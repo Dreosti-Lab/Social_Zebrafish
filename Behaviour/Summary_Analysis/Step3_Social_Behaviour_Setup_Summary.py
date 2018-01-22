@@ -9,7 +9,7 @@ Created on 2018 January
 lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
 #-----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'C:\Users\adamk\Desktop\Isolation_Experiments\Python_Analysis_All'
+base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
 
 # Set Library Paths
 import sys
@@ -33,12 +33,12 @@ import BONSAI_ARK
 import glob
 
 # Read Folder List
+#folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
 folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls.txt'
-#folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated_subset.txt'
 
 # Set Analysis Folder Path
-analysisFolder = base_path + r'\Analysis_Folder\Controls_Summary'
 #analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
+analysisFolder = base_path + r'\Analysis_Folder\Controls_Summary'
 
 # Plot Data
 plot = False

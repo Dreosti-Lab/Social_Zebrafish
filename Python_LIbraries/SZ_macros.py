@@ -4,32 +4,12 @@ Created on Fri Dec 20 11:44:40 2013
 
 @author: Adam
 """
-# Function to find Dropbox Folder Path on each computer
-#import os
-#import json
-#
-## Find Dropbox Path
-#try:
-#    appdata_path = os.getenv('APPDATA')
-#    with open(appdata_path + '\Dropbox\info.json') as data_file:
-#        data = json.load(data_file)
-#except:
-#    local_appdata_path = os.getenv('LOCALAPPDATA')
-#    with open(local_appdata_path + '\Dropbox\info.json') as data_file:
-#        data = json.load(data_file)
-#dropbox_path = data['personal']['path']
-#
-## -----------------------------------------------------------------------------
-## Set Base Path (Shared Dropbox Folder)
-#base_path = dropbox_path
-base_path=r'C:\Users\elenadreosti\Dropbox (Personal)'
-# -----------------------------------------------------------------------------
-
+# Set "Library Path" - Social Zebrafish Repo
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
 
 # Set Library Paths
 import sys
-sys.path.append(base_path + r'\Adam_Ele\Shared Programming\Python\ARK')
-sys.path.append(base_path + r'\Adam_Ele\Shared Programming\Python\Social Zebrafish\Include')
+sys.path.append(lib_path)
 
 # Import useful libraries
 import os
@@ -38,11 +18,11 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import scipy.signal as signal
 import scipy.misc as misc
-import glob
-
-# Import local modules
+import CV_ARK
 import SZ_utilities as SZU
 import BONSAI_ARK
+import glob
+
 
 # Utilities for loading and ploting "social zebrafish" data
 

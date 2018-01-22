@@ -4,59 +4,23 @@ Created on Wed Sep 14 11:59:42 2016
 
 @author: dreostilab (Elena Dreosti)
 """
-#==============================================================================
-# This is the Algorithm used
-    # 1. Subtract pre-computed Background frame from Current frame (Note: Not AbsDiff!)
-    # 2. Extract Crop regions from ROIs
-    # 3. Threshold ROI using mean/7 of each crop region, Binary Close image using 5 rad disc
-    # 4. Find largest particle (Contour)
-    # 5. - Compute Weighted Centroid (X,Y) for Eye Region (10% of brightest pixels)
-    # 6. - Compute Binary Centroid of Body Region (50% of brightest pixels - eyeRegion)
-    # 7. - Compute Heading
-
-#==============================================================================
 # -----------------------------------------------------------------------------
-# 1) Function to find Dropbox Folder Path on each computer. In this way you 
-# can keep files in Dropbox and do analyisis with different computers.
-
-import os
-import json
-
-# Find Dropbox Path function taken from the internet
-try:
-    appdata_path = os.getenv('APPDATA')
-    with open(appdata_path + '\Dropbox\info.json') as data_file:
-        data = json.load(data_file)
-except:
-    local_appdata_path = os.getenv('LOCALAPPDATA')
-    with open(local_appdata_path + '\Dropbox\info.json') as data_file:
-        data = json.load(data_file)
-dropbox_path = data['personal']['path']
-#
-#
-## -----------------------------------------------------------------------------
-## 2) Set Base Path (Shared Dropbox Folder)
-#base_path = dropbox_home()
-base_path= dropbox_path
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-
+# Set "Library Path" - Social Zebrafish Repo
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
 
 # Set Library Paths
 import sys
-#sys.path.append(base_path + r'\Adam_Ele\Shared Programming\Python\ARK')
-sys.path.append(base_path + r'\Python_ED\Libraries')
-
+sys.path.append(lib_path)
 
 # Import useful libraries
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import scipy.signal as signal
+import CV_ARK
 import scipy.misc as misc
 from scipy import stats
-
-# Import local modules
 import SZ_utilities as SZU
 import SZ_macros as SZM
 import SZ_video as SZV

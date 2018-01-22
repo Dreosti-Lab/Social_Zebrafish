@@ -10,7 +10,7 @@ Created on Sun May 11 14:01:46 2014
 lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
 #-----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'C:\Users\adamk\Desktop\Isolation_Experiments\Python_Analysis_All'
+base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
 
 # Set Library Paths
 import sys
@@ -202,15 +202,25 @@ mean_long_pauses_S = np.mean(Pauses_S_ALL)
 
 plt.figure()
 
-plt.subplot(121)
+plt.subplot(221)
 plt.plot(Pauses_NS_ALL)
 plt.title('Long Pauses (NS):' + str(mean_long_pauses_NS), fontsize=12)
 plt.xlabel('Fish', fontsize=12)
 plt.ylabel('Pause Count', fontsize=12)
-plt.subplot(122)
+plt.subplot(222)
 plt.plot(Pauses_S_ALL)
 plt.title('Long Pauses (S):' + str(mean_long_pauses_S), fontsize=12)
 plt.xlabel('Fish', fontsize=12)
+plt.ylabel('Pause Count', fontsize=12)
+plt.subplot(223)
+plt.plot(SPI_NS_ALL, Pauses_NS_ALL, 'ko')
+plt.title('SPI vs Long Pauses (NS)' )
+plt.xlabel('SPI', fontsize=12)
+plt.ylabel('Pause Count', fontsize=12)
+plt.subplot(224)
+plt.plot(SPI_S_ALL, Pauses_S_ALL, 'ko')
+plt.title('SPI vs Long Pauses (S)')
+plt.xlabel('SPI', fontsize=12)
 plt.ylabel('Pause Count', fontsize=12)
 
 

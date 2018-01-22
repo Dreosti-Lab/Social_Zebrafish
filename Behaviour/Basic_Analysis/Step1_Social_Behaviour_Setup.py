@@ -4,48 +4,21 @@ Created on Fri Feb 14 10:24:46 2014
 
 @author: dreostilab (Elena Dreosti)
 """
-#==============================================================================
-# This function is used to make the sumamry image and to check that all the 
-#folders contain the bonsai ROi files
-#==============================================================================
-
-
 # -----------------------------------------------------------------------------
-# 1) Function to find Dropbox Folder Path on each computer. In this way you 
-# can keep files in Dropbox and do analyisis with different computers.
+# Set "Library Path" - Social Zebrafish Repo
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
 
-import os
-import json
-
-# Find Dropbox Path
-try:
-    appdata_path = os.getenv('APPDATA')
-    with open(appdata_path + '\Dropbox\info.json') as data_file:
-        data = json.load(data_file)
-except:
-    local_appdata_path = os.getenv('LOCALAPPDATA')
-    with open(local_appdata_path + '\Dropbox\info.json') as data_file:
-        data = json.load(data_file)
-dropbox_path = data['personal']['path']
-
-# -----------------------------------------------------------------------------
-# Set Base Path Aas the shared Dropbox Folder (unique to each computer)
-base_path = dropbox_path 
-# Use this in case the dropbox doesn't work (base_path=r'C:\Users\elenadreosti
-#\Dropbox (Personal)'
-#-----------------------------------------------------------------------------
-
-#-----------------------------------------------------------------------------
-# 2) Set Library Paths
+# Set Library Paths
 import sys
-sys.path.append(base_path + r'\Python_ED\Libraries')
-
+sys.path.append(lib_path)
 
 # Import useful libraries
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import scipy.signal as signal
+import CV_ARK
 import scipy.misc as misc
 from scipy import stats
 

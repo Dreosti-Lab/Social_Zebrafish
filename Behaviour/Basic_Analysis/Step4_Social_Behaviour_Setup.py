@@ -6,22 +6,12 @@ Created on Sun May 11 14:01:46 2014
 """
 
 # -----------------------------------------------------------------------------
-# 1) Function to find Dropbox Folder Path on each computer. In this way you 
-# can keep files in Dropbox and do analyisis with different computers.
+# Set "Library Path" - Social Zebrafish Repo
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 
-import os
-import json
-
-# Find Dropbox Path
-try:
-    appdata_path = os.getenv('APPDATA')
-    with open(appdata_path + '\Dropbox\info.json') as data_file:
-        data = json.load(data_file)
-except:
-    local_appdata_path = os.getenv('LOCALAPPDATA')
-    with open(local_appdata_path + '\Dropbox\info.json') as data_file:
-        data = json.load(data_file)
-dropbox_path = data['personal']['path']
+# Set Library Paths
+import sys
+sys.path.append(lib_path)
 
 # -----------------------------------------------------------------------------
 # Set Base Path Aas the shared Dropbox Folder (unique to each computer)

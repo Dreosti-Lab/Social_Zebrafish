@@ -6,7 +6,7 @@ This script loads and processes an NII folder list: .nii images and behaviour
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
 base_path = r'C:\Users\adamk\Desktop\cFos Experiments'
@@ -20,7 +20,7 @@ import glob
 import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
-import SZ_nii as SZNII
+import SZ_cfos as SZCFOS
 
 # Set Folder List
 folderListFile = base_path + r'\test_list.txt'
@@ -51,7 +51,7 @@ for i, f in enumerate(folderList):  #enumerate tells you what folder is 'i'
 mask_path = base_path + r'\Masks\Caudal_Hypothalamus.labels.tif'
 
 # Load mask(s)
-mask_stack = SZNII.load_mask(mask_path)
+mask_stack = SZCFOS.load_mask(mask_path)
 num_mask_voxels = np.sum(np.sum(np.sum(mask_stack)))
 # ------------------------------------------------------------------
 # Start Analysis
@@ -76,7 +76,7 @@ for i in range(num_folders):
 # Measure cFOS in Mask (normalize to "background"...eventually)
 cFos_values = np.zeros(num_folders)
 for i in range(num_folders):
-    data = SZNII.load_nii(nii_names[i])
+    data = SZCFOS.load_nii(nii_names[i])
     cFos_values[i] = np.sum(np.sum(np.sum(mask_stack * data)))/num_mask_voxels
     print(str(i) + ", cFos = " + str(cFos_values[i]) + ", motion = " + str(motion_values[i]))
     

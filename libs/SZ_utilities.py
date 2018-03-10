@@ -6,7 +6,7 @@ Created on Wed Dec 04 09:21:29 2013
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 
 # Set Library Paths
 import sys

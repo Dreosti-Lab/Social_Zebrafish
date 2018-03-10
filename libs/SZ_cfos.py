@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Library to handle NII stacks
+Library of utilities for cFos analysis
 
 @author: Dreosti Lab
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\Python_LIbraries'
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 
 # Set Library Paths
 import sys
@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from PIL import Image, ImageSequence
 
-# Utilities for processing NII stacks
+# Utilities for analyzing cFos experiments
 
 # Load NII stack
 def load_nii(path):

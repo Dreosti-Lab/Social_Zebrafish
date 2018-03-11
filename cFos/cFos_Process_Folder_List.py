@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This script loads and processes an NII folder list: .nii images and behaviour
+This script loads and processes a cFos folder list: .nii images and behaviour
 
 @author: Dreosti Lab
 """
@@ -24,10 +24,11 @@ import SZ_summary as SZS
 import SZ_analysis as SZA
 
 #---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
 
 # Set Folder List
-folderListFile = base_path + r'\wt_list.txt'
-#folderListFile = base_path + r'\isolation_list.txt'
+#folderListFile = base_path + r'\wt_list.txt'
+folderListFile = base_path + r'\isolation_list.txt'
 
 # Set Mask Path
 mask_path = base_path + r'\Masks\Caudal_Hypothalamus.labels.tif'
@@ -36,6 +37,8 @@ mask_path = base_path + r'\Masks\Caudal_Hypothalamus.labels.tif'
 background_path = base_path + r'\Masks\Tectum.labels.tif'
 
 #---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
 # Read folder list
 folder_names, test_ROIs, stim_ROIs, cfos_names, NS_names, S_names, fish_numbers = SZCFOS.read_folderlist(base_path, folderListFile)
 num_folders = len(folder_names)
@@ -79,7 +82,7 @@ for i in range(num_folders):
     BPS_s, avgBout_s = SZS.measure_BPS(motion)
     bps_values[i] = BPS_s
 
-# Measure cFOS in Mask (normalize to "background"...eventually)
+# Measure cFOS in Mask (normalize to "background")
 cFos_values = np.zeros(num_folders)
 for i in range(num_folders):
     cfos_data = SZCFOS.load_nii(cfos_names[i])

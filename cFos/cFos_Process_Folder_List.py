@@ -8,60 +8,59 @@ This script loads and processes an NII folder list: .nii images and behaviour
 # Set "Library Path" - Social Zebrafish Repo
 lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 # -----------------------------------------------------------------------------
-# Set "Base Path" for this analysis session
-base_path = r'C:\Users\adamk\Desktop\cFos Experiments'
+# Set "Base Path" for this analysis session'
+#base_path = r'C:\Users\adamk\Desktop\cFos Experiments'
+base_path = r'D:\Registration'
 
 # Set Library Paths
 import sys
 sys.path.append(lib_path)
 
 # Import useful libraries
-import glob
-import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
 import SZ_cfos as SZCFOS
+import SZ_summary as SZS
+import SZ_analysis as SZA
+
+#---------------------------------------------------------------------------
 
 # Set Folder List
-folderListFile = base_path + r'\test_list.txt'
-
-# Read Folder List
-folderFile = open(folderListFile, "r")  #"r" means read the file
-folderList = folderFile.readlines()     # returns a list containing the lines
-num_folders = len(folderList) 
-folder_names = [] # We use this becasue we do not know the exact lenght
-nii_names = []
-npz_NS_names = []
-npz_S_names = []
-for i, f in enumerate(folderList):  #enumerate tells you what folder is 'i'
-    folder_name = base_path+f[:-1]
-    folder_names.append(folder_name)
-    
-    # Find cFos nii paths: "warped_red"
-    nii_name = glob.glob(folder_name + r'\*warped_red.nii.gz')[0]
-    nii_names.append(nii_name)
-    
-    # Find behaviour npz (NS and S)
-    npz_name_NS = glob.glob(folder_name + r'\Behaviour\*_NS.npz')[0]
-    npz_name_S = glob.glob(folder_name + r'\Behaviour\*_S.npz')[0]
-    npz_NS_names.append(npz_name_NS)
-    npz_S_names.append(npz_name_S)
+folderListFile = base_path + r'\wt_list.txt'
+#folderListFile = base_path + r'\isolation_list.txt'
 
 # Set Mask Path
 mask_path = base_path + r'\Masks\Caudal_Hypothalamus.labels.tif'
 
+# Set Background Path
+background_path = base_path + r'\Masks\Tectum.labels.tif'
+
+#---------------------------------------------------------------------------
+# Read folder list
+folder_names, test_ROIs, stim_ROIs, cfos_names, NS_names, S_names, fish_numbers = SZCFOS.read_folderlist(base_path, folderListFile)
+num_folders = len(folder_names)
+
 # Load mask(s)
 mask_stack = SZCFOS.load_mask(mask_path)
 num_mask_voxels = np.sum(np.sum(np.sum(mask_stack)))
+
+background_stack = SZCFOS.load_mask(background_path)
+num_background_voxels = np.sum(np.sum(np.sum(background_stack)))
+
 # ------------------------------------------------------------------
 # Start Analysis
 
-# Analyze Behaviour (SPI for now)
-motion_values = np.zeros(num_folders)
+# Analyze Behaviour for each folder (BPS and SPI for now)
+bps_values = np.zeros(num_folders)
+spi_values = np.zeros(num_folders)
 for i in range(num_folders):
-    data = np.load(npz_S_names[i])
-    tracking = data['tracking']
     
+    # Set fish number 
+    fish_number = fish_numbers[i]
+
+    # Load tracking data (S)
+    behaviour_data = np.load(S_names[i])
+    tracking = behaviour_data['tracking']
     fx = tracking[:,0] 
     fy = tracking[:,1]
     bx = tracking[:,2]
@@ -71,20 +70,40 @@ for i in range(num_folders):
     area = tracking[:,6]
     ort = tracking[:,7]
     motion = tracking[:,8]
-    motion_values[i] = np.mean(motion)
+    
+    # Compute SPI (S)
+    SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, test_ROIs[i][fish_number-1], stim_ROIs[i][fish_number-1])
+    spi_values[i] = SPI_s
+    
+    # Compute BPS (S)
+    BPS_s, avgBout_s = SZS.measure_BPS(motion)
+    bps_values[i] = BPS_s
 
 # Measure cFOS in Mask (normalize to "background"...eventually)
 cFos_values = np.zeros(num_folders)
 for i in range(num_folders):
-    data = SZCFOS.load_nii(nii_names[i])
-    cFos_values[i] = np.sum(np.sum(np.sum(mask_stack * data)))/num_mask_voxels
-    print(str(i) + ", cFos = " + str(cFos_values[i]) + ", motion = " + str(motion_values[i]))
+    cfos_data = SZCFOS.load_nii(cfos_names[i])
+    signal_value = np.sum(np.sum(np.sum(mask_stack * cfos_data)))/num_mask_voxels
+    background_value = np.sum(np.sum(np.sum(background_stack * cfos_data)))/num_background_voxels
     
-    # Display
-    plt.figure()
-    plt.subplot(1,2,1)
-    plt.imshow(data[:,:,54])
-    plt.subplot(1,2,2)
-    plt.imshow(mask_stack[:,:,54] * data[:,:,54])
+    cFos_values[i] = signal_value/background_value
+    print(str(i) + ", cFos = " + str(cFos_values[i]) + ", SPI = " + str(spi_values[i]))
+
+# Make plots
+plt.figure()
+plt.title("BPS vs cFos - Normalized by Tectum")
+plt.plot(bps_values, cFos_values, '.')
+
+plt.figure()
+plt.title("SPI vs cFos - Normalized by Tectum")
+plt.plot(spi_values, cFos_values, '.')
 
 # FIN
+
+
+# Huh?
+#    x_min = min(test_ROIs[i][fish_number-1,0], stim_ROIs[i][fish_number-1,0])
+#    y_min = min(test_ROIs[i][fish_number-1,1], stim_ROIs[i][fish_number-1,1])
+#    x_max = max(test_ROIs[i][fish_number-1,0] + test_ROIs[i][fish_number-1,2], stim_ROIs[i][fish_number-1,0] + stim_ROIs[i][fish_number-1,2])
+#    y_max = max(test_ROIs[i][fish_number-1,1] + test_ROIs[i][fish_number-1,3], stim_ROIs[i][fish_number-1,1] + stim_ROIs[i][fish_number-1,3])
+

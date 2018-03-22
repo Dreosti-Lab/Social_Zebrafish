@@ -50,6 +50,9 @@ npzFiles = glob.glob(analysisFolder+'\*.npz')
 #CAlculate how many files
 numFiles = np.size(npzFiles, 0)
 
+VPI_NS_ALL = np.zeros(numFiles)
+VPI_S_ALL = np.zeros(numFiles)
+
 SPI_NS_ALL = np.zeros(numFiles)
 SPI_S_ALL = np.zeros(numFiles)
 
@@ -75,6 +78,8 @@ for f, filename in enumerate(npzFiles):
     dataobject = np.load(filename)
     
     #Extract from the npz file
+    VPI_NS = dataobject['VPI_NS']    
+    VPI_S = dataobject['VPI_S']   
     SPI_NS = dataobject['SPI_NS']    
     SPI_S = dataobject['SPI_S']   
     BPS_NS = dataobject['BPS_NS']   
@@ -89,6 +94,8 @@ for f, filename in enumerate(npzFiles):
     OrtHist_s_SocialSide = dataobject['OrtHist_S_SocialSide']
     
     #Make an array with all summary stats
+    VPI_NS_ALL[f] = VPI_NS
+    VPI_S_ALL[f] = VPI_S
     SPI_NS_ALL[f] = SPI_NS
     SPI_S_ALL[f] = SPI_S
     BPS_NS_ALL[f] = BPS_NS
@@ -101,6 +108,55 @@ for f, filename in enumerate(npzFiles):
     OrtHist_NS_SS_ALL[f,:] = OrtHist_ns_SocialSide
     OrtHist_S_NSS_ALL[f,:] = OrtHist_s_NonSocialSide
     OrtHist_S_SS_ALL[f,:] = OrtHist_s_SocialSide   
+
+
+
+# ----------------
+# VPI Summary Plot
+
+#Make histogram and plot it with lines 
+a_ns,c=np.histogram(VPI_NS_ALL,  bins=8, range=(-1,1))
+a_s,c=np.histogram(VPI_S_ALL,  bins=8, range=(-1,1))
+centers = (c[:-1]+c[1:])/2
+
+#Normalize by tot number of fish
+Tot_Fish_NS=numFiles
+
+a_ns_float = np.float32(a_ns)
+a_s_float = np.float32(a_s)
+
+a_ns_nor_medium=a_ns_float/Tot_Fish_NS
+a_s_nor_medium=a_s_float/Tot_Fish_NS 
+ 
+plt.figure()
+plt.plot(centers, a_ns_nor_medium, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
+plt.plot(centers, a_s_nor_medium, color=[1.0,0.0,0.0,0.5], linewidth=4.0)
+plt.title('Non Social/Social VPI', fontsize=12)
+plt.xlabel('Preference Index (PI_)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+plt.axis([-1.1, 1.1, 0, 0.5])
+pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+
+bar_width=0.25
+plt.figure()
+plt.bar(centers, a_ns_nor_medium, width=0.25, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
+plt.title('Non Social VPI', fontsize=12)
+plt.xlabel('Preference Index (PI_)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+plt.axis([-1.1, 1.1, 0, 0.5])
+pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+
+plt.figure()
+plt.bar(centers, a_s_nor_medium, width=0.25, color=[1.0,0.0,0.0,1.0], linewidth=4.0)
+plt.title('Social VPI', fontsize=12)
+plt.xlabel('Preference Index (PI_)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+plt.axis([-1.1, 1.1, 0, 0.5])
+pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+
 
 # ----------------
 # SPI Summary Plot

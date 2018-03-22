@@ -83,6 +83,7 @@ def read_folderlist(base_path, path):
         # Find folder name (path)
         folder_name = base_path+f[:-1]
         folder_names.append(folder_name)
+        print('Checking: ' + folder_name)
         
         # Find ROIs from bonsai workflow - Test Fish
         bonsai_test_name = glob.glob(folder_name + r'\Behaviour\*Social_1*.bonsai')[0]

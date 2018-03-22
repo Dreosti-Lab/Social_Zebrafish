@@ -188,22 +188,22 @@ def process_video_summary_images(folder, social):
             croppedStim[r1:r2, c1:c2] = 0
     
         
-    plt.figure()
-    plt.imshow(croppedTest, cmap = plt.cm.gray, vmin = 0, vmax = 255)
-    plt.draw()
-    plt.pause(0.001)
-    
-        
-    plt.figure()    
-    plt.imshow(croppedStim, cmap = plt.cm.gray, vmin = 0, vmax = 255)
-    plt.draw()
-    plt.pause(0.001)
-    
-    plt.figure()    
-    plt.imshow(equ, cmap = plt.cm.gray, vmin = 0, vmax = 255)
-    plt.draw()
-    plt.pause(0.001)
-    
+#    plt.figure()
+#    plt.imshow(croppedTest, cmap = plt.cm.gray, vmin = 0, vmax = 255)
+#    plt.draw()
+#    plt.pause(0.001)
+#    
+#        
+#    plt.figure()    
+#    plt.imshow(croppedStim, cmap = plt.cm.gray, vmin = 0, vmax = 255)
+#    plt.draw()
+#    plt.pause(0.001)
+#    
+#    plt.figure()    
+#    plt.imshow(equ, cmap = plt.cm.gray, vmin = 0, vmax = 255)
+#    plt.draw()
+#    plt.pause(0.001)
+#    
     summary = np.zeros((height, width, 3), dtype = float)
     if social:
         summary[:,:, 0] = croppedStim;

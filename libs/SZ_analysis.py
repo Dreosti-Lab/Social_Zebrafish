@@ -23,6 +23,35 @@ import SZ_utilities as SZU
 
 # Functions for analyzing "social zebrafish" data
 
+
+# Compute Viewing Preference Index
+def computeVPI(xPositions, yPositions, testROI, stimROI):
+     
+    # Find thresholds of Y from the Test ROI in order to define the Visible area
+    visiblePositionThreshold_Y = testROI[1]+(testROI[3]/2) 
+    
+    # Define which frames are "VISIBLE" in Y by comparing Y with the above calculated threshold
+    socialTop = stimROI[1] < visiblePositionThreshold_Y
+        
+    # Check Y threshold 
+    if socialTop:  
+        AllVisibleFrames = yPositions < visiblePositionThreshold_Y   # True/False array, BUT "Zero Y" remember is located conventionally at the TOP   
+    else:
+        AllVisibleFrames = yPositions > visiblePositionThreshold_Y   # Opposite True/False array
+    
+    # Determine Non-Visible Fames
+    AllNonVisibleFrames = np.logical_not(AllVisibleFrames)
+   
+    # Count Visible and Non-Visible Frames
+    numVisibleFrames = np.float(np.sum(AllVisibleFrames))     # Final Sum of Visible Frames
+    numNonVisibleFrames= np.float(np.sum(AllNonVisibleFrames))  # Final Sum of NON Visible Frames 
+        
+    # Compute VPI
+    VPI = (numVisibleFrames-numNonVisibleFrames)/np.size(yPositions)
+    
+    return VPI, AllVisibleFrames, AllNonVisibleFrames
+
+
 # Compute Social Preference Index
 def computeSPI(xPositions, yPositions, testROI, stimROI):
     
@@ -65,7 +94,7 @@ def computeSPI(xPositions, yPositions, testROI, stimROI):
     if (numSocialFrames+numNONSocialFrames) == 0:
         SPI = 0.0
     else:
-        SPI = (numSocialFrames-numNONSocialFrames)/(numSocialFrames+numNONSocialFrames)
+#        SPI = (numSocialFrames-numNONSocialFrames)/(numSocialFrames+numNONSocialFrames)
         SPI = (numSocialFrames-numNONSocialFrames)/np.size(yPositions)
     
     

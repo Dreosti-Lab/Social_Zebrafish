@@ -34,11 +34,15 @@ import glob
 
 # Read Folder List
 #folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
-folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls.txt'
+#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_Controls.txt'
+#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_48h.txt'
+folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_24h.txt'
 
 # Set Analysis Folder Path
 #analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
-analysisFolder = base_path + r'\Analysis_Folder\Controls_Summary'
+#analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\Controls'
+#analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\48h'
+analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\24h'
 
 # Plot Data
 plot = False
@@ -111,13 +115,12 @@ for idx,folder in enumerate(folderNames):
             ort = tracking[:,7]
             motion = tracking[:,8]
             
-            # Determine "Visible" Frames
-            AllVisibleFrames = SZA.analyze_tracking_VISIBLE(NS_folder, i, NS_test_ROIs, S_stim_ROIs)
-            AllNonVisibleFrames = np.logical_not(AllVisibleFrames)
-
             # Adjust orientation (0 is always facing the "stimulus" fish) - Depends on chamber
             ort = SZU.adjust_ort_test(ort, i)
                         
+            # Compute VPI (NS)
+            VPI_ns, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
+            
             # Compute SPI (NS)
             SPI_ns, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
             
@@ -139,7 +142,7 @@ for idx,folder in enumerate(folderNames):
                 plt.plot(bx, by, '.', markersize=1, color = [0.0, 0.0, 0.0, 0.05])
                 plt.plot(bx[AllSocialFrames_TF], by[AllSocialFrames_TF], '.', markersize=1, color = [1.0, 0.0, 0.0, 0.05], )
                 plt.plot(bx[AllNONSocialFrames_TF], by[AllNONSocialFrames_TF], '.', markersize=1, color = [0.0, 0.0, 1.0, 0.05])
-                
+                plt.title('SPI: ' + format(SPI_ns, '.3f') + ', VPI: ' + format(VPI_ns, '.3f'))
                 plt.axis([x_min, x_max, y_min, y_max])
                 plt.gca().invert_yaxis()
                 plt.subplot(3,2,3)
@@ -163,13 +166,12 @@ for idx,folder in enumerate(folderNames):
             area = tracking[:,6]
             ort = tracking[:,7]
             motion = tracking[:,8]
-
-            # Determine "Visible" Frames
-            AllVisibleFrames = SZA.analyze_tracking_VISIBLE(S_folder, i, S_test_ROIs, S_stim_ROIs)
-            AllNonVisibleFrames = np.logical_not(AllVisibleFrames)
             
-            # Adjust orientation (0 is always facing the "stimulus" fish) - Depends on chamber
+             # Adjust orientation (0 is always facing the "stimulus" fish) - Depends on chamber
             ort = SZU.adjust_ort_test(ort, i)
+            
+            # Compute VPI (S)
+            VPI_s, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
 
             # Compute SPI (S)
             SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
@@ -192,7 +194,7 @@ for idx,folder in enumerate(folderNames):
                 plt.plot(bx, by, '.', markersize=1, color = [0.0, 0.0, 0.0, 0.05])
                 plt.plot(bx[AllSocialFrames_TF], by[AllSocialFrames_TF], '.', markersize=1, color = [1.0, 0.0, 0.0, 0.05], )
                 plt.plot(bx[AllNONSocialFrames_TF], by[AllNONSocialFrames_TF], '.', markersize=1, color = [0.0, 0.0, 1.0, 0.05])
-                plt.title([SPI_ns,SPI_s])
+                plt.title('SPI: ' + format(SPI_s, '.3f') + ', VPI: ' + format(VPI_s, '.3f'))                
                 plt.axis([x_min, x_max, y_min, y_max])
                 plt.gca().invert_yaxis()
                 plt.subplot(3,2,4)
@@ -239,7 +241,9 @@ for idx,folder in enumerate(folderNames):
             #----------------------------
             # Save Analyzed Summary Data
             filename = analysisFolder + '\\' + str(np.int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
-            np.savez(filename, 
+            np.savez(filename,
+                     VPI_NS=VPI_ns,
+                     VPI_S=VPI_s,
                      SPI_NS=SPI_ns, 
                      SPI_S=SPI_s,
                      BPS_NS=BPS_ns,

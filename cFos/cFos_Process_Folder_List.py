@@ -27,14 +27,24 @@ import SZ_analysis as SZA
 #---------------------------------------------------------------------------
 
 # Set Folder List
-#folderListFile = base_path + r'\wt_list.txt'
-folderListFile = base_path + r'\isolation_list.txt'
+folderListFile = base_path + r'\Folder_list\wt_list.txt'
+#folderListFile = base_path + r'\Folder_list\isolation.txt'
+#folderListFile = base_path + r'\Folder_list\No_SC.txt'
 
 # Set Mask Path
-mask_path = base_path + r'\Masks\Caudal_Hypothalamus.labels.tif'
+#mask_path = base_path + r'\Masks\Telencephalon_Area_1.labels.tif'
+#mask_path = base_path + r'\Masks\Telencephalon_Area_2.labels.tif'
+#mask_path = base_path + r'\Masks\Telencephalon_Area_8.tif'
+
+#mask_path = base_path + r'\Masks\Diencephalon_Area_1_Caudal_Hypothalamus.tif'
+#mask_path = base_path + r'\Masks\Diencephalon_Area_2_Habenula.labels.tif'
+#mask_path = base_path + r'\Masks\Diencephalon_Area_3.labels.tif'
+mask_path = base_path + r'\Masks\Diencephalon_Area_4.tif'
+#mask_path = base_path + r'\Masks\Diencephalon_Area_7.labels.tif'
 
 # Set Background Path
-background_path = base_path + r'\Masks\Tectum.labels.tif'
+#background_path = base_path + r'\Masks\Diencephalon_Area_10_DIL.tif'
+background_path = base_path + r'\Masks\Diencephalon_Area_8.tif'
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -56,6 +66,7 @@ num_background_voxels = np.sum(np.sum(np.sum(background_stack)))
 # Analyze Behaviour for each folder (BPS and SPI for now)
 bps_values = np.zeros(num_folders)
 spi_values = np.zeros(num_folders)
+vpi_values = np.zeros(num_folders)
 for i in range(num_folders):
     
     # Set fish number 
@@ -74,6 +85,10 @@ for i in range(num_folders):
     ort = tracking[:,7]
     motion = tracking[:,8]
     
+    # Compute VPI (S)
+    VPI_s, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, test_ROIs[i][fish_number-1], stim_ROIs[i][fish_number-1])
+    vpi_values[i] = VPI_s
+
     # Compute SPI (S)
     SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, test_ROIs[i][fish_number-1], stim_ROIs[i][fish_number-1])
     spi_values[i] = SPI_s
@@ -83,23 +98,51 @@ for i in range(num_folders):
     bps_values[i] = BPS_s
 
 # Measure cFOS in Mask (normalize to "background")
-cFos_values = np.zeros(num_folders)
+signal_values = np.zeros(num_folders)
+background_values = np.zeros(num_folders)
+normalized_cFos_values = np.zeros(num_folders)
 for i in range(num_folders):
     cfos_data = SZCFOS.load_nii(cfos_names[i])
     signal_value = np.sum(np.sum(np.sum(mask_stack * cfos_data)))/num_mask_voxels
     background_value = np.sum(np.sum(np.sum(background_stack * cfos_data)))/num_background_voxels
-    
-    cFos_values[i] = signal_value/background_value
-    print(str(i) + ", cFos = " + str(cFos_values[i]) + ", SPI = " + str(spi_values[i]))
+                             
+    # Append to list
+    signal_values[i] = signal_value
+    background_values[i] = background_value
+    normalized_cFos_values[i] = signal_value/background_value
+    print(str(i) + ", cFos = " + format(normalized_cFos_values[i], '.3f') + ", SPI = " + format(spi_values[i], '.3f') + ", VPI = " + format(vpi_values[i], '.3f'))
 
 # Make plots
 plt.figure()
-plt.title("BPS vs cFos - Normalized by Tectum")
-plt.plot(bps_values, cFos_values, '.')
 
-plt.figure()
-plt.title("SPI vs cFos - Normalized by Tectum")
-plt.plot(spi_values, cFos_values, '.')
+# Plot unnormalized data
+plt.subplot(2,3,1)
+plt.title("BPS vs cFos - UnNormalized")
+plt.plot(bps_values, signal_values, 'b.')
+plt.plot(bps_values, background_values, 'r.')
+
+plt.subplot(2,3,2)
+plt.title("SPI vs cFos - UnNormalized")
+plt.plot(spi_values, signal_values, 'b.')
+plt.plot(spi_values, background_values, 'r.')
+
+plt.subplot(2,3,3)
+plt.title("VPI vs cFos - UnNormalized")
+plt.plot(vpi_values, signal_values, 'b.')
+plt.plot(vpi_values, background_values, 'r.')
+
+# Plot normalized data
+plt.subplot(2,3,4)
+plt.title("BPS vs cFos - Normalized by DA9")
+plt.plot(bps_values, normalized_cFos_values, 'k.')
+
+plt.subplot(2,3,5)
+plt.title("SPI vs cFos - Normalized by DA9")
+plt.plot(spi_values, normalized_cFos_values, 'k.')
+
+plt.subplot(2,3,6)
+plt.title("VPI vs cFos - Normalized by DA9")
+plt.plot(vpi_values, normalized_cFos_values, 'k.')
 
 # FIN
 

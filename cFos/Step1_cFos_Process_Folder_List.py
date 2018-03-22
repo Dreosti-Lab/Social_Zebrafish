@@ -9,8 +9,8 @@ This script loads and processes a cFos folder list: .nii images and behaviour
 lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session'
-#base_path = r'C:\Users\adamk\Desktop\cFos Experiments'
-base_path = r'D:\Registration'
+base_path = r'C:\Users\adamk\Desktop\cFos Experiments'
+#base_path = r'D:\Registration'
 
 # Set Library Paths
 import sys
@@ -27,8 +27,8 @@ import SZ_analysis as SZA
 #---------------------------------------------------------------------------
 
 # Set Folder List
-folderListFile = base_path + r'\Folder_list\wt_list.txt'
-#folderListFile = base_path + r'\Folder_list\isolation.txt'
+#folderListFile = base_path + r'\Folder_list\wt_list.txt'
+folderListFile = base_path + r'\Folder_list\isolation.txt'
 #folderListFile = base_path + r'\Folder_list\No_SC.txt'
 
 # Set Mask Path
@@ -39,12 +39,16 @@ folderListFile = base_path + r'\Folder_list\wt_list.txt'
 #mask_path = base_path + r'\Masks\Diencephalon_Area_1_Caudal_Hypothalamus.tif'
 #mask_path = base_path + r'\Masks\Diencephalon_Area_2_Habenula.labels.tif'
 #mask_path = base_path + r'\Masks\Diencephalon_Area_3.labels.tif'
-mask_path = base_path + r'\Masks\Diencephalon_Area_4.tif'
+#mask_path = base_path + r'\Masks\Diencephalon_Area_4.tif'
 #mask_path = base_path + r'\Masks\Diencephalon_Area_7.labels.tif'
+
+mask_path = base_path + r'\Masks\Caudal_Hypothalamus.labels.tif'
 
 # Set Background Path
 #background_path = base_path + r'\Masks\Diencephalon_Area_10_DIL.tif'
-background_path = base_path + r'\Masks\Diencephalon_Area_8.tif'
+#background_path = base_path + r'\Masks\Diencephalon_Area_8.tif'
+
+background_path = base_path + r'\Masks\Tectum.labels.tif'
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -67,6 +71,7 @@ num_background_voxels = np.sum(np.sum(np.sum(background_stack)))
 bps_values = np.zeros(num_folders)
 spi_values = np.zeros(num_folders)
 vpi_values = np.zeros(num_folders)
+dist_values = np.zeros(num_folders)
 for i in range(num_folders):
     
     # Set fish number 
@@ -96,6 +101,22 @@ for i in range(num_folders):
     # Compute BPS (S)
     BPS_s, avgBout_s = SZS.measure_BPS(motion)
     bps_values[i] = BPS_s
+    
+    # Load tracking data (NS)
+    behaviour_data = np.load(NS_names[i])
+    tracking = behaviour_data['tracking']
+    fx = tracking[:,0] 
+    fy = tracking[:,1]
+    bx = tracking[:,2]
+    by = tracking[:,3]
+    ex = tracking[:,4]
+    ey = tracking[:,5]
+    area = tracking[:,6]
+    ort = tracking[:,7]
+    motion = tracking[:,8]
+
+    # Compute Distance Traveled (NS)
+    dist_values[i] = SZA.distance_traveled(bx, by)
 
 # Measure cFOS in Mask (normalize to "background")
 signal_values = np.zeros(num_folders)
@@ -116,33 +137,42 @@ for i in range(num_folders):
 plt.figure()
 
 # Plot unnormalized data
-plt.subplot(2,3,1)
+plt.subplot(2,4,1)
 plt.title("BPS vs cFos - UnNormalized")
 plt.plot(bps_values, signal_values, 'b.')
 plt.plot(bps_values, background_values, 'r.')
 
-plt.subplot(2,3,2)
+plt.subplot(2,4,2)
 plt.title("SPI vs cFos - UnNormalized")
 plt.plot(spi_values, signal_values, 'b.')
 plt.plot(spi_values, background_values, 'r.')
 
-plt.subplot(2,3,3)
+plt.subplot(2,4,3)
 plt.title("VPI vs cFos - UnNormalized")
 plt.plot(vpi_values, signal_values, 'b.')
 plt.plot(vpi_values, background_values, 'r.')
 
+plt.subplot(2,4,4)
+plt.title("Distance (NS) vs cFos - UnNormalized")
+plt.plot(dist_values, signal_values, 'b.')
+plt.plot(dist_values, background_values, 'r.')
+
 # Plot normalized data
-plt.subplot(2,3,4)
+plt.subplot(2,4,5)
 plt.title("BPS vs cFos - Normalized by DA9")
 plt.plot(bps_values, normalized_cFos_values, 'k.')
 
-plt.subplot(2,3,5)
+plt.subplot(2,4,6)
 plt.title("SPI vs cFos - Normalized by DA9")
 plt.plot(spi_values, normalized_cFos_values, 'k.')
 
-plt.subplot(2,3,6)
+plt.subplot(2,4,7)
 plt.title("VPI vs cFos - Normalized by DA9")
 plt.plot(vpi_values, normalized_cFos_values, 'k.')
+
+plt.subplot(2,4,8)
+plt.title("Distance (NS) vs cFos - Normalized by DA9")
+plt.plot(dist_values, normalized_cFos_values, 'k.')
 
 # FIN
 

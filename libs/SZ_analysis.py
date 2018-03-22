@@ -150,7 +150,21 @@ def computeVISIBLE(xPositions, yPositions, testROI, stimROI):
     
     
     return AllVisibleFrames_Y_TF
+
+# Measure ditance traveled during experiment
+def distance_traveled(bx, by):
     
+    # Sample position every 100 frames (1 Hz) and accumulate distance swum
+    num_frames = len(bx)
+    prev_x = bx[0]
+    prev_y = by[0]
+    distance = 0
+    for f in range(99,num_frames,100):
+        dx = bx[f]-prev_x
+        dy = by[f]-prev_y
+        distance = distance + np.sqrt(dx*dx + dy*dy)
+    
+    return distance    
 
 # Analyze Correlations between Test and Stimulus Fish
 def analyze_tracking_SPI(folder, fishNumber, testROIs, stimROIs):

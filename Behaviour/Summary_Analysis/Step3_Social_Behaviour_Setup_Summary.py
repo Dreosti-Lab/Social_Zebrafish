@@ -126,6 +126,9 @@ for idx,folder in enumerate(folderNames):
             
             # Compute BPS (NS)
             BPS_ns, avgBout_ns = SZS.measure_BPS(motion)
+            
+            # Compute Distance Traveled (NS)
+            Distance_ns = SZA.distance_traveled(bx, by)
         
             # Compute Orientation Histograms (NS)
             OrtHist_ns_NonSocialSide = SZS.ort_histogram(ort[AllNonVisibleFrames])
@@ -178,6 +181,9 @@ for idx,folder in enumerate(folderNames):
             
             # Compute BPS (S)
             BPS_s, avgBout_s = SZS.measure_BPS(motion)
+            
+            # Compute Distance Traveled (S)
+            Distance_s = SZA.distance_traveled(bx, by)
             
             # Compute Orientation Histograms (S)
             OrtHist_s_NonSocialSide = SZS.ort_histogram(ort[AllNonVisibleFrames])
@@ -248,6 +254,8 @@ for idx,folder in enumerate(folderNames):
                      SPI_S=SPI_s,
                      BPS_NS=BPS_ns,
                      BPS_S=BPS_s,
+                     Distance_NS = Distance_ns,
+                     Distance_S = Distance_s,
                      IBI_NS=IBI_ns,
                      IBI_S=IBI_s,
                      Pauses_NS = pauses_ns,

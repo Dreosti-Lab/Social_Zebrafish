@@ -109,8 +109,10 @@ def process_video_summary_images(folder, social):
     height = np.size(previous, 0)
     
     # Alloctae Image Space
-    stepFrames = 250 # Add a background frame every 2.5 seconds for 50 seconds
-    bFrames = 20
+    #stepFrames = 250 # Add a background frame every 2.5 seconds for 50 seconds
+    #bFrames = 20
+    stepFrames = 1500 # Add a background frame every 15 seconds for 600 seconds
+    bFrames = 40
     accumulated_diff = np.zeros((height, width), dtype = float)
     backgroundStack = np.zeros((height, width, bFrames), dtype = float)
     background = np.zeros((height, width), dtype = float)
@@ -704,8 +706,10 @@ def process_video_track_fish(folder, social, multiple):
     background = misc.imread(backgroundFile, False)
     
     # Alloctae Space for Background Stack/Model
-    stepFrames = 250 # Add a background frame every 2.5 seconds for 50 seconds
-    bFrames = 20
+    #stepFrames = 250 # Add a background frame every 2.5 seconds for 50 seconds
+    #bFrames = 20
+    stepFrames = 1500 # Add a background frame every 15 seconds for 600 seconds
+    bFrames = 40
     bCount = 0
     height = np.size(background, 0)
     width = np.size(background, 1)

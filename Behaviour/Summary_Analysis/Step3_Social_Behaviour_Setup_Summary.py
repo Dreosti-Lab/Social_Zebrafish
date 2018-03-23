@@ -45,7 +45,7 @@ folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experim
 analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\24h'
 
 # Plot Data
-plot = False
+plot = True
 
 # Load Folder list File
 groups, ages, folderNames, fishStatus = SZU.read_folder_list(folderListFile)
@@ -87,7 +87,7 @@ for idx,folder in enumerate(folderNames):
             # PLot Fish Data (maybe)
             if plot:
                 # Make a Figure per each fish
-                plt.figure() 
+                plt.figure(figsize=(10, 12), dpi=150)
         
             # Get X and Y coordinates of ROI Test and Stim ROIs extremes 
             x_min = min(NS_test_ROIs[i-1,0], S_stim_ROIs[i-1,0])
@@ -140,7 +140,7 @@ for idx,folder in enumerate(folderNames):
 
             # PLot NS (maybe)
             if plot:
-                plt.subplot(3,2,1)
+                plt.subplot(5,2,1)
                 plt.axis('off')
                 plt.plot(bx, by, '.', markersize=1, color = [0.0, 0.0, 0.0, 0.05])
                 plt.plot(bx[AllSocialFrames_TF], by[AllSocialFrames_TF], '.', markersize=1, color = [1.0, 0.0, 0.0, 0.05], )
@@ -148,10 +148,22 @@ for idx,folder in enumerate(folderNames):
                 plt.title('SPI: ' + format(SPI_ns, '.3f') + ', VPI: ' + format(VPI_ns, '.3f'))
                 plt.axis([x_min, x_max, y_min, y_max])
                 plt.gca().invert_yaxis()
-                plt.subplot(3,2,3)
+
+                plt.subplot(5,2,3)
+                plt.title('BPS: ' + format(BPS_ns, '.3f') + ', Pauses: ' + format(pauses_ns, '.3f'))
                 motion[motion == -1.0] = -0.05
                 plt.plot(motion)
-                plt.subplot(3,2,5)
+
+                plt.subplot(5,2,5)
+                motionThreshold = np.median(motion)+0.05
+                motion[motion == -1.0] = -0.05
+                plt.axhline(motionThreshold, c="red")
+                plt.plot(motion[50000:51000])
+
+                plt.subplot(5,2,7)
+                plt.plot(avgBout_ns, 'k')
+                
+                plt.subplot(5,2,9)
                 plt.plot(area, 'r')
 
             # ----------------------
@@ -195,18 +207,30 @@ for idx,folder in enumerate(folderNames):
                 
             # PLot S (maybe)
             if plot:
-                plt.subplot(3,2,2)
+                plt.subplot(5,2,2)
                 plt.axis('off')
                 plt.plot(bx, by, '.', markersize=1, color = [0.0, 0.0, 0.0, 0.05])
                 plt.plot(bx[AllSocialFrames_TF], by[AllSocialFrames_TF], '.', markersize=1, color = [1.0, 0.0, 0.0, 0.05], )
                 plt.plot(bx[AllNONSocialFrames_TF], by[AllNONSocialFrames_TF], '.', markersize=1, color = [0.0, 0.0, 1.0, 0.05])
-                plt.title('SPI: ' + format(SPI_s, '.3f') + ', VPI: ' + format(VPI_s, '.3f'))                
+                plt.title('SPI: ' + format(SPI_s, '.3f') + ', VPI: ' + format(VPI_s, '.3f'))
                 plt.axis([x_min, x_max, y_min, y_max])
                 plt.gca().invert_yaxis()
-                plt.subplot(3,2,4)
+
+                plt.subplot(5,2,4)
+                plt.title('BPS: ' + format(BPS_s, '.3f') + ', Pauses: ' + format(pauses_s, '.3f'))
                 motion[motion == -1.0] = -0.05
                 plt.plot(motion)
-                plt.subplot(3,2,6)
+
+                plt.subplot(5,2,6)
+                motionThreshold = np.median(motion)+0.05
+                motion[motion == -1.0] = -0.05
+                plt.axhline(motionThreshold, c="red")
+                plt.plot(motion[50000:51000])
+
+                plt.subplot(5,2,8)
+                plt.plot(avgBout_s, 'k')
+                
+                plt.subplot(5,2,10)
                 plt.plot(area, 'r')
                 
 
@@ -228,7 +252,7 @@ for idx,folder in enumerate(folderNames):
     
             # PLot Stim (maybe)
             if plot:
-                plt.subplot(3,2,2)
+                plt.subplot(5,2,2)
                 plt.plot(bx, by, '.', markersize=1, color = [1.0, 0.0, 0.0, 0.01])
                 plt.plot(bx, by, '.', markersize=1, color = [0.0, 0.0, 1.0, 0.02])
                 plt.plot(ex, ey, '.', markersize=1, color = [0.0, 1.0, 0.0, 0.02])
@@ -240,7 +264,7 @@ for idx,folder in enumerate(folderNames):
             if plot:
                 filename = analysisFolder + '\\' + str(np.int(groups[idx])) + '_SPI_' + str(i) + '.png'  
                 plt.show()
-                plt.savefig(filename, dpi=1200)
+                plt.savefig(filename, dpi=600)
                 plt.close('all')
 
 

@@ -29,8 +29,10 @@ import SZ_video as SZV
 
 # 3) Read Folder List. The folder that contains all the info
 
-folderListFile = (base_path + r'\Python_ED\Folder_List')
-folderListFile = folderListFile + r'\SocialFolderList_2017_05_25_Condition_A_all.txt'
+#folderListFile = (base_path + r'\Python_ED\Folder_List')
+folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
+
+
 
 #folderListFile = (base_path + r'\Python_ED\PreProcessing')
 #folderListFile = folderListFile + r'\SocialFolderList_PreProcessing.txt'

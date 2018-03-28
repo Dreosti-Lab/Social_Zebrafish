@@ -36,13 +36,15 @@ import glob
 #folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
 #folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_Controls.txt'
 #folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_48h.txt'
-folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_24h.txt'
+#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_24h.txt'
+folderListFile = 'C:/Users/adamk/Desktop/Adam/adam_test_list.txt'
 
 # Set Analysis Folder Path
 #analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
 #analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\Controls'
 #analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\48h'
-analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\24h'
+#analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\24h'
+analysisFolder = r'C:/Users/adamk/Desktop/Adam/Analysis'
 
 # Plot Data
 plot = True

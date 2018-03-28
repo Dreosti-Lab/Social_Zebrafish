@@ -29,10 +29,7 @@ import CV_ARK
 def measure_BPS(motion):
 
     # Estimate motion bout threshold
-    motionThreshold = np.median(motion)+0.05
-
-    # Exclude first 1 minute (6000 frames)
-    motion = motion[6000:];
+    motionThreshold = 0.025
                    
     # Threshold motion signal
     motionBinary = np.array(motion>motionThreshold, dtype = np.int32)

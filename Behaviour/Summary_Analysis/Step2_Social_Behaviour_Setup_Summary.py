@@ -52,16 +52,15 @@ for idx,folder in enumerate(folderNames):
     
     # Get Folder Names
     NS_folder, S_folder, C_folder = SZU.get_folder_names(folder)
-    
-    # Load NS Crop Regions
-    bonsaiFiles = glob.glob(NS_folder + '\*.bonsai')
-    bonsaiFiles = bonsaiFiles[0]
-    test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
-    ROIs = test_ROIs[:, :]
+    Stimulus_folder = S_folder + '/Social_Fish'
 
     # ---------------------
     # Process Video (NS)
-    fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(NS_folder, ROIs)
+    bonsaiFiles = glob.glob(NS_folder + '\*.bonsai')
+    bonsaiFiles = bonsaiFiles[0]
+    ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
+    ROIs = ROIs[:, :]
+    fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(NS_folder, NS_folder, ROIs)
 
     # Save Tracking (NS)
     for i in range(0,6):
@@ -71,14 +70,32 @@ for idx,folder in enumerate(folderNames):
         np.savez(filename, tracking=fish.T)
     
     # ---------------------
-
     # Process Video (S)
-    fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(S_folder, ROIs)
+    bonsaiFiles = glob.glob(S_folder + '\*.bonsai')
+    bonsaiFiles = bonsaiFiles[0]
+    ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
+    ROIs = ROIs[:, :]
+    fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(S_folder, S_folder, ROIs)
 
     # Save Tracking (S)
     for i in range(0,6):
         # Save S_test
         filename = S_folder + r'\tracking'+ str(i+1) + '.npz'
+        fish = np.vstack((fxS[:,i], fyS[:,i], bxS[:,i], byS[:,i], exS[:,i], eyS[:,i], areaS[:,i], ortS[:,i], motS[:,i]))
+        np.savez(filename, tracking=fish.T)
+
+    # ---------------------
+    # Process Video (Stimulus)
+    bonsaiFiles = glob.glob(Stimulus_folder + '\*.bonsai')
+    bonsaiFiles = bonsaiFiles[0]
+    ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
+    ROIs = ROIs[:, :]
+    fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(S_folder, Stimulus_folder, ROIs)
+
+    # Save Tracking (Stimulus)
+    for i in range(0,6):
+        # Save S_test
+        filename = Stimulus_folder + r'\tracking'+ str(i+1) + '.npz'
         fish = np.vstack((fxS[:,i], fyS[:,i], bxS[:,i], byS[:,i], exS[:,i], eyS[:,i], areaS[:,i], ortS[:,i], motS[:,i]))
         np.savez(filename, tracking=fish.T)
     

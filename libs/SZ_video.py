@@ -1310,11 +1310,11 @@ def compute_intial_backgrounds(folder, ROIs):
 
 
 # Process Video : Track fish in AVI
-def improved_fish_tracking(folder, ROIs):
+def improved_fish_tracking(input_folder, output_folder, ROIs):
 
     # Compute a "Starting" Background
     # - Median value of 20 frames with significant difference between them
-    background_ROIs = compute_intial_backgrounds(folder, ROIs)
+    background_ROIs = compute_intial_backgrounds(input_folder, ROIs)
     
     # Algorithm
     # 1. Find initial background guess for each ROI
@@ -1326,15 +1326,13 @@ def improved_fish_tracking(folder, ROIs):
     # 7. - Compute Heading
     
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(input_folder+'\*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))-100 # Skip, possibly corrupt, last 100 frames (1 second)
     width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    
-    numFrames = 2000
-    
+        
     # Allocate ROI (crop region) space
     previous_ROIs = []
     for i in range(0,6):
@@ -1353,7 +1351,7 @@ def improved_fish_tracking(folder, ROIs):
     motS = np.zeros((numFrames,6))          # frame-by-frame change in segmented particle
         
     # Track within each ROI
-    plt.figure()  
+    plt.figure(figsize=(8,6))
     for f in range(0,numFrames):
         
         # Read next frame        
@@ -1552,9 +1550,9 @@ def improved_fish_tracking(folder, ROIs):
             plt.imshow(color)
             plt.axis('image')
             for i in range(0,6):
-                plt.plot(fxS[f, i],fyS[f, i],'b.')
-                plt.plot(exS[f, i],eyS[f, i],'r.')
-                plt.plot(bxS[f, i],byS[f, i],'co')
+                plt.plot(fxS[f, i],fyS[f, i],'b.', MarkerSize = 1)
+                plt.plot(exS[f, i],eyS[f, i],'r.', MarkerSize = 3)
+                plt.plot(bxS[f, i],byS[f, i],'co', MarkerSize = 3)
                 plt.text(bxS[f, i]+10,byS[f, i]+10,  '{0:.1f}'.format(ortS[f, i]), color = [1.0, 1.0, 0.0, 0.5])
                 plt.text(bxS[f, i]+10,byS[f, i]+30,  '{0:.0f}'.format(areaS[f, i]), color = [1.0, 0.5, 0.0, 0.5])
             plt.draw()
@@ -1563,20 +1561,20 @@ def improved_fish_tracking(folder, ROIs):
         # ---------------------------------------------------------------------------------
         # Save Tracking Summary
         if(f == 0):
-            plt.savefig(folder+'/initial_tracking.png', dpi=600)
+            plt.savefig(output_folder+'/initial_tracking.png', dpi=300)
             plt.figure('backgrounds')
             for i in range(0,6):
                 plt.subplot(2,3,i+1)
                 plt.imshow(background_ROIs[i])
-            plt.savefig(folder+'/initial_backgrounds.png', dpi=600)
+            plt.savefig(output_folder+'/initial_backgrounds.png', dpi=300)
             plt.close('backgrounds')
         if(f == numFrames-1):
-            plt.savefig(folder+'/final_tracking.png', dpi=600)
+            plt.savefig(output_folder+'/final_tracking.png', dpi=300)
             plt.figure('backgrounds')
             for i in range(0,6):
                 plt.subplot(2,3,i+1)
                 plt.imshow(background_ROIs[i])
-            plt.savefig(folder+'/final_backgrounds.png', dpi=600)
+            plt.savefig(output_folder+'/final_backgrounds.png', dpi=300)
             plt.close('backgrounds')
 
         # Report Progress

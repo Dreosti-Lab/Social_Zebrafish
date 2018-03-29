@@ -25,6 +25,7 @@ from scipy import stats
 import SZ_utilities as SZU
 import SZ_macros as SZM
 import SZ_video as SZV
+import BONSAI_ARK
 
 ## Read Folder List
 #folderListFile = base_path + r'\Adam_Ele\Shared Programming\Python\Social Zebrafish\Folder Lists\Dreosti_LAb\\Wt_Nacre'

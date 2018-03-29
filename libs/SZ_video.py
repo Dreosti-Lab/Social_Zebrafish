@@ -1385,6 +1385,9 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
             
             # Find Binary Contours            
             image, contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+            
+            # Create Binary Mask Image
+            mask = np.zeros(crop.shape,np.uint8)
                        
             # If there are NO contours, then skip tracking
             if len(contours) == 0:
@@ -1436,8 +1439,7 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
                         motion = -1.0
                         
                 else:
-                    # Create Binary Mask Image (1 for Fish, 0 for Background)
-                    mask = np.zeros(crop.shape,np.uint8)
+                    # Draw contours into Mask Image (1 for Fish, 0 for Background)
                     cv2.drawContours(mask,[largest_cnt],0,1,-1) # -1 draw the contour filled
                     pixelpoints = np.transpose(np.nonzero(mask))
                     

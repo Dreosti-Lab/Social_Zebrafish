@@ -39,7 +39,7 @@ import SZ_video as SZV
 #folderListFile = (base_path + r'\Python_ED\Folder_List')
 #folderListFile = folderListFile + r'\SocialFolderList_2017_05_25_Condition_A.txt'
 
-folderListFile = 'C:/Users/adamk/Desktop/Adam/adam_test_list.txt'
+folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\New_Tracking\Folder_List\Long_Isolation_All_Isolated.txt'
 
 
 dark = False

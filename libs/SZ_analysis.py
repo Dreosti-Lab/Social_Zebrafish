@@ -151,17 +151,23 @@ def computeVISIBLE(xPositions, yPositions, testROI, stimROI):
     
     return AllVisibleFrames_Y_TF
 
-# Measure ditance traveled during experiment
-def distance_traveled(bx, by):
+# Measure ditance traveled during experiment (in mm)
+def distance_traveled(bx, by, ROI):
+
+    # Rescale by chamber dimensions
+    chamber_width_pixels = ROI[2]
+    chamber_height_pixels = ROI[3]
+    chamber_width_mm = 40
+    chamber_height_mm = 80
     
-    # Sample position every 100 frames (1 Hz) and accumulate distance swum
+    # Sample position every 10 frames (10 Hz) and accumulate distance swum
     num_frames = len(bx)
     prev_x = bx[0]
     prev_y = by[0]
     distance = 0
-    for f in range(99,num_frames,100):
-        dx = bx[f]-prev_x
-        dy = by[f]-prev_y
+    for f in range(9,num_frames,10):
+        dx = ((bx[f]-prev_x)/chamber_width_pixels) * chamber_width_mm
+        dy = ((by[f]-prev_y)/chamber_height_pixels) * chamber_height_mm
         distance = distance + np.sqrt(dx*dx + dy*dy)
     
     return distance    

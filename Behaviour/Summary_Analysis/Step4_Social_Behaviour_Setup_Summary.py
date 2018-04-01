@@ -10,7 +10,8 @@ Created on Sun May 11 14:01:46 2014
 lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 #-----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
+#base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
+base_path = r'C:/Users/adamk/Desktop/Adam'
 
 # Set Library Paths
 import sys
@@ -40,14 +41,15 @@ import pylab as pl
 # -----------------------------------------------------------------------------
 
 # Set Analysis Folder Path where all the npz files you want to load are saved
-analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
+#analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
 #analysisFolder = base_path + r'\Analysis_Folder\Controls_Summary'
 #analysisFolder = base_path + r'\Analysis_Folder\Summary'
+analysisFolder = base_path + r'\New_Analysis'
 
 # Find all the npz files saved for each group and fish with all the information
 npzFiles = glob.glob(analysisFolder+'\*.npz')
 
-#CAlculate how many files
+#Calculate how many files
 numFiles = np.size(npzFiles, 0)
 
 VPI_NS_ALL = np.zeros(numFiles)
@@ -59,11 +61,8 @@ SPI_S_ALL = np.zeros(numFiles)
 BPS_NS_ALL = np.zeros(numFiles)
 BPS_S_ALL = np.zeros(numFiles)
 
-IBI_NS_ALL = np.zeros(0)
-IBI_S_ALL = np.zeros(0)
-
-Pauses_NS_ALL = np.zeros(numFiles)
-Pauses_S_ALL = np.zeros(numFiles)
+Distance_NS_ALL = np.zeros(numFiles)
+Distance_S_ALL = np.zeros(numFiles)
 
 OrtHist_NS_NSS_ALL = np.zeros((numFiles,36))
 OrtHist_NS_SS_ALL = np.zeros((numFiles,36))
@@ -84,15 +83,17 @@ for f, filename in enumerate(npzFiles):
     SPI_S = dataobject['SPI_S']   
     BPS_NS = dataobject['BPS_NS']   
     BPS_S = dataobject['BPS_S']
-    IBI_NS = dataobject['IBI_NS']   
-    IBI_S = dataobject['IBI_S']
-    Pauses_NS = dataobject['Pauses_NS']   
-    Pauses_S = dataobject['Pauses_S']
+    Distance_NS = dataobject['Distance_NS']   
+    Distance_S = dataobject['Distance_S']   
     OrtHist_ns_NonSocialSide = dataobject['OrtHist_NS_NonSocialSide']
     OrtHist_ns_SocialSide = dataobject['OrtHist_NS_SocialSide']
     OrtHist_s_NonSocialSide = dataobject['OrtHist_S_NonSocialSide']
     OrtHist_s_SocialSide = dataobject['OrtHist_S_SocialSide']
-    
+    Bouts_NS = dataobject['Bouts_NS']   
+    Bouts_S = dataobject['Bouts_S']
+    Pauses_NS = dataobject['Pauses_NS']   
+    Pauses_S = dataobject['Pauses_S']
+        
     #Make an array with all summary stats
     VPI_NS_ALL[f] = VPI_NS
     VPI_S_ALL[f] = VPI_S
@@ -100,16 +101,14 @@ for f, filename in enumerate(npzFiles):
     SPI_S_ALL[f] = SPI_S
     BPS_NS_ALL[f] = BPS_NS
     BPS_S_ALL[f] = BPS_S
-    IBI_NS_ALL = np.concatenate([IBI_NS_ALL, IBI_NS])
-    IBI_S_ALL = np.concatenate([IBI_S_ALL, IBI_S])
-    Pauses_NS_ALL[f] = Pauses_NS
-    Pauses_S_ALL[f] = Pauses_S
+    Distance_NS_ALL[f] = Distance_NS
+    Distance_S_ALL[f] = Distance_S
     OrtHist_NS_NSS_ALL[f,:] = OrtHist_ns_NonSocialSide
     OrtHist_NS_SS_ALL[f,:] = OrtHist_ns_SocialSide
     OrtHist_S_NSS_ALL[f,:] = OrtHist_s_NonSocialSide
-    OrtHist_S_SS_ALL[f,:] = OrtHist_s_SocialSide   
-
-
+    OrtHist_S_SS_ALL[f,:] = OrtHist_s_SocialSide
+    
+    # Somehow concat all Pauses/Bouts
 
 # ----------------
 # VPI Summary Plot

@@ -26,32 +26,36 @@ import CV_ARK
 # Utilities for summarizing and plotting "Social Zebrafish" experiments
 
 # Compute activity level of the fish in bouts per second (BPS)
-def measure_BPS(motion):
-
-    # Estimate motion bout threshold
-    motionThreshold = 0.025
+def measure_BPS(motion, startThreshold, stopThreshold):
                    
-    # Threshold motion signal
-    motionBinary = np.array(motion>motionThreshold, dtype = np.int32)
-
-    # Find starts and stops by measuring transitions from (0 to 1) = +1 or (1 to 0) = -1
-    transitions = np.diff(motionBinary)
-
-    # Find only the "starts": where the transition is +1
-    startArray = np.array(transitions == 1, dtype = np.int32)
-
-    # Find only the "stops": where the transition is -1
-    stopArray = np.array(transitions == -1, dtype = np.int32)
+    # Find bouts starts and stops
+    boutStarts = []
+    boutStops = []
+    moving = 0
+    for i, m in enumerate(motion):
+        if(moving == 0):
+            if m > startThreshold:
+                moving = 1
+                boutStarts.append(i)
+        else:
+            if m < stopThreshold:
+                moving = 0
+                boutStops.append(i)
+    
+    # Extract all bouts (ignore last, if clipped)
+    boutStarts = np.array(boutStarts)
+    boutStops = np.array(boutStops)
+    if(len(boutStarts) > len(boutStops)):
+        boutStarts = boutStarts[:-1]
 
     # Count number of bouts
-    numBouts= np.sum(startArray)
+    numBouts= len(boutStarts)
     numberOfSeconds = np.size(motion)/100   ## Assume 100 Frames per Second
 
     # Set the bouts per second (BPS)
     boutsPerSecond = numBouts/numberOfSeconds
     
     # Measure averge bout trajectory
-    boutStarts = np.where(startArray)[0]
     boutStarts = boutStarts[(boutStarts > 25) * (boutStarts < (len(motion)-75))]
     allBouts = np.zeros([len(boutStarts), 100])
     for b in range(0,len(boutStarts)):
@@ -73,37 +77,85 @@ def ort_histogram(ort):
 
 
 # Measure IBI lengths
-def interBout_intervals(motion):
-
-    # Estimate motion bout threshold
-    motionThreshold = np.median(motion)+0.05
-
-    # Exclude first 1 minute (6000 frames)
-    motion = motion[6000:];
-                   
-    # Threshold motion signal
-    motionBinary = np.array(motion>motionThreshold, dtype = np.int32)
-
-    # Find starts and stops by measuring transitions from (0 to 1) = +1 or (1 to 0) = -1
-    transitions = np.diff(motionBinary)
-
-    # Find only the "starts": where the transition is +1
-    startArray = np.array(transitions == 1, dtype = np.int32)
-
-    # Find only the "stops": where the transition is -1
-    stopArray = np.array(transitions == -1, dtype = np.int32)
-
-    # Count number of bouts
-    numBouts= np.sum(startArray)
-    numberOfSeconds = np.size(motion)/100   ## Assume 100 Frames per Second
-
-    # Set the bouts per second (BPS)
-    boutsPerSecond = numBouts/numberOfSeconds
+def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
     
-    # Measure inter bout intervals
-    boutStarts = np.where(startArray)[0]
-    interBoutIntervals = np.diff(boutStarts)
+    # Extract tracking details
+    bx = tracking[:,2]
+    by = tracking[:,3]
+    ort = tracking[:,7]
+    motion = tracking[:,8]                
     
-    return interBoutIntervals
+    # Find bouts starts and stops
+    boutStarts = []
+    boutStops = []
+    moving = 0
+    for i, m in enumerate(motion):
+        if(moving == 0):
+            if m > startThreshold:
+                moving = 1
+                boutStarts.append(i)
+        else:
+            if m < stopThreshold:
+                moving = 0
+                boutStops.append(i)
+    
+    # Extract all bouts (ignore last, if clipped)
+    boutStarts = np.array(boutStarts)
+    boutStops = np.array(boutStops)
+    if(len(boutStarts) > len(boutStops)):
+        boutStarts = boutStarts[:-1]
+
+    # Extract all bouts (startindex, startx, starty, startort, stopindex, stopx, stopy, stoport, duration)
+    numBouts= len(boutStarts)
+    bouts = np.zeros((numBouts, 9))
+    for i in range(0, numBouts):
+        bouts[i, 0] = boutStarts[i]
+        bouts[i, 1] = bx[boutStarts[i]]
+        bouts[i, 2] = by[boutStarts[i]]
+        bouts[i, 3] = ort[boutStarts[i]]
+        bouts[i, 4] = boutStops[i]
+        bouts[i, 5] = bx[boutStops[i]]
+        bouts[i, 6] = by[boutStops[i]]
+        bouts[i, 7] = ort[boutStops[i]]
+        bouts[i, 8] = boutStops[i] - boutStarts[i]
+        
+    # Analyse all pauses (startindex, startx, starty, startort, stopindex, stopx, stopy, stoport, duration)
+    numPauses = numBouts+1
+    pauses = np.zeros((numPauses, 9))
+
+    # -Include first and last as pauses (clipped in video)
+    # First Pause
+    pauses[0, 0] = 0
+    pauses[0, 1] = bx[0]
+    pauses[0, 2] = by[0]
+    pauses[0, 3] = ort[0]
+    pauses[0, 4] = boutStarts[0]
+    pauses[0, 5] = bx[boutStarts[0]]
+    pauses[0, 6] = by[boutStarts[0]]
+    pauses[0, 7] = ort[boutStarts[0]]
+    pauses[0, 8] = boutStarts[0]
+    # Other pauses
+    for i in range(1, numBouts):
+        pauses[i, 0] = boutStops[i-1]
+        pauses[i, 1] = bx[boutStops[i-1]]
+        pauses[i, 2] = by[boutStops[i-1]]
+        pauses[i, 3] = ort[boutStops[i-1]]
+        pauses[i, 4] = boutStarts[i]
+        pauses[i, 5] = bx[boutStarts[i]]
+        pauses[i, 6] = by[boutStarts[i]]
+        pauses[i, 7] = ort[boutStarts[i]]
+        pauses[i, 8] = boutStarts[i] - boutStops[i-1]
+    # Last Pause
+    pauses[-1, 0] = boutStops[-1]
+    pauses[-1, 1] = bx[boutStops[-1]]
+    pauses[-1, 2] = by[boutStops[-1]]
+    pauses[-1, 3] = ort[boutStops[-1]]
+    pauses[-1, 4] = len(motion)-1
+    pauses[-1, 5] = bx[-1]
+    pauses[-1, 6] = by[-1]
+    pauses[-1, 7] = ort[-1]
+    pauses[-1, 8] = len(motion)-1-boutStops[-1]
+    
+    return bouts, pauses
         
 # FIN

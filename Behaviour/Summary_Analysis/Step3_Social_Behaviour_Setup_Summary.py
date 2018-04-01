@@ -9,7 +9,8 @@ Created on 2018 January
 lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 #-----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
+#base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
+base_path = r'C:/Users/adamk/Desktop/Adam'
 
 # Set Library Paths
 import sys
@@ -37,17 +38,23 @@ import glob
 #folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_Controls.txt'
 #folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_48h.txt'
 #folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_24h.txt'
-folderListFile = 'C:/Users/adamk/Desktop/Adam/adam_test_list.txt'
+
+folderListFile = base_path + r'\adam_test_list.txt'
 
 # Set Analysis Folder Path
 #analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
 #analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\Controls'
 #analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\48h'
 #analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\24h'
-analysisFolder = r'C:/Users/adamk/Desktop/Adam/Analysis'
+
+analysisFolder = base_path + r'\New_Analysis'
 
 # Plot Data
 plot = True
+
+# Set motion thresholds
+motionStartThreshold = 0.03
+motionStopThreshold = 0.01
 
 # Load Folder list File
 groups, ages, folderNames, fishStatus = SZU.read_folder_list(folderListFile)
@@ -79,7 +86,7 @@ for idx,folder in enumerate(folderNames):
     # Determine Fish Status       
     fishStat = fishStatus[idx, :]
 
-        # ----------------------
+    # ----------------------
     # Analyze and (maybe) Plot each Fish
     for i in range(1,7):
         
@@ -97,10 +104,6 @@ for idx,folder in enumerate(folderNames):
             x_max = max(NS_test_ROIs[i-1,0] + NS_test_ROIs[i-1,2], S_stim_ROIs[i-1,0] + S_stim_ROIs[i-1,2])
             y_max = max(NS_test_ROIs[i-1,1] + NS_test_ROIs[i-1,3], S_stim_ROIs[i-1,1] + S_stim_ROIs[i-1,3])
             
-            
-            # Filtering Tracking
-            # - Area less than 20?
-            
             # ----------------------
             # Analyze NS
             trackingFile = NS_folder + r'\tracking' + str(i) + '.npz'
@@ -116,7 +119,7 @@ for idx,folder in enumerate(folderNames):
             area = tracking[:,6]
             ort = tracking[:,7]
             motion = tracking[:,8]
-            
+
             # Adjust orientation (0 is always facing the "stimulus" fish) - Depends on chamber
             ort = SZU.adjust_ort_test(ort, i)
                         
@@ -127,18 +130,19 @@ for idx,folder in enumerate(folderNames):
             SPI_ns, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
             
             # Compute BPS (NS)
-            BPS_ns, avgBout_ns = SZS.measure_BPS(motion)
+            BPS_ns, avgBout_ns = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
             
             # Compute Distance Traveled (NS)
-            Distance_ns = SZA.distance_traveled(bx, by)
+            Distance_ns = SZA.distance_traveled(bx, by, NS_test_ROIs[i-1])
         
             # Compute Orientation Histograms (NS)
             OrtHist_ns_NonSocialSide = SZS.ort_histogram(ort[AllNonVisibleFrames])
             OrtHist_ns_SocialSide = SZS.ort_histogram(ort[AllVisibleFrames])
             
-            # Compute "Pauses" (NS)
-            IBI_ns = SZS.interBout_intervals(motion)
-            pauses_ns = len(np.where(IBI_ns > 500)[0])
+            # Analyze "Bouts" amd "Pauses" (NS)
+            Bouts_ns, Pauses_ns = SZS.analyze_bouts_and_pauses(tracking, motionStartThreshold, motionStopThreshold)
+            Percent_Moving_ns = 100 * np.sum(Bouts_ns[:,8])/len(motion)
+            Percent_Paused_ns = 100 * np.sum(Pauses_ns[:,8])/len(motion)
 
             # PLot NS (maybe)
             if plot:
@@ -152,14 +156,16 @@ for idx,folder in enumerate(folderNames):
                 plt.gca().invert_yaxis()
 
                 plt.subplot(5,2,3)
-                plt.title('BPS: ' + format(BPS_ns, '.3f') + ', Pauses: ' + format(pauses_ns, '.3f'))
-                motion[motion == -1.0] = -0.05
+                plt.title('BPS: ' + format(BPS_ns, '.3f') + ', %Paused: ' + format(Percent_Paused_ns, '.2f') + ', %Moving: ' + format(Percent_Moving_ns, '.2f'))
+                motion[motion == -1.0] = -0.01
+                plt.axhline(motionStartThreshold, c="green")
+                plt.axhline(motionStopThreshold, c="red")
                 plt.plot(motion)
 
                 plt.subplot(5,2,5)
-                motionThreshold = np.median(motion)+0.05
-                motion[motion == -1.0] = -0.05
-                plt.axhline(motionThreshold, c="red")
+                motion[motion == -1.0] = -0.01
+                plt.axhline(motionStartThreshold, c="green")
+                plt.axhline(motionStopThreshold, c="red")
                 plt.plot(motion[50000:51000])
 
                 plt.subplot(5,2,7)
@@ -194,18 +200,19 @@ for idx,folder in enumerate(folderNames):
             SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
             
             # Compute BPS (S)
-            BPS_s, avgBout_s = SZS.measure_BPS(motion)
+            BPS_s, avgBout_s = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
             
             # Compute Distance Traveled (S)
-            Distance_s = SZA.distance_traveled(bx, by)
+            Distance_s = SZA.distance_traveled(bx, by, S_test_ROIs[i-1])
             
             # Compute Orientation Histograms (S)
             OrtHist_s_NonSocialSide = SZS.ort_histogram(ort[AllNonVisibleFrames])
             OrtHist_s_SocialSide = SZS.ort_histogram(ort[AllVisibleFrames])
             
-            # Compute "Pauses" (S)
-            IBI_s = SZS.interBout_intervals(motion)
-            pauses_s = len(np.where(IBI_s > 500)[0])
+            # Analyze "Bouts" amd "Pauses" (S)
+            Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, motionStartThreshold, motionStopThreshold)
+            Percent_Moving_s = 100 * np.sum(Bouts_s[:,8])/len(motion)
+            Percent_Paused_s = 100 * np.sum(Pauses_s[:,8])/len(motion)
                 
             # PLot S (maybe)
             if plot:
@@ -219,14 +226,16 @@ for idx,folder in enumerate(folderNames):
                 plt.gca().invert_yaxis()
 
                 plt.subplot(5,2,4)
-                plt.title('BPS: ' + format(BPS_s, '.3f') + ', Pauses: ' + format(pauses_s, '.3f'))
-                motion[motion == -1.0] = -0.05
+                plt.title('BPS: ' + format(BPS_s, '.3f') + ', %Paused: ' + format(Percent_Paused_s, '.2f') + ', %Moving: ' + format(Percent_Moving_s, '.2f'))
+                motion[motion == -1.0] = -0.01
+                plt.axhline(motionStartThreshold, c="green")
+                plt.axhline(motionStopThreshold, c="red")
                 plt.plot(motion)
 
                 plt.subplot(5,2,6)
-                motionThreshold = np.median(motion)+0.05
-                motion[motion == -1.0] = -0.05
-                plt.axhline(motionThreshold, c="red")
+                motion[motion == -1.0] = -0.01
+                plt.axhline(motionStartThreshold, c="green")
+                plt.axhline(motionStopThreshold, c="red")
                 plt.plot(motion[50000:51000])
 
                 plt.subplot(5,2,8)
@@ -282,15 +291,14 @@ for idx,folder in enumerate(folderNames):
                      BPS_S=BPS_s,
                      Distance_NS = Distance_ns,
                      Distance_S = Distance_s,
-                     IBI_NS=IBI_ns,
-                     IBI_S=IBI_s,
-                     Pauses_NS = pauses_ns,
-                     Pauses_S = pauses_s,
                      OrtHist_NS_NonSocialSide = OrtHist_ns_NonSocialSide,
                      OrtHist_NS_SocialSide = OrtHist_ns_SocialSide,
                      OrtHist_S_NonSocialSide = OrtHist_s_NonSocialSide,
                      OrtHist_S_SocialSide = OrtHist_s_SocialSide,
-                     )    
+                     Bouts_NS = Bouts_ns, 
+                     Bouts_S = Bouts_s,
+                     Pauses_NS = Pauses_ns,
+                     Pauses_S = Pauses_s)
         else:
             print ("Bad Fish")
     

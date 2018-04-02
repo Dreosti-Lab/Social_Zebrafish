@@ -61,7 +61,7 @@ analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isola
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated_new'
 
 # Plot Data
-plot = False
+plot = True
 
 # Set motion thresholds
 motionStartThreshold = 0.03

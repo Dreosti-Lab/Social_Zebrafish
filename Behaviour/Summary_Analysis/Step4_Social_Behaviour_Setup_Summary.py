@@ -41,8 +41,8 @@ import pylab as pl
 # -----------------------------------------------------------------------------
 
 # Analysis folder lONG isolation
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
+analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
 
 # Analysis folder SHORT isolation 24h or 48h
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control_new'
@@ -83,7 +83,7 @@ Pauses_NS_ALL = np.zeros((0,10))
 Pauses_S_ALL = np.zeros((0,10))
 
 
-#Go through al the files contained in the analysis folder
+#Go through all the files contained in the analysis folder
 for f, filename in enumerate(npzFiles):
 
     #Load each npz file
@@ -145,6 +145,7 @@ a_ns_nor_medium=a_ns_float/Tot_Fish_NS
 a_s_nor_medium=a_s_float/Tot_Fish_NS 
  
 plt.figure()
+plt.subplot(1,3,1)
 plt.plot(centers, a_ns_nor_medium, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
 plt.plot(centers, a_s_nor_medium, color=[1.0,0.0,0.0,0.5], linewidth=4.0)
 plt.title('Non Social/Social VPI', fontsize=12)
@@ -155,7 +156,7 @@ pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
 
 bar_width=0.25
-plt.figure()
+plt.subplot(1,3,2)
 plt.bar(centers, a_ns_nor_medium, width=0.25, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
 plt.title('Non Social VPI', fontsize=12)
 plt.xlabel('Preference Index (PI_)', fontsize=12)
@@ -164,7 +165,7 @@ plt.axis([-1.1, 1.1, 0, 0.5])
 pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
 
-plt.figure()
+plt.subplot(1,3,3)
 plt.bar(centers, a_s_nor_medium, width=0.25, color=[1.0,0.0,0.0,1.0], linewidth=4.0)
 plt.title('Social VPI', fontsize=12)
 plt.xlabel('Preference Index (PI_)', fontsize=12)
@@ -192,6 +193,7 @@ a_ns_nor_medium=a_ns_float/Tot_Fish_NS
 a_s_nor_medium=a_s_float/Tot_Fish_NS 
  
 plt.figure()
+plt.subplot(1,3,1)
 plt.plot(centers, a_ns_nor_medium, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
 plt.plot(centers, a_s_nor_medium, color=[1.0,0.0,0.0,0.5], linewidth=4.0)
 plt.title('Non Social/Social SPI', fontsize=12)
@@ -202,7 +204,7 @@ pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
 
 bar_width=0.25
-plt.figure()
+plt.subplot(1,3,2)
 plt.bar(centers, a_ns_nor_medium, width=0.25, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
 plt.title('Non Social SPI', fontsize=12)
 plt.xlabel('Preference Index (PI_)', fontsize=12)
@@ -211,7 +213,7 @@ plt.axis([-1.1, 1.1, 0, 0.5])
 pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
 
-plt.figure()
+plt.subplot(1,3,3)
 plt.bar(centers, a_s_nor_medium, width=0.25, color=[1.0,0.0,0.0,1.0], linewidth=4.0)
 plt.title('Social SPI', fontsize=12)
 plt.xlabel('Preference Index (PI_)', fontsize=12)
@@ -239,6 +241,7 @@ a_ns_nor_medium=a_ns_float/Tot_Fish_NS
 a_s_nor_medium=a_s_float/Tot_Fish_NS 
  
 plt.figure()
+plt.subplot(1,3,1)
 plt.plot(centers, a_ns_nor_medium, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
 plt.plot(centers, a_s_nor_medium, color=[1.0,0.0,0.0,0.5], linewidth=4.0)
 plt.title('Non Social/Social BPS', fontsize=12)
@@ -249,7 +252,7 @@ pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([0, 5, 10], fontsize=12)
 
 bar_width=0.5
-plt.figure()
+plt.subplot(1,3,2)
 plt.bar(centers, a_ns_nor_medium, width=bar_width, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
 plt.title('Non Social BPS', fontsize=12)
 plt.xlabel('Bouts per Second (BPS)', fontsize=12)
@@ -258,7 +261,7 @@ plt.axis([-0.1, 10.1, 0, 0.5])
 pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([0, 5, 10], fontsize=12)
 
-plt.figure()
+plt.subplot(1,3,3)
 plt.bar(centers, a_s_nor_medium, width=bar_width, color=[1.0,0.0,0.0,1.0], linewidth=4.0)
 plt.title('Social BPS', fontsize=12)
 plt.xlabel('Bouts per Second (BPS)', fontsize=12)
@@ -305,60 +308,37 @@ plt.title('Social Bout Durations (visible)', fontsize=12)
 plt.xlabel('Bout Durations (sec)', fontsize=12)
 plt.ylabel('Rel. Frequency', fontsize=12)
 
+# ----------------
+# All Bouts Summary Plot
+plt.figure()
+plt.subplot(1,2,1)
+plt.plot(Bouts_NS_ALL[:, 1], Bouts_NS_ALL[:, 2], '.', Color=[0.0, 0.0, 0.0, 0.002])
+plt.axis([0, 17, 0, 42])
+plt.gca().invert_yaxis()
+    
+plt.subplot(1,2,2)
+plt.plot(Bouts_S_ALL[:, 1], Bouts_S_ALL[:, 2], '.', Color=[0.0, 0.0, 0.0, 0.002])
+plt.axis([0, 17, 0, 42])
+plt.gca().invert_yaxis()
 
 # ----------------
-# Pauses Summary Plot
+# Long Pauses Summary Plot
 plt.figure()
-bar_width=5
-
-plt.subplot(121)
-pause_durations_ns, c = np.histogram(Pauses_NS_ALL[:,8], bins=51, range=(0,50000))
-centers = (c[:-1]+c[1:])/2
-plt.bar(centers/100, pause_durations_ns, width=bar_width, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
-plt.title('Non Social Pause Durations', fontsize=12)
-plt.xlabel('Pause Durations (sec)', fontsize=12)
-plt.ylabel('Rel. Frequency', fontsize=12)
-
-plt.subplot(122)
-pause_durations_s, c = np.histogram(Pauses_S_ALL[:,8], bins=51, range=(0,50000))
-centers = (c[:-1]+c[1:])/2
-plt.bar(centers/100, pause_durations_s, width=bar_width, color=[1.0,0.0,0.0,1.0], linewidth=4.0)
-plt.title('Social Pause Durations', fontsize=12)
-plt.xlabel('Pause Durations (sec)', fontsize=12)
-plt.ylabel('Rel. Frequency', fontsize=12)
-
-
-
-
-
-# ----------------
-# Pauses Summary Plot
-mean_long_pauses_NS = np.mean(Pauses_NS_ALL) 
-mean_long_pauses_S = np.mean(Pauses_S_ALL) 
-
-plt.figure()
-
-plt.subplot(221)
-plt.plot(Pauses_NS_ALL)
-plt.title('Long Pauses (NS):' + str(mean_long_pauses_NS), fontsize=12)
-plt.xlabel('Fish', fontsize=12)
-plt.ylabel('Pause Count', fontsize=12)
-plt.subplot(222)
-plt.plot(Pauses_S_ALL)
-plt.title('Long Pauses (S):' + str(mean_long_pauses_S), fontsize=12)
-plt.xlabel('Fish', fontsize=12)
-plt.ylabel('Pause Count', fontsize=12)
-plt.subplot(223)
-plt.plot(SPI_NS_ALL, Pauses_NS_ALL, 'ko')
-plt.title('SPI vs Long Pauses (NS)' )
-plt.xlabel('SPI', fontsize=12)
-plt.ylabel('Pause Count', fontsize=12)
-plt.subplot(224)
-plt.plot(SPI_S_ALL, Pauses_S_ALL, 'ko')
-plt.title('SPI vs Long Pauses (S)')
-plt.xlabel('SPI', fontsize=12)
-plt.ylabel('Pause Count', fontsize=12)
-
+plt.subplot(1,2,1)
+long_pauses_ns = np.where(Pauses_NS_ALL[:,8] > 500)[0]
+num_long_pauses_per_fish_ns = len(long_pauses_ns)/numFiles
+plt.title('NS: #Long Pauses = ' + format(num_long_pauses_per_fish_ns, '.4f'))
+plt.plot(Pauses_NS_ALL[long_pauses_ns, 1], Pauses_NS_ALL[long_pauses_ns, 2], 'o', Color=[0.0, 0.0, 0.0, 0.2])
+plt.axis([0, 17, 0, 42])
+plt.gca().invert_yaxis()
+    
+plt.subplot(1,2,2)
+long_pauses_s = np.where(Pauses_S_ALL[:,8] > 500)[0]
+num_long_pauses_per_fish_s = len(long_pauses_s)/numFiles
+plt.title('S: #Long Pauses = ' + format(num_long_pauses_per_fish_s, '.4f'))
+plt.plot(Pauses_S_ALL[long_pauses_s, 1], Pauses_S_ALL[long_pauses_s, 2], 'o', Color=[0.0, 0.0, 0.0, 0.2])
+plt.axis([0, 17, 0, 42])
+plt.gca().invert_yaxis()
 
 # ----------------
 # ORT_HIST Summary Plot

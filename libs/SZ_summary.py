@@ -19,6 +19,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import scipy.signal as signal
+import SZ_analysis as SZA
 import CV_ARK
 
 
@@ -77,13 +78,16 @@ def ort_histogram(ort):
 
 
 # Analyze bouts and pauses (individual stats)
-def analyze_bouts_and_pauses(tracking, visibleFrames, startThreshold, stopThreshold):
+def analyze_bouts_and_pauses(tracking, testROI, stimROI, visibleFrames, startThreshold, stopThreshold):
     
     # Extract tracking details
     bx = tracking[:,2]
     by = tracking[:,3]
     ort = tracking[:,7]
     motion = tracking[:,8]                
+    
+    # Compute normlaized arena coordinates
+    nx, ny = SZA.normalized_arena_coords(bx, by, testROI, stimROI)
     
     # Find bouts starts and stops
     boutStarts = []
@@ -110,12 +114,12 @@ def analyze_bouts_and_pauses(tracking, visibleFrames, startThreshold, stopThresh
     bouts = np.zeros((numBouts, 10))
     for i in range(0, numBouts):
         bouts[i, 0] = boutStarts[i]
-        bouts[i, 1] = bx[boutStarts[i]]
-        bouts[i, 2] = by[boutStarts[i]]
+        bouts[i, 1] = nx[boutStarts[i]]
+        bouts[i, 2] = ny[boutStarts[i]]
         bouts[i, 3] = ort[boutStarts[i]]
         bouts[i, 4] = boutStops[i]
-        bouts[i, 5] = bx[boutStops[i]]
-        bouts[i, 6] = by[boutStops[i]]
+        bouts[i, 5] = nx[boutStops[i]]
+        bouts[i, 6] = ny[boutStops[i]]
         bouts[i, 7] = ort[boutStops[i]]
         bouts[i, 8] = boutStops[i] - boutStarts[i]
         bouts[i, 9] = visibleFrames[boutStarts[i]]
@@ -127,35 +131,35 @@ def analyze_bouts_and_pauses(tracking, visibleFrames, startThreshold, stopThresh
     # -Include first and last as pauses (clipped in video)
     # First Pause
     pauses[0, 0] = 0
-    pauses[0, 1] = bx[0]
-    pauses[0, 2] = by[0]
+    pauses[0, 1] = nx[0]
+    pauses[0, 2] = ny[0]
     pauses[0, 3] = ort[0]
     pauses[0, 4] = boutStarts[0]
-    pauses[0, 5] = bx[boutStarts[0]]
-    pauses[0, 6] = by[boutStarts[0]]
+    pauses[0, 5] = nx[boutStarts[0]]
+    pauses[0, 6] = ny[boutStarts[0]]
     pauses[0, 7] = ort[boutStarts[0]]
     pauses[0, 8] = boutStarts[0]
     pauses[0, 9] = visibleFrames[0]
     # Other pauses
     for i in range(1, numBouts):
         pauses[i, 0] = boutStops[i-1]
-        pauses[i, 1] = bx[boutStops[i-1]]
-        pauses[i, 2] = by[boutStops[i-1]]
+        pauses[i, 1] = nx[boutStops[i-1]]
+        pauses[i, 2] = ny[boutStops[i-1]]
         pauses[i, 3] = ort[boutStops[i-1]]
         pauses[i, 4] = boutStarts[i]
-        pauses[i, 5] = bx[boutStarts[i]]
-        pauses[i, 6] = by[boutStarts[i]]
+        pauses[i, 5] = nx[boutStarts[i]]
+        pauses[i, 6] = ny[boutStarts[i]]
         pauses[i, 7] = ort[boutStarts[i]]
         pauses[i, 8] = boutStarts[i] - boutStops[i-1]
         pauses[i, 9] = visibleFrames[boutStops[i-1]]
     # Last Pause
     pauses[-1, 0] = boutStops[-1]
-    pauses[-1, 1] = bx[boutStops[-1]]
-    pauses[-1, 2] = by[boutStops[-1]]
+    pauses[-1, 1] = nx[boutStops[-1]]
+    pauses[-1, 2] = ny[boutStops[-1]]
     pauses[-1, 3] = ort[boutStops[-1]]
     pauses[-1, 4] = len(motion)-1
-    pauses[-1, 5] = bx[-1]
-    pauses[-1, 6] = by[-1]
+    pauses[-1, 5] = nx[-1]
+    pauses[-1, 6] = ny[-1]
     pauses[-1, 7] = ort[-1]
     pauses[-1, 8] = len(motion)-1-boutStops[-1]
     pauses[-1, 9] = visibleFrames[boutStops[-1]]

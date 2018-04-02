@@ -100,6 +100,38 @@ def computeSPI(xPositions, yPositions, testROI, stimROI):
     
     return SPI, AllSocialFrames_TF, AllNONSocialFrames_TF
 
+# Compute normalized arena coordinates
+def normalized_arena_coords(xPositions, yPositions, testROI, stimROI):
+    
+    # Rescale by chamber dimensions
+    chamber_x_min = testROI[0]
+    chamber_y_min = testROI[1]
+    chamber_width_pixels = testROI[2]
+    chamber_height_pixels = testROI[3]
+    chamber_width_mm = 17
+    chamber_height_mm = 42
+    
+    # Find thresholds of X and Y Test ROI in order to define the social area to calculate the SPI
+    socialPositionThreshold_X = testROI[0]+(testROI[2]/2)
+    socialPositionThreshold_Y = testROI[1]+(testROI[3]/2) 
+    
+    # Define which frames are "social" in X and Y by comparing Tracking X and Y with the above calculated threshold
+    socialTop = stimROI[1]<socialPositionThreshold_Y
+    socialLeft = stimROI[0]<socialPositionThreshold_X
+        
+    # Normalize positions to "social arena" coordinates (in mm): -X, -Y away from stim, +X, +Y towards stim
+    norm_x = ((xPositions-chamber_x_min)/chamber_width_pixels) * chamber_width_mm
+    norm_y = ((yPositions-chamber_y_min)/chamber_height_pixels) * chamber_height_mm
+    
+   # Place stim fish on right 
+    if socialLeft:
+        norm_x = (norm_x * -1) + chamber_width_mm
+            
+    # Place stim fish on top 
+    if ~socialTop:
+        norm_y = (norm_y * -1) + chamber_height_mm
+        
+    return norm_x, norm_y
 
 
 def computeSPI_3fish(xPositions, yPositions, testROI, stimLeft):

@@ -35,7 +35,9 @@ import glob
 
 # Read Folder List
 folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls_subset.txt'
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated_subset.txt'
 
 
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_subset.txt'
@@ -149,7 +151,7 @@ for idx,folder in enumerate(folderNames):
             OrtHist_ns_SocialSide = SZS.ort_histogram(ort[AllVisibleFrames])
             
             # Analyze "Bouts" amd "Pauses" (NS)
-            Bouts_ns, Pauses_ns = SZS.analyze_bouts_and_pauses(tracking, AllVisibleFrames, motionStartThreshold, motionStopThreshold)
+            Bouts_ns, Pauses_ns = SZS.analyze_bouts_and_pauses(tracking, NS_test_ROIs[i-1], S_stim_ROIs[i-1], AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_ns = 100 * np.sum(Bouts_ns[:,8])/len(motion)
             Percent_Paused_ns = 100 * np.sum(Pauses_ns[:,8])/len(motion)
 
@@ -219,7 +221,7 @@ for idx,folder in enumerate(folderNames):
             OrtHist_s_SocialSide = SZS.ort_histogram(ort[AllVisibleFrames])
             
             # Analyze "Bouts" amd "Pauses" (S)
-            Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, AllVisibleFrames, motionStartThreshold, motionStopThreshold)
+            Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, S_test_ROIs[i-1], S_stim_ROIs[i-1], AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_s = 100 * np.sum(Bouts_s[:,8])/len(motion)
             Percent_Paused_s = 100 * np.sum(Pauses_s[:,8])/len(motion)
                 

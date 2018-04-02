@@ -157,8 +157,8 @@ def distance_traveled(bx, by, ROI):
     # Rescale by chamber dimensions
     chamber_width_pixels = ROI[2]
     chamber_height_pixels = ROI[3]
-    chamber_width_mm = 40
-    chamber_height_mm = 80
+    chamber_width_mm = 17
+    chamber_height_mm = 42
     
     # Sample position every 10 frames (10 Hz) and accumulate distance swum
     num_frames = len(bx)

@@ -161,6 +161,7 @@ def distance_traveled(bx, by, ROI):
     chamber_height_mm = 42
     
     # Sample position every 10 frames (10 Hz) and accumulate distance swum
+    # - Only add increments greater than 0.5 mm
     num_frames = len(bx)
     prev_x = bx[0]
     prev_y = by[0]
@@ -168,7 +169,11 @@ def distance_traveled(bx, by, ROI):
     for f in range(9,num_frames,10):
         dx = ((bx[f]-prev_x)/chamber_width_pixels) * chamber_width_mm
         dy = ((by[f]-prev_y)/chamber_height_pixels) * chamber_height_mm
-        distance = distance + np.sqrt(dx*dx + dy*dy)
+        d = np.sqrt(dx*dx + dy*dy)
+        if(d > 0.5):
+            distance = distance + d
+            prev_x = bx[f]
+            prev_y = by[f]           
     
     return distance    
 

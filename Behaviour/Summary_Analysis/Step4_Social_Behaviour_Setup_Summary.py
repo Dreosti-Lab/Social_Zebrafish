@@ -11,7 +11,7 @@ lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 #-----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
-base_path = r'C:/Users/adamk/Desktop/Adam'
+base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 
 # Set Library Paths
 import sys
@@ -40,11 +40,19 @@ import pylab as pl
 # Function to load all summary statistics and make a summary figure
 # -----------------------------------------------------------------------------
 
-# Set Analysis Folder Path where all the npz files you want to load are saved
-#analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
-#analysisFolder = base_path + r'\Analysis_Folder\Controls_Summary'
-#analysisFolder = base_path + r'\Analysis_Folder\Summary'
-analysisFolder = base_path + r'\New_Analysis'
+# Analysis folder lONG isolation
+analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
+
+# Analysis folder SHORT isolation 24h or 48h
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h_new'
+
+# Analysis folder EARLY isolation up to 7dpf
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Controls_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated_new'
+
 
 # Find all the npz files saved for each group and fish with all the information
 npzFiles = glob.glob(analysisFolder+'\*.npz')
@@ -68,6 +76,11 @@ OrtHist_NS_NSS_ALL = np.zeros((numFiles,36))
 OrtHist_NS_SS_ALL = np.zeros((numFiles,36))
 OrtHist_S_NSS_ALL = np.zeros((numFiles,36))
 OrtHist_S_SS_ALL = np.zeros((numFiles,36))
+
+Bouts_NS_ALL = np.zeros((0,10))
+Bouts_S_ALL = np.zeros((0,10))
+Pauses_NS_ALL = np.zeros((0,10))   
+Pauses_S_ALL = np.zeros((0,10))
 
 
 #Go through al the files contained in the analysis folder
@@ -109,6 +122,10 @@ for f, filename in enumerate(npzFiles):
     OrtHist_S_SS_ALL[f,:] = OrtHist_s_SocialSide
     
     # Somehow concat all Pauses/Bouts
+    Bouts_NS_ALL = np.vstack([Bouts_NS_ALL, Bouts_NS])
+    Bouts_S_ALL = np.vstack([Bouts_S_ALL, Bouts_S])
+    Pauses_NS_ALL = np.vstack([Pauses_NS_ALL, Pauses_NS])
+    Pauses_S_ALL = np.vstack([Pauses_S_ALL, Pauses_S])
 
 # ----------------
 # VPI Summary Plot
@@ -251,7 +268,71 @@ pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([0, 5, 10], fontsize=12)
 
 # ----------------
-# IBI/Pause Summary Plot
+# Bouts Summary Plot
+plt.figure()
+bar_width=0.005
+
+# NS
+visible_bouts = np.where(Bouts_NS_ALL[:,9] == 1)[0]
+non_visible_bouts = np.where(Bouts_NS_ALL[:,9] == 0)[0]
+plt.subplot(221)
+bout_durations_ns, c = np.histogram(Bouts_NS_ALL[non_visible_bouts,8], bins=51, range=(0,50))
+centers = (c[:-1]+c[1:])/2
+plt.bar(centers/100, bout_durations_ns, width=bar_width, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
+plt.title('Non Social Bout Durations (non-visible)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+plt.subplot(223)
+bout_durations_ns, c = np.histogram(Bouts_NS_ALL[visible_bouts,8], bins=51, range=(0,50))
+centers = (c[:-1]+c[1:])/2
+plt.bar(centers/100, bout_durations_ns, width=bar_width, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
+plt.title('Non Social Bout Durations (visible)', fontsize=12)
+plt.xlabel('Bout Durations (sec)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+# S
+visible_bouts = np.where(Bouts_S_ALL[:,9] == 1)[0]
+non_visible_bouts = np.where(Bouts_S_ALL[:,9] == 0)[0]
+plt.subplot(222)
+bout_durations_s, c = np.histogram(Bouts_S_ALL[non_visible_bouts,8], bins=51, range=(0,50))
+centers = (c[:-1]+c[1:])/2
+plt.bar(centers/100, bout_durations_s, width=bar_width, color=[1.0,0.5,0.5,1.0], linewidth=4.0)
+plt.title('Social Bout Durations (non-visible)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+plt.subplot(224)
+bout_durations_s, c = np.histogram(Bouts_S_ALL[visible_bouts,8], bins=51, range=(0,50))
+centers = (c[:-1]+c[1:])/2
+plt.bar(centers/100, bout_durations_s, width=bar_width, color=[1.0,0.5,0.5,1.0], linewidth=4.0)
+plt.title('Social Bout Durations (visible)', fontsize=12)
+plt.xlabel('Bout Durations (sec)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+
+
+# ----------------
+# Pauses Summary Plot
+plt.figure()
+bar_width=5
+
+plt.subplot(121)
+pause_durations_ns, c = np.histogram(Pauses_NS_ALL[:,8], bins=51, range=(0,50000))
+centers = (c[:-1]+c[1:])/2
+plt.bar(centers/100, pause_durations_ns, width=bar_width, color=[0.5,0.5,0.5,1.0], linewidth=4.0)
+plt.title('Non Social Pause Durations', fontsize=12)
+plt.xlabel('Pause Durations (sec)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+
+plt.subplot(122)
+pause_durations_s, c = np.histogram(Pauses_S_ALL[:,8], bins=51, range=(0,50000))
+centers = (c[:-1]+c[1:])/2
+plt.bar(centers/100, pause_durations_s, width=bar_width, color=[1.0,0.0,0.0,1.0], linewidth=4.0)
+plt.title('Social Pause Durations', fontsize=12)
+plt.xlabel('Pause Durations (sec)', fontsize=12)
+plt.ylabel('Rel. Frequency', fontsize=12)
+
+
+
+
+
+# ----------------
+# Pauses Summary Plot
 mean_long_pauses_NS = np.mean(Pauses_NS_ALL) 
 mean_long_pauses_S = np.mean(Pauses_S_ALL) 
 

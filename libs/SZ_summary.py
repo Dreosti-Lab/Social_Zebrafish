@@ -76,8 +76,8 @@ def ort_histogram(ort):
     return ortHistogram
 
 
-# Measure IBI lengths
-def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
+# Analyze bouts and pauses (individual stats)
+def analyze_bouts_and_pauses(tracking, visibleFrames, startThreshold, stopThreshold):
     
     # Extract tracking details
     bx = tracking[:,2]
@@ -107,7 +107,7 @@ def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
 
     # Extract all bouts (startindex, startx, starty, startort, stopindex, stopx, stopy, stoport, duration)
     numBouts= len(boutStarts)
-    bouts = np.zeros((numBouts, 9))
+    bouts = np.zeros((numBouts, 10))
     for i in range(0, numBouts):
         bouts[i, 0] = boutStarts[i]
         bouts[i, 1] = bx[boutStarts[i]]
@@ -118,10 +118,11 @@ def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
         bouts[i, 6] = by[boutStops[i]]
         bouts[i, 7] = ort[boutStops[i]]
         bouts[i, 8] = boutStops[i] - boutStarts[i]
+        bouts[i, 9] = visibleFrames[boutStarts[i]]
         
     # Analyse all pauses (startindex, startx, starty, startort, stopindex, stopx, stopy, stoport, duration)
     numPauses = numBouts+1
-    pauses = np.zeros((numPauses, 9))
+    pauses = np.zeros((numPauses, 10))
 
     # -Include first and last as pauses (clipped in video)
     # First Pause
@@ -134,6 +135,7 @@ def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
     pauses[0, 6] = by[boutStarts[0]]
     pauses[0, 7] = ort[boutStarts[0]]
     pauses[0, 8] = boutStarts[0]
+    pauses[0, 9] = visibleFrames[0]
     # Other pauses
     for i in range(1, numBouts):
         pauses[i, 0] = boutStops[i-1]
@@ -145,6 +147,7 @@ def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
         pauses[i, 6] = by[boutStarts[i]]
         pauses[i, 7] = ort[boutStarts[i]]
         pauses[i, 8] = boutStarts[i] - boutStops[i-1]
+        pauses[i, 9] = visibleFrames[boutStops[i-1]]
     # Last Pause
     pauses[-1, 0] = boutStops[-1]
     pauses[-1, 1] = bx[boutStops[-1]]
@@ -155,7 +158,7 @@ def analyze_bouts_and_pauses(tracking, startThreshold, stopThreshold):
     pauses[-1, 6] = by[-1]
     pauses[-1, 7] = ort[-1]
     pauses[-1, 8] = len(motion)-1-boutStops[-1]
-    
+    pauses[-1, 9] = visibleFrames[boutStops[-1]]
     return bouts, pauses
         
 # FIN

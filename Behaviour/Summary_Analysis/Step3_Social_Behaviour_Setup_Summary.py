@@ -10,7 +10,7 @@ lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 #-----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
-base_path = r'C:/Users/adamk/Desktop/Adam'
+base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 
 # Set Library Paths
 import sys
@@ -34,23 +34,32 @@ import BONSAI_ARK
 import glob
 
 # Read Folder List
-#folderListFile = base_path + r'\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
-#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_Controls.txt'
-#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_48h.txt'
-#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Folder_list\SocialFolderList_PreProcessing_Isolation_13_2018_03_06_24h.txt'
+folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
 
-folderListFile = base_path + r'\adam_test_list.txt'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_subset.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_subset.txt'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Controls_subset.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Isolated.txt'
+
+
 
 # Set Analysis Folder Path
-#analysisFolder = base_path + r'\Analysis_Folder\Isolated_Summary'
-#analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\Controls'
-#analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\48h'
-#analysisFolder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Experiment_13\Analysis_Folder\24h'
+analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control_new'd
 
-analysisFolder = base_path + r'\New_Analysis'
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Controls_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated_new'
 
 # Plot Data
-plot = True
+plot = False
 
 # Set motion thresholds
 motionStartThreshold = 0.03
@@ -140,7 +149,7 @@ for idx,folder in enumerate(folderNames):
             OrtHist_ns_SocialSide = SZS.ort_histogram(ort[AllVisibleFrames])
             
             # Analyze "Bouts" amd "Pauses" (NS)
-            Bouts_ns, Pauses_ns = SZS.analyze_bouts_and_pauses(tracking, motionStartThreshold, motionStopThreshold)
+            Bouts_ns, Pauses_ns = SZS.analyze_bouts_and_pauses(tracking, AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_ns = 100 * np.sum(Bouts_ns[:,8])/len(motion)
             Percent_Paused_ns = 100 * np.sum(Pauses_ns[:,8])/len(motion)
 
@@ -210,7 +219,7 @@ for idx,folder in enumerate(folderNames):
             OrtHist_s_SocialSide = SZS.ort_histogram(ort[AllVisibleFrames])
             
             # Analyze "Bouts" amd "Pauses" (S)
-            Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, motionStartThreshold, motionStopThreshold)
+            Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_s = 100 * np.sum(Bouts_s[:,8])/len(motion)
             Percent_Paused_s = 100 * np.sum(Pauses_s[:,8])/len(motion)
                 

@@ -34,15 +34,14 @@ import BONSAI_ARK
 import glob
 
 # Read Folder List
-folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls.txt'
-#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Controls_subset.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls.txt'
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated.txt'
-#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\SocialFolderList_PreProcessing_isolation_All_Isolated_subset.txt'
 
 
-#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_subset.txt'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h.txt'
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h.txt'
-#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_subset.txt'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_SPP.txt'
 
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Controls_subset.txt'
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Isolated.txt'
@@ -50,18 +49,146 @@ folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isola
 
 
 # Set Analysis Folder Path
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h_new'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h_new'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control_new'd
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\\Control\SPP'
 
 
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Controls_new'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated_new'
 
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_subset.txt'
+
+#SHORT ISOLATION CONTROLS
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\\Control\SPP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_SP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_NP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\\Control\NP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_MP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\\Control\MP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_MPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\\Control\MPP'
+
+#48 HOURS ISOLATION
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SPP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h_SP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h_NP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\NP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h_MP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h_MPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MPP'
+
+#24 HOURS ISOLATION
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SPP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_SP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_NP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\NP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_MP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h_MPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MPP'
+
+
+#lONG ISOLATION CONTROLS
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SPP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls_SP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls_NP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\NP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls_MP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls_MPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MPP'
+
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Controls.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
+
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_test.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All_test'
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_24h.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\All'
+##
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_48h.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
+
+#lONG ISOLATION
+folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_SPP.txt'
+analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\SPP'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Isolated_MP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MP'
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Isolated_NP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\NP'
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Isolated_SP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\SP'
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Isolated_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\SPP'
+
+
+#Social Brain areas
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_All_subset.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All'
+
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_MP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\MP'
+
+
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_MPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\MPP'
+#
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_NP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\NP'
+#
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_SP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\SP'
+#
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\SPP'
+
+
+
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Isolation_All_sub.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Isolation_All'
+
+
 # Plot Data
-plot = True
+plot = False
 
 # Set motion thresholds
 motionStartThreshold = 0.03
@@ -136,13 +263,13 @@ for idx,folder in enumerate(folderNames):
                         
             # Compute VPI (NS)
             VPI_ns, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
-            
+#            print ("VPI_ns =", format(VPI_ns, '.3f'))
             # Compute SPI (NS)
             SPI_ns, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
             
             # Compute BPS (NS)
             BPS_ns, avgBout_ns = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
-            
+#            print ("BPS_ns =", format(BPS_ns, '.3f'))
             # Compute Distance Traveled (NS)
             Distance_ns = SZA.distance_traveled(bx, by, NS_test_ROIs[i-1])
         
@@ -153,7 +280,9 @@ for idx,folder in enumerate(folderNames):
             # Analyze "Bouts" amd "Pauses" (NS)
             Bouts_ns, Pauses_ns = SZS.analyze_bouts_and_pauses(tracking, NS_test_ROIs[i-1], S_stim_ROIs[i-1], AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_ns = 100 * np.sum(Bouts_ns[:,8])/len(motion)
+#            print ("Percent_Moving_ns =", format(Percent_Moving_ns, '.3f'))
             Percent_Paused_ns = 100 * np.sum(Pauses_ns[:,8])/len(motion)
+#            print ("Percent_Paused_ns =", format(Percent_Paused_ns, '.3f'))
 
             # PLot NS (maybe)
             if plot:
@@ -206,13 +335,13 @@ for idx,folder in enumerate(folderNames):
             
             # Compute VPI (S)
             VPI_s, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
-
+            print ("VPI_s= ", format(VPI_s, '.3f'))
             # Compute SPI (S)
             SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
             
             # Compute BPS (S)
             BPS_s, avgBout_s = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
-            
+            print ("BPS_s =",format(BPS_s, '.3f'))
             # Compute Distance Traveled (S)
             Distance_s = SZA.distance_traveled(bx, by, S_test_ROIs[i-1])
             
@@ -223,8 +352,10 @@ for idx,folder in enumerate(folderNames):
             # Analyze "Bouts" amd "Pauses" (S)
             Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, S_test_ROIs[i-1], S_stim_ROIs[i-1], AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_s = 100 * np.sum(Bouts_s[:,8])/len(motion)
+            print ("Percent_Moving_s =", format(Percent_Moving_s, '.3f'))
             Percent_Paused_s = 100 * np.sum(Pauses_s[:,8])/len(motion)
-                
+            print ("Percent_Paused_s =", format(Percent_Paused_s, '.3f'))
+            
             # PLot S (maybe)
             if plot:
                 plt.subplot(5,2,2)
@@ -309,7 +440,11 @@ for idx,folder in enumerate(folderNames):
                      Bouts_NS = Bouts_ns, 
                      Bouts_S = Bouts_s,
                      Pauses_NS = Pauses_ns,
-                     Pauses_S = Pauses_s)
+                     Pauses_S = Pauses_s,
+                     Percent_Moving_NS = Percent_Moving_ns,
+                     Percent_Moving_S = Percent_Moving_s,
+                     Percent_Paused_NS = Percent_Paused_ns,
+                     Percent_Paused_S = Percent_Paused_s)
         else:
             print ("Bad Fish")
     

@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from PIL import Image, ImageSequence
 import BONSAI_ARK
+from openpyxl import load_workbook
 
 # Utilities for analyzing cFos experiments
 
@@ -66,49 +67,31 @@ def load_mask(path):
 
     return np.array(images)
 
-# Read cFos experiment folder list
-def read_folderlist(base_path, path):
+# Read cFos experiment summary list
+def read_summarylist(path):
 
-    folderFile = open(path, "r")  #"r" means read the file
-    folderList = folderFile.readlines()     # returns a list containing the lines
-    folder_names = []
-    test_ROIs = []
-    stim_ROIs = []
-    cfos_names = []
-    NS_names = []
-    S_names = []
-    fish_numbers = []
-    for i, f in enumerate(folderList):  #enumerate tells you what folder is 'i'
+    summaryWb = load_workbook(filename = path)
+    summaryWs = summaryWb.active
+    base_npz_path = summaryWs['B1'].value + '/'
+    base_cfos_path = summaryWs['C1'].value + '/'
+    all_cells =  list(summaryWs.values)
+    data_cells = all_cells[1:]
+    num_rows = len(data_cells)
+    
+    npz_files = []
+    cfos_files = []
+    for i in range(0,num_rows):
 
-        # Find folder name (path)
-        folder_name = base_path+f[:-1]
-        folder_names.append(folder_name)
-        print('Checking: ' + folder_name)
+        # Find correct NPZ file
+        current_cell = data_cells[i]
+        current_npz_file = base_npz_path + current_cell[1]
+        npz_files.append(current_npz_file)
         
-        # Find ROIs from bonsai workflow - Test Fish
-        bonsai_test_name = glob.glob(folder_name + r'\Behaviour\*Social_1*.bonsai')[0]
-        test_ROIs.append(BONSAI_ARK.read_bonsai_crop_rois(bonsai_test_name))
-
-        # Find ROIs from bonsai workflow - Stimuli Fish
-        bonsai_stim_name = glob.glob(folder_name + r'\Behaviour\Social_Fish.bonsai')[0]
-        stim_ROIs.append(BONSAI_ARK.read_bonsai_crop_rois(bonsai_stim_name))
-                
         # Find cFos nii paths: "warped_red"
-        cfos_name = glob.glob(folder_name + r'\*warped_red.nii.gz')[0]
-        cfos_names.append(cfos_name)
-        
-        # Find behaviour (tracking) npz (NonSocial)
-        NS_name = glob.glob(folder_name + r'\Behaviour\*_NS.npz')[0]
-        NS_names.append(NS_name)
-
-        # Find behaviour (tracking) npz (Social)
-        S_name = glob.glob(folder_name + r'\Behaviour\*_S.npz')[0]
-        S_names.append(S_name)
-
-        # Find fish number (in experiment folder)
-        fish_number = int(S_name[-7])
-        fish_numbers.append(fish_number)
-
-    return folder_names, test_ROIs, stim_ROIs, cfos_names, NS_names, S_names, fish_numbers
+        current_cfos_folder = base_cfos_path + current_cell[2]
+        current_cfos_file = glob.glob(current_cfos_folder + r'\*warped_red.nii.gz')[0]
+        cfos_files.append(current_cfos_file)
+                
+    return npz_files, cfos_files
 
 # FIN

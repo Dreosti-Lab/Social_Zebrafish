@@ -42,7 +42,7 @@ import pylab as pl
 
 # Analysis folder lONG isolation
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
 
 # Analysis folder SHORT isolation 24h or 48h
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control_new'
@@ -53,6 +53,76 @@ analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isola
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Controls_new'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated_new'
 
+#NEW
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\SPP_Red'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\SP_Orange'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\NP_Gray'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\MP_Cyan'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\MPP_Blue'
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\SPP_Red'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\SP_Orange'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\NP_Gray'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\MP_Cyan'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\MPP_Blue'
+
+
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SPP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\NP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MPP'
+
+
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SPP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\NP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MPP'
+
+
+
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SPP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\NP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MPP'
+
+
+
+
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\All'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
+analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
+
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SPP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\NP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MPP'
+
+
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MPP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\NP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\SP'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\SPP'
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
+
+# Freeze time threshold
+freeze_threshold = 500
 
 # Find all the npz files saved for each group and fish with all the information
 npzFiles = glob.glob(analysisFolder+'\*.npz')
@@ -71,6 +141,9 @@ BPS_S_ALL = np.zeros(numFiles)
 
 Distance_NS_ALL = np.zeros(numFiles)
 Distance_S_ALL = np.zeros(numFiles)
+
+Freezes_NS_ALL = np.zeros(numFiles)
+Freezes_S_ALL = np.zeros(numFiles)
 
 OrtHist_NS_NSS_ALL = np.zeros((numFiles,36))
 OrtHist_NS_SS_ALL = np.zeros((numFiles,36))
@@ -106,7 +179,11 @@ for f, filename in enumerate(npzFiles):
     Bouts_S = dataobject['Bouts_S']
     Pauses_NS = dataobject['Pauses_NS']   
     Pauses_S = dataobject['Pauses_S']
-        
+    
+    # Count Freezes
+    Freezes_NS_ALL[f] = np.sum(Pauses_NS[:,8] > freeze_threshold)
+    Freezes_S_ALL[f] = np.sum(Pauses_S[:,8] > freeze_threshold)
+    
     #Make an array with all summary stats
     VPI_NS_ALL[f] = VPI_NS
     VPI_S_ALL[f] = VPI_S
@@ -325,7 +402,7 @@ plt.gca().invert_yaxis()
 # Long Pauses Summary Plot
 plt.figure()
 plt.subplot(1,2,1)
-long_pauses_ns = np.where(Pauses_NS_ALL[:,8] > 500)[0]
+long_pauses_ns = np.where(Pauses_NS_ALL[:,8] > freeze_threshold)[0]
 num_long_pauses_per_fish_ns = len(long_pauses_ns)/numFiles
 plt.title('NS: #Long Pauses = ' + format(num_long_pauses_per_fish_ns, '.4f'))
 plt.plot(Pauses_NS_ALL[long_pauses_ns, 1], Pauses_NS_ALL[long_pauses_ns, 2], 'o', Color=[0.0, 0.0, 0.0, 0.2])
@@ -333,12 +410,68 @@ plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
     
 plt.subplot(1,2,2)
-long_pauses_s = np.where(Pauses_S_ALL[:,8] > 500)[0]
+long_pauses_s = np.where(Pauses_S_ALL[:,8] > freeze_threshold)[0]
 num_long_pauses_per_fish_s = len(long_pauses_s)/numFiles
 plt.title('S: #Long Pauses = ' + format(num_long_pauses_per_fish_s, '.4f'))
 plt.plot(Pauses_S_ALL[long_pauses_s, 1], Pauses_S_ALL[long_pauses_s, 2], 'o', Color=[0.0, 0.0, 0.0, 0.2])
 plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
+
+# ----------------
+# VPI vs BPS Summary Plot 
+plt.figure()
+plt.subplot(1,2,1)
+plt.title('VPI vs BPS (NS)')
+plt.plot(VPI_NS_ALL, BPS_NS_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
+plt.ylabel('Bouts per Second', fontsize=12)
+plt.axis([-1.1, 1.1, 0, max(BPS_NS_ALL)+0.5])
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+    
+plt.subplot(1,2,2)
+plt.title('VPI vs BPS (S)')
+plt.plot(VPI_S_ALL, BPS_S_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
+plt.axis([-1.1, 1.1, 0,  max(BPS_S_ALL)+0.5])
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+
+# ----------------
+# VPI vs Distance Traveled Summary Plot 
+plt.figure()
+plt.subplot(1,2,1)
+plt.title('VPI vs Distance Traveled (NS)')
+plt.plot(VPI_NS_ALL, Distance_NS_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
+plt.ylabel('Distance (mm)', fontsize=12)
+plt.axis([-1.1, 1.1, 0, max(Distance_NS_ALL)+0.5])
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+    
+plt.subplot(1,2,2)
+plt.title('VPI vs Distance Traveled (S)')
+plt.plot(VPI_S_ALL, Distance_S_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
+plt.axis([-1.1, 1.1, 0,  max(Distance_S_ALL)+0.5])
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+
+# ----------------
+# VPI vs Number of Long Pauses Summary Plot 
+plt.figure()
+plt.subplot(1,2,1)
+plt.title('VPI vs Freezes (NS)')
+plt.plot(VPI_NS_ALL, Freezes_NS_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
+plt.ylabel('Freezes (count)', fontsize=12)
+plt.axis([-1.1, 1.1, -1, max(Freezes_NS_ALL)+0.5])
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+    
+plt.subplot(1,2,2)
+plt.title('VPI vs Freezes (S)')
+plt.plot(VPI_S_ALL, Freezes_S_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
+plt.axis([-1.1, 1.1, -1, max(Freezes_S_ALL)+0.5])
+pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+
+
 
 # ----------------
 # ORT_HIST Summary Plot

@@ -24,6 +24,8 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import scipy.misc as misc
 from scipy import stats
+import seaborn as sns
+import pandas as pd
 
 # Import local modules
 import SZ_utilities as SZU
@@ -75,23 +77,27 @@ import pylab as pl
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MPP'
 
 
-
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SPP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\NP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MPP'
 
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MPP_test'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SPP_test'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\NP_test'
 
 
 
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\All'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SPP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\NP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MPP'
 
-
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All_test'
 
 
 
@@ -100,9 +106,13 @@ import pylab as pl
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
 
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
 
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All_No_SC'
 
+analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All_No_SC'
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SPP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\NP'
@@ -110,7 +120,7 @@ analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isola
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MPP'
 
 
-
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MPP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MP'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\NP'
@@ -120,6 +130,9 @@ analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isola
 #analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
+
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Analysis_Folder\Wt_No_SC'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Analysis_Folder\Isolated_No_SC'
 
 # Freeze time threshold
 freeze_threshold = 500
@@ -507,6 +520,47 @@ plt.plot(xAxis, np.hstack((Norm_OrtHist_S_NSS_ALL, Norm_OrtHist_S_NSS_ALL[0])), 
 ax = plt.subplot(224, polar=True)
 plt.title('S - Social Side')
 plt.plot(xAxis, np.hstack((Norm_OrtHist_S_SS_ALL, Norm_OrtHist_S_SS_ALL[0])), linewidth = 3)
+
+
+#------------------------
+# Behaviour Summary plots
+plt.figure()
+
+# VPI
+plt.subplot(2,2,1)
+plt.title('VPI')
+s1 = pd.Series(VPI_NS_ALL, name='NS')
+s2 = pd.Series(VPI_S_ALL, name='S')
+df = pd.concat([s1,s2], axis=1)
+sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
+sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+
+# BPS
+plt.subplot(2,2,2)
+plt.title('BPS')
+s1 = pd.Series(BPS_NS_ALL, name='NS')
+s2 = pd.Series(BPS_S_ALL, name='S')
+df = pd.concat([s1,s2], axis=1)
+sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
+sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+
+# Distance
+plt.subplot(2,2,3)
+plt.title('Distance Traveled')
+s1 = pd.Series(Distance_NS_ALL, name='NS')
+s2 = pd.Series(Distance_S_ALL, name='S')
+df = pd.concat([s1,s2], axis=1)
+sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
+sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+
+# Freezes
+plt.subplot(2,2,4)
+plt.title('Freezes')
+s1 = pd.Series(Freezes_NS_ALL, name='NS')
+s2 = pd.Series(Freezes_S_ALL, name='S')
+df = pd.concat([s1,s2], axis=1)
+sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
+sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 
 
 # FIN

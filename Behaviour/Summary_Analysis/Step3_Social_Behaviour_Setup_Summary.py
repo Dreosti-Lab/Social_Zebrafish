@@ -142,8 +142,8 @@ import glob
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
 
 #lONG ISOLATION
-folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_SPP.txt'
-analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\SPP'
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_SPP.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\SPP'
 
 #folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Folder_List\Long_isolation_All_Isolated_MP.txt'
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MP'
@@ -164,15 +164,15 @@ analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisy
 
 #folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_MP.txt'
 #analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\MP'
-
-
+#
+##
 #folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_MPP.txt'
 #analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\MPP'
-#
+###
 #
 #folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_NP.txt'
 #analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\NP'
-#
+##
 #
 #folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_SP.txt'
 #analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\SP'
@@ -187,8 +187,32 @@ analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisy
 #analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Isolation_All'
 
 
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_All_No_SC.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All_No_SC'
+
+
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Isolation_All_No_SC.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Isolation_All_No_SC'
+
+#
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Isolation_All_No_SC.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Isolation_All_No_SC'
+
+
+#folderListFile = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Folder_List\Wt_All_No_SC.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All_No_SC'
+
+
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Folder_List\Wt_No_SC.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Analysis_Folder\Wt_No_SC'
+
+#
+folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_test.txt'
+analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All_test'
+
+
 # Plot Data
-plot = False
+plot = True
 
 # Set motion thresholds
 motionStartThreshold = 0.03
@@ -341,7 +365,7 @@ for idx,folder in enumerate(folderNames):
             
             # Compute BPS (S)
             BPS_s, avgBout_s = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
-            print ("BPS_s =",format(BPS_s, '.3f'))
+#            print ("BPS_s =",format(BPS_s, '.3f'))
             # Compute Distance Traveled (S)
             Distance_s = SZA.distance_traveled(bx, by, S_test_ROIs[i-1])
             
@@ -352,9 +376,9 @@ for idx,folder in enumerate(folderNames):
             # Analyze "Bouts" amd "Pauses" (S)
             Bouts_s, Pauses_s = SZS.analyze_bouts_and_pauses(tracking, S_test_ROIs[i-1], S_stim_ROIs[i-1], AllVisibleFrames, motionStartThreshold, motionStopThreshold)
             Percent_Moving_s = 100 * np.sum(Bouts_s[:,8])/len(motion)
-            print ("Percent_Moving_s =", format(Percent_Moving_s, '.3f'))
+#            print ("Percent_Moving_s =", format(Percent_Moving_s, '.3f'))
             Percent_Paused_s = 100 * np.sum(Pauses_s[:,8])/len(motion)
-            print ("Percent_Paused_s =", format(Percent_Paused_s, '.3f'))
+#            print ("Percent_Paused_s =", format(Percent_Paused_s, '.3f'))
             
             # PLot S (maybe)
             if plot:

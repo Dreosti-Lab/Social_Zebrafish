@@ -24,10 +24,13 @@ import SZ_analysis as SZA
 #---------------------------------------------------------------------------
 
 # Set Summary List
-summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Summary_List_ARK.xlsx'
+#summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Summary_List_ARK.xlsx'
+#summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Summary_List_Isolated.xlsx'
+summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Summary_List_Isolated_No_SC.xlsx'
 
 # Set Mask Path
 mask_path = r'D:\Anatomical_Segmentation\Diencephalon_Causal_Hypothalamus_Area1.tif'
+#mask_path = r'D:\Anatomical_Segmentation\Diencephalon_Area6.tif'
 
 # Set Background Path
 background_path = r'D:\Anatomical_Segmentation\Diencephalon_Area_8.labels.tif'
@@ -54,7 +57,7 @@ num_background_voxels = np.sum(np.sum(np.sum(background_stack)))
 freeze_threshold = 500
 
 # Load Behaviour Analysis
-VPI_NS_ALL = np.zeros(num_files)
+VPI_NS_ALL = np.zeros(num_files) 
 VPI_S_ALL = np.zeros(num_files)
 SPI_NS_ALL = np.zeros(num_files)
 SPI_S_ALL = np.zeros(num_files)
@@ -139,6 +142,7 @@ for i in range(num_files):
     signal_values[i] = signal_value
     background_values[i] = background_value
     normalized_cFos_values[i] = signal_value/background_value
+    print(cfos_files[i])
     print(str(i) + ", cFos = " + format(normalized_cFos_values[i], '.3f') + ", VPI = " + format(VPI_S_ALL[i], '.3f') + ", BPS = " + format(BPS_S_ALL[i], '.3f'))
 
 # Make plots

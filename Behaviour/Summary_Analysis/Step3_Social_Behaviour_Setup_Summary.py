@@ -207,12 +207,16 @@ import glob
 #analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Analysis_Folder\Wt_No_SC'
 
 #
-folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Folder_List\Short_isolation_Controls_test.txt'
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All_test'
+#folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Controls.txt'
+#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Controls'
+
+folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Isolated.txt'
+analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated'
+
 
 
 # Plot Data
-plot = True
+plot = False
 
 # Set motion thresholds
 motionStartThreshold = 0.03

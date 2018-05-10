@@ -42,13 +42,14 @@ import pylab as pl
 # -----------------------------------------------------------------------------
 
 # Set analysis folders for each condition
-#analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All'
+analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
+#analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All_test'
 conditionName_A = "Controls-All"
 
 #analysisFolder_B = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
+#analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All'
 analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
-conditionName_B = "Isolated-48h-All"
+conditionName_B = "Isolated-All"
 
 analysisFolders = [analysisFolder_A, analysisFolder_B]
 conditionNames = [conditionName_A, conditionName_B]
@@ -67,6 +68,9 @@ Distance_S_summary = []
 Freezes_NS_summary = []
 Freezes_S_summary = []
 
+Long_Freezes_NS_summary = []
+Long_Freezes_S_summary = []
+
 Percent_Moving_NS_summary = []
 Percent_Moving_S_summary = []
 
@@ -74,7 +78,8 @@ Percent_Moving_S_summary = []
 for i, analysisFolder in enumerate(analysisFolders):
     
     # Freeze time threshold
-    freeze_threshold = 500
+    freeze_threshold = 500 # more than 5 seconds
+    Long_freeze_threshold = 24000 #More than 4 minutes
     
     # Find all the npz files saved for each group and fish with all the information
     npzFiles = glob.glob(analysisFolder+'\*.npz')
@@ -97,6 +102,9 @@ for i, analysisFolder in enumerate(analysisFolders):
     Percent_Moving_NS_ALL = np.zeros(numFiles)
     Percent_Moving_S_ALL = np.zeros(numFiles)
     
+    Long_Freezes_NS_ALL = np.zeros(numFiles)
+    Long_Freezes_S_ALL = np.zeros(numFiles)
+    
     #Go through all the files contained in the analysis folder
     for f, filename in enumerate(npzFiles):
     
@@ -118,6 +126,9 @@ for i, analysisFolder in enumerate(analysisFolders):
         # Count Freezes
         Freezes_NS_ALL[f] = np.sum(Pauses_NS[:,8] > freeze_threshold)
         Freezes_S_ALL[f] = np.sum(Pauses_S[:,8] > freeze_threshold)
+        
+        Long_Freezes_NS_ALL[f] = np.sum(Pauses_NS[:,8] > Long_freeze_threshold)
+        Long_Freezes_S_ALL[f] = np.sum(Pauses_S[:,8] > Long_freeze_threshold)
         
         # Make an array with all summary stats
         VPI_NS_ALL[f] = VPI_NS
@@ -144,6 +155,9 @@ for i, analysisFolder in enumerate(analysisFolders):
 
     Percent_Moving_NS_summary.append(Percent_Moving_NS_ALL)
     Percent_Moving_S_summary.append(Percent_Moving_S_ALL)
+    
+    Long_Freezes_NS_summary.append(Long_Freezes_NS_ALL)
+    Long_Freezes_S_summary.append(Long_Freezes_S_ALL)
 
     # ----------------
 
@@ -222,6 +236,21 @@ for i, name in enumerate(conditionNames):
     
 for i, name in enumerate(conditionNames):
     s = pd.Series(Percent_Moving_S_summary[i], name="S: " + name)
+    series_list.append(s)
+df = pd.concat(series_list, axis=1)
+sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
+sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+
+# Long Freezes
+plt.subplot(2,3,6)
+plt.title('Long Freezes')
+series_list = []
+for i, name in enumerate(conditionNames):
+    s = pd.Series(Long_Freezes_NS_summary[i], name="NS: " + name)
+    series_list.append(s)
+    
+for i, name in enumerate(conditionNames):
+    s = pd.Series(Long_Freezes_S_summary[i], name="S: " + name)
     series_list.append(s)
 df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)

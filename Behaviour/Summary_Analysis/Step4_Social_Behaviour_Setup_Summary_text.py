@@ -43,97 +43,8 @@ import pylab as pl
 # -----------------------------------------------------------------------------
 
 # Analysis folder lONG isolation
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New'
-
-# Analysis folder SHORT isolation 24h or 48h
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control_new'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h_new'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h_new'
-
-# Analysis folder EARLY isolation up to 7dpf
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Controls_new'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated_new'
-
-#NEW
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\SPP_Red'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\SP_Orange'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\NP_Gray'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\MP_Cyan'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated_New - Copy\MPP_Blue'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\SPP_Red'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\SP_Orange'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\NP_Gray'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\MP_Cyan'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new - Copy\MPP_Blue'
-
-
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SPP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\NP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MPP'
-
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SPP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\SP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\NP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\MPP'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\MPP_test'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\SPP_test'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\NP_test'
-
-
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SPP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\SP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\NP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\MPP'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-
-
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\24h\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All_No_SC'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All_No_SC'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SPP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\SP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\NP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\MPP'
-
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MPP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\MP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\NP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\SP'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\SPP'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Wt_All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
-
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Analysis_Folder\Wt_No_SC'
-#analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_All_No_SC\Analysis_Folder\Isolated_No_SC'
+analysisFolder = base_path + r'\Isolation_Experiments\Social_Brain_Areas_Analisys\Analysis_Folder\Isolation_All_check'
+reportFilename = analysisFolder + r'\report.txt'
 
 # Freeze time threshold
 freeze_threshold = 500
@@ -159,6 +70,12 @@ Distance_S_ALL = np.zeros(numFiles)
 Freezes_NS_ALL = np.zeros(numFiles)
 Freezes_S_ALL = np.zeros(numFiles)
 
+Percent_Moving_NS_ALL = np.zeros(numFiles)
+Percent_Moving_S_ALL = np.zeros(numFiles)
+
+Long_Freezes_NS_ALL = np.zeros(numFiles)
+Long_Freezes_S_ALL = np.zeros(numFiles)
+
 OrtHist_NS_NSS_ALL = np.zeros((numFiles,36))
 OrtHist_NS_SS_ALL = np.zeros((numFiles,36))
 OrtHist_S_NSS_ALL = np.zeros((numFiles,36))
@@ -171,13 +88,18 @@ Pauses_S_ALL = np.zeros((0,10))
 
 
 #Go through all the files contained in the analysis folder
+reportFile = open(reportFilename, 'w')
 for f, filename in enumerate(npzFiles):
+
+    # Freeze time threshold
+    freeze_threshold = 500 # more than 5 seconds
+    Long_freeze_threshold = 24000 #More than 4 minutes
 
     #Load each npz file
     dataobject = np.load(filename)
     
     #Extract from the npz file
-    VPI_NS = dataobject['VPI_NS']    
+    VPI_NS = dataobject['VPI_NS']   
     VPI_S = dataobject['VPI_S']   
     SPI_NS = dataobject['SPI_NS']    
     SPI_S = dataobject['SPI_S']   
@@ -193,12 +115,21 @@ for f, filename in enumerate(npzFiles):
     Bouts_S = dataobject['Bouts_S']
     Pauses_NS = dataobject['Pauses_NS']   
     Pauses_S = dataobject['Pauses_S']
-    
+    Percent_Moving_NS = dataobject['Percent_Moving_NS']   
+    Percent_Moving_S = dataobject['Percent_Moving_S']
+
     # Count Freezes
-    Freezes_NS_ALL[f] = np.sum(Pauses_NS[:,8] > freeze_threshold)
-    Freezes_S_ALL[f] = np.sum(Pauses_S[:,8] > freeze_threshold)
+    Freezes_NS = np.array(np.sum(Pauses_NS[:,8] > freeze_threshold))
+    Freezes_S = np.array(np.sum(Pauses_S[:,8] > freeze_threshold))
+    Freezes_NS_ALL[f] = Freezes_NS
+    Freezes_S_ALL[f] = Freezes_S
     
-    #Make an array with all summary stats
+    Long_Freezes_NS = np.array(np.sum(Pauses_NS[:,8] > Long_freeze_threshold))
+    Long_Freezes_S = np.array(np.sum(Pauses_S[:,8] > Long_freeze_threshold))
+    Long_Freezes_NS_ALL[f] = Long_Freezes_NS
+    Long_Freezes_S_ALL[f] = Long_Freezes_S
+    
+    # Make an array with all summary stats
     VPI_NS_ALL[f] = VPI_NS
     VPI_S_ALL[f] = VPI_S
     SPI_NS_ALL[f] = SPI_NS
@@ -217,6 +148,30 @@ for f, filename in enumerate(npzFiles):
     Bouts_S_ALL = np.vstack([Bouts_S_ALL, Bouts_S])
     Pauses_NS_ALL = np.vstack([Pauses_NS_ALL, Pauses_NS])
     Pauses_S_ALL = np.vstack([Pauses_S_ALL, Pauses_S])
+    
+    
+    # Save to report file
+    reportFile.write(filename + '\n')
+    reportFile.write('-------------------\n')
+    reportFile.write('VPI_NS:\t' + format(np.float64(VPI_NS), '.3f') + '\n')
+    reportFile.write('VPI_S:\t' + format(np.float64(VPI_S), '.3f') + '\n')
+    reportFile.write('SPI_NS:\t' + format(np.float64(SPI_NS), '.3f') + '\n')
+    reportFile.write('SPI_S:\t' + format(np.float64(SPI_S), '.3f') + '\n')
+    reportFile.write('BPS_NS:\t' + format(np.float64(BPS_NS), '.3f') + '\n')
+    reportFile.write('BPS_S:\t' + format(np.float64(BPS_S), '.3f') + '\n')
+    reportFile.write('Distance_NS:\t' + format(np.float64(Distance_NS), '.3f') + '\n')
+    reportFile.write('Distance_S:\t' + format(np.float64(Distance_S), '.3f') + '\n')
+    reportFile.write('Freezes_NS:\t' + format(np.float64(Freezes_NS), '.3f') + '\n')
+    reportFile.write('Freezes_S:\t' + format(np.float64(Freezes_S), '.3f') + '\n')
+    reportFile.write('Long_Freezes_NS:\t' + format(np.float64(Long_Freezes_NS), '.3f') + '\n')
+    reportFile.write('Long_Freezes_S:\t' + format(np.float64(Long_Freezes_S), '.3f') + '\n')
+    reportFile.write('Perc_Moving_NS:\t' + format(np.float64(Percent_Moving_NS), '.3f') + '\n')
+    reportFile.write('Perc_Moving_S:\t' + format(np.float64(Percent_Moving_S), '.3f') + '\n')
+    reportFile.write('-------------------\n\n')
+    
+
+# Close report
+reportFile.close()
 
 # ----------------
 # VPI Summary Plot

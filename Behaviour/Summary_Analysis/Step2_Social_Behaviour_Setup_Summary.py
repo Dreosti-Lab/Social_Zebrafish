@@ -42,7 +42,7 @@ import BONSAI_ARK
 #folderListFile = folderListFile + r'\SocialFolderList_2017_05_25_Condition_A.txt'
 
 #folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\New_Tracking\Folder_List\Long_Isolation_All_Isolated.txt'
-folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\New_Tracking\Folder_List\Long_Isolation_Subset_Isolated.txt'
+folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation17_Isolated_SetupB.txt'
 
 
 dark = False

@@ -26,28 +26,15 @@ from openpyxl import load_workbook
 # Utilities for analyzing cFos experiments
 
 # Load NII stack
-def load_nii(path):
- 
+def load_nii(path, normalized=False): 
     image = nib.load(path)
-    image_size = image.shape
-    image_type = image.get_data_dtype()
-    image_data = image.get_data() + 32768 # offset from 16-bit signed
-    image_data = np.transpose(image_data, (1, 0, 2)) # swap x/y
-    
-#    z_stack_avg = np.mean(image_data,axis=2)
-#    z_stack_max = np.max(image_data,axis=2)
-#    z_stack_std = np.std(image_data,axis=2)
-    
-#    plt.figure()
-#    plt.imshow(z_stack_max)
-    
-#    plt.figure()
-#    plt.imshow(z_stack_std)
-    
- #   plt.figure()
- #   plt.imshow(z_stack_avg)
-        
-    return image_data
+    image_affine = image.affine
+    image_header = image.header
+    if(normalized):
+        image_data = image.get_data()
+    else:
+        image_data = image.get_data() + 32768 # offset from 16-bit signed integer
+    return image_data, image_affine, image_header
 
 # Save NII stack
 def save_nii(path, data, affine, header):
@@ -56,42 +43,55 @@ def save_nii(path, data, affine, header):
     nib.save(new_img, path)
 
 # Load Mask Labels (TIFF)
-def load_mask(path):
-    
+def load_mask(path, transpose=True):
+    # Mask should be transposed to align with .nii loaded images
     tiff = Image.open(path)
     tiff.load()
     num_frames = tiff.n_frames
-    images = np.zeros((tiff.height, tiff.width, num_frames), dtype=np.uint8) 
-    for i, page in enumerate(ImageSequence.Iterator(tiff)):
-        images[:,:,i] = np.reshape(page, (tiff.height, tiff.width))
-
+    if(transpose):
+        images = np.zeros((tiff.width, tiff.height, num_frames), dtype=np.uint8) 
+        for i, page in enumerate(ImageSequence.Iterator(tiff)):
+            images[:,:,i] = np.transpose(np.reshape(page, (tiff.height, tiff.width)))
+    else:
+        images = np.zeros((tiff.height, tiff.width, num_frames), dtype=np.uint8) 
+        for i, page in enumerate(ImageSequence.Iterator(tiff)):
+            images[:,:,i] = np.reshape(page, (tiff.height, tiff.width))
+ 
     return np.array(images)
 
 # Read cFos experiment summary list
-def read_summarylist(path):
-
+def read_summarylist(path, normalized=False):
+    
+    # Load worksbook/sheet
     summaryWb = load_workbook(filename = path)
     summaryWs = summaryWb.active
-    base_npz_path = summaryWs['B1'].value + '/'
-    base_cfos_path = summaryWs['C1'].value + '/'
+
+    # Extract cell data
     all_cells =  list(summaryWs.values)
     data_cells = all_cells[1:]
+    metric_labels = all_cells[0][2:]
     num_rows = len(data_cells)
     
-    npz_files = []
-    cfos_files = []
+    # Empty lists to fill   
+    cfos_paths = []
+    behaviour_metrics = []
     for i in range(0,num_rows):
 
-        # Find correct NPZ file
+        # Find correct cfos image file path
         current_cell = data_cells[i]
-        current_npz_file = base_npz_path + current_cell[1]
-        npz_files.append(current_npz_file)
+        base_cfos_path = current_cell[0] + current_cell[1]
+        if(normalized):
+            cfos_image_name = glob.glob(base_cfos_path + '\*warped_red_normalized.nii.gz')[0]
+        else:
+            cfos_image_name = glob.glob(base_cfos_path + '\*warped_red.nii.gz')[0]            
+        cfos_paths.append(cfos_image_name)
         
-        # Find cFos nii paths: "warped_red"
-        current_cfos_folder = base_cfos_path + current_cell[2]
-        current_cfos_file = glob.glob(current_cfos_folder + r'\*warped_red.nii.gz')[0]
-        cfos_files.append(current_cfos_file)
+        # Find behaviour metrics
+        behaviour = np.zeros(15);
+        for i in range(15): 
+            behaviour[i] = current_cell[2 + i]                 
+        behaviour_metrics.append(behaviour)
                 
-    return npz_files, cfos_files
+    return cfos_paths, behaviour_metrics, metric_labels
 
 # FIN

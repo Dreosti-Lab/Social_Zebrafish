@@ -17,6 +17,7 @@ import os
 import glob
 import nibabel as nib
 import numpy as np
+from scipy import signal
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from PIL import Image, ImageSequence
@@ -37,9 +38,12 @@ def load_nii(path, normalized=False):
     return image_data, image_affine, image_header
 
 # Save NII stack
-def save_nii(path, data, affine, header):
- 
-    new_img = nib.Nifti1Image(data, affine, header)
+def save_nii(path, data, affine, header=False):
+    
+    if(header):
+        new_img = nib.Nifti1Image(data, affine, header)
+    else:
+        new_img = nib.Nifti1Image(data, affine)
     nib.save(new_img, path)
 
 # Load Mask Labels (TIFF)
@@ -93,5 +97,102 @@ def read_summarylist(path, normalized=False):
         behaviour_metrics.append(behaviour)
                 
     return cfos_paths, behaviour_metrics, metric_labels
+
+# Compute summary stacks from a cFos experiment summary list
+def summary_stacks(paths, smooth_factor=1, normalized=False):
+
+    # Load all data stacks into 4-D array
+    n_stacks = len(paths)    
+    for i in range(n_stacks):
+        
+        # Load stack
+        cfos_data, cfos_affine, cfos_header = load_nii(paths[i], normalized=normalized)
+        n_stack_rows = np.size(cfos_data, 0)
+        n_stack_cols = np.size(cfos_data, 1)
+        n_stack_slices = np.size(cfos_data, 2)
+        
+        # (Optional) Smooth_Factor
+        if(smooth_factor > 1):
+            smooth_kernel = np.ones((smooth_factor,smooth_factor,smooth_factor)) / np.power(smooth_factor,3)
+            smoothed_data = signal.fftconvolve(cfos_data, smooth_kernel, mode='same')
+            cfos_data = smoothed_data
+        
+        # Allocate if first iteration
+        if (i == 0):
+            group_data = np.zeros((n_stack_rows, n_stack_cols, n_stack_slices, n_stacks), dtype = np.float32)    
+
+        # Fill data stack
+        group_data[:,:,:,i] = cfos_data;
+
+        # Report progress        
+        print('Summarizing: ' + str(i+1) + ' of ' + str(n_stacks) + ':\n' + paths[i] + '\n')
+    	
+    # Measure mean and std stack for group 
+    mean_stack = np.mean(group_data, 3)
+    std_stack = np.std(group_data, 3)
+    
+    # Check for outliers
+    plt.figure()
+    plt.plot(np.mean(np.mean(np.mean(group_data, 2), 1), 0))
+    plt.title("Mean stack intensity of all stacks.")
+
+    return mean_stack, std_stack
+
+# Compute correlation between voxel values and explanatory metric
+def voxel_correlation(paths, metric, smooth_factor=1, normalized=False):
+
+    # Load all data stacks into 4-D array
+    n_stacks = len(paths)    
+    for i in range(n_stacks):
+        
+        # Load stack
+        cfos_data, cfos_affine, cfos_header = load_nii(paths[i], normalized=normalized)
+        n_stack_rows = np.size(cfos_data, 0)
+        n_stack_cols = np.size(cfos_data, 1)
+        n_stack_slices = np.size(cfos_data, 2)
+        
+        # (Optional) Smooth_Factor
+        if(smooth_factor > 1):
+            smooth_kernel = np.ones((smooth_factor,smooth_factor,smooth_factor)) / np.power(smooth_factor,3)
+            smoothed_data = signal.fftconvolve(cfos_data, smooth_kernel, mode='same')
+            cfos_data = smoothed_data
+        
+        # Allocate if first iteration
+        if (i == 0):
+            group_data = np.zeros((n_stack_rows, n_stack_cols, n_stack_slices, n_stacks), dtype = np.float32)    
+
+        # Fill data stack
+        group_data[:,:,:,i] = cfos_data;
+
+        # Report progress        
+        print('Loading: ' + str(i+1) + ' of ' + str(n_stacks) + ':\n' + paths[i] + '\n')
+    	
+    # Compute correlation between metric vector and voxel values 
+    corr_stack = np.zeros((n_stack_rows, n_stack_cols, n_stack_slices), dtype = np.float32)    
+    
+    # Zero-mean, unit variance for metric vector
+    metric_vec = metric - np.mean(metric)
+    metric_vec = metric_vec / np.std(metric_vec)
+    metric_auto_corr = np.correlate(metric_vec, metric_vec)[0]
+
+    # Correlate each voxel vector with the metric vector
+    for r in range(n_stack_rows):
+        for c in range(n_stack_cols):
+            for z in range(n_stack_slices):
+                vox_vec = group_data[r,c,z,:]
+                vox_vec = vox_vec - np.mean(vox_vec)
+                vox_vec = vox_vec / np.std(vox_vec)
+                
+                vox_auto_corr = np.correlate(vox_vec,vox_vec)[0]
+                norm_value = (vox_auto_corr + metric_auto_corr) / 2
+                corr_factor = np.correlate(vox_vec, metric_vec) / norm_value
+                
+                corr_stack[r,c,z] = corr_factor[0]
+            
+        # Report progress        
+        print('Correlating: Row ' + str(r+1) + ' of ' + str(n_stack_rows))
+
+    return corr_stack
+
 
 # FIN

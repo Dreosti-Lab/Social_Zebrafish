@@ -24,11 +24,11 @@ import SZ_analysis as SZA
 #---------------------------------------------------------------------------
 
 # Set Summary List
-summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Sheets\Test.xlsx'
+summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Sheets\Test_Comparison_2.xlsx'
 
 # Set Background and Normalization Mask Paths
 background_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Anatomical_Masks\Background_Mask\Bkg_No_Fish.tif'
-normalizer_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Anatomical_Masks\Background_Mask\Background_C_Fos_Diencephalon_Area_8.tif'
+normalizer_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Anatomical_Masks\Background_Mask\Background_C_Fos_Brain_Area.tif'
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -71,7 +71,7 @@ for i in range(num_files):
     normalized = backsub / normalizer_value
     
     # Save normlaized NII stack...
-    save_path = cfos_paths[i][:-7] + '_normalized.nii.gz'      
+    save_path = cfos_paths[i][:-7] + '_normalized_new.nii.gz'      
     SZCFOS.save_nii(save_path, normalized, cfos_affine, cfos_header)
                             
     # Append to list

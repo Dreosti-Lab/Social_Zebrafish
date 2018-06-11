@@ -83,9 +83,13 @@ def read_summarylist(path, normalized=False):
 
         # Find correct cfos image file path
         current_cell = data_cells[i]
-        base_cfos_path = current_cell[0] + current_cell[1]
+        try:
+            base_cfos_path = current_cell[0] + current_cell[1]
+        except:
+            print("Bad path in summary list: Row " + str(i))
+            exit(-1)
         if(normalized):
-            cfos_image_name = glob.glob(base_cfos_path + '\*warped_red_normalized.nii.gz')[0]
+            cfos_image_name = glob.glob(base_cfos_path + '\*warped_red_normalized_new.nii.gz')[0]
         else:
             cfos_image_name = glob.glob(base_cfos_path + '\*warped_red.nii.gz')[0]            
         cfos_paths.append(cfos_image_name)
@@ -125,16 +129,24 @@ def summary_stacks(paths, smooth_factor=1, normalized=False):
         group_data[:,:,:,i] = cfos_data;
 
         # Report progress        
-        print('Summarizing: ' + str(i+1) + ' of ' + str(n_stacks) + ':\n' + paths[i] + '\n')
+        summary_mean = np.mean(np.mean(np.mean(cfos_data, 2), 1), 0)
+        summary_std = np.std(np.std(np.std(cfos_data, 2), 1), 0)
+        print('Summarizing: ' + str(i+1) + ' of ' + str(n_stacks) + ':\n' + paths[i])
+        print('Mean: ' + str(summary_mean) + ' - STD: ' + str(summary_std) + '\n')
     	
     # Measure mean and std stack for group 
     mean_stack = np.mean(group_data, 3)
     std_stack = np.std(group_data, 3)
     
     # Check for outliers
+    all_means = np.mean(np.mean(np.mean(group_data, 2), 1), 0) 
+    all_stds = np.std(np.std(np.std(group_data, 2), 1), 0) 
     plt.figure()
-    plt.plot(np.mean(np.mean(np.mean(group_data, 2), 1), 0))
+    plt.plot(all_means, 'k')
+    plt.plot(all_stds, 'r')
     plt.title("Mean stack intensity of all stacks.")
+    
+    print
 
     return mean_stack, std_stack
 

@@ -25,18 +25,19 @@ import SZ_analysis as SZA
 #---------------------------------------------------------------------------
 
 # Set Summary List
-#summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Sheets\Test.xlsx'
-summaryListFile = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Test_All.xlsx'
+summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Sheets\Test_Comparison_1.xlsx'
+#summaryListFile = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Test_All.xlsx'
 
 # Set Groups to compare
 group_A = 1;
 group_B = 2;
 
 # Spatial smoothing factor
-smooth_factor = 8;
+smooth_factor = 4;
 
 # Set analysis path
-analysis_folder = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope'
+#analysis_folder = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope'
+analysis_folder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Comparison'
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

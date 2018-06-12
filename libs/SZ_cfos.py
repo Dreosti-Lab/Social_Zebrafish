@@ -85,13 +85,22 @@ def read_summarylist(path, normalized=False):
         current_cell = data_cells[i]
         try:
             base_cfos_path = current_cell[0] + current_cell[1]
-        except:
+        except IndexError:
             print("Bad path in summary list: Row " + str(i))
-            exit(-1)
+            sys.exit()
         if(normalized):
-            cfos_image_name = glob.glob(base_cfos_path + '\*warped_red_normalized_new.nii.gz')[0]
+            try:
+                cfos_image_name = glob.glob(base_cfos_path + '\*warped_red_normalized.nii.gz')[0]
+            except IndexError:
+                print("No file found with name: " + base_cfos_path + '\*warped_red_normalized.nii.gz')
+                sys.exit()
         else:
-            cfos_image_name = glob.glob(base_cfos_path + '\*warped_red.nii.gz')[0]            
+            try:
+                cfos_image_name = glob.glob(base_cfos_path + '\*warped_red.nii.gz')[0]            
+            except IndexError:
+                print("No file found with name: " + base_cfos_path + '\*warped_red.nii.gz')
+                sys.exit()
+        # Append path to list
         cfos_paths.append(cfos_image_name)
         
         # Find behaviour metrics

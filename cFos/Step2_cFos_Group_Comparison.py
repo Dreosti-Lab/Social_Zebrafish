@@ -25,8 +25,8 @@ import SZ_analysis as SZA
 #---------------------------------------------------------------------------
 
 # Set Summary List
-summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Sheets\Test_Comparison_1.xlsx'
-#summaryListFile = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Test_All.xlsx'
+#summaryListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Excel_Sheets\Test_Comparison_1.xlsx'
+summaryListFile = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Test_all_ARK.xlsx'
 
 # Set Groups to compare
 group_A = 1;
@@ -36,14 +36,14 @@ group_B = 2;
 smooth_factor = 4;
 
 # Set analysis path
-#analysis_folder = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope'
-analysis_folder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Comparison'
+analysis_folder = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Analysis\G1v2'
+#analysis_folder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Comparison'
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 # Read summary list
-cfos_paths, behaviour_metrics, metric_labels = SZCFOS.read_summarylist(summaryListFile, normalized=True)
+cfos_paths, behaviour_metrics, metric_labels = SZCFOS.read_summarylist(summaryListFile, normalized=True, change_base_path=True)
 cfos_paths = np.array(cfos_paths)
 behaviour_metrics = np.array(behaviour_metrics)
 

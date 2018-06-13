@@ -64,7 +64,7 @@ def load_mask(path, transpose=True):
     return np.array(images)
 
 # Read cFos experiment summary list
-def read_summarylist(path, normalized=False):
+def read_summarylist(path, normalized=False, change_base_path=False):
     
     # Load worksbook/sheet
     summaryWb = load_workbook(filename = path)
@@ -83,11 +83,19 @@ def read_summarylist(path, normalized=False):
 
         # Find correct cfos image file path
         current_cell = data_cells[i]
-        try:
-            base_cfos_path = current_cell[0] + current_cell[1]
-        except IndexError:
-            print("Bad path in summary list: Row " + str(i))
-            sys.exit()
+        if(change_base_path):
+            alt_base_path = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope'
+            try:
+                base_cfos_path = alt_base_path + current_cell[0].split('VPI')[1] + current_cell[1]
+            except IndexError:
+                print("Bad path in summary list: Row " + str(i))
+                sys.exit()            
+        else:
+            try:
+                base_cfos_path = current_cell[0] + current_cell[1]
+            except IndexError:
+                print("Bad path in summary list: Row " + str(i))
+                sys.exit()
         if(normalized):
             try:
                 cfos_image_name = glob.glob(base_cfos_path + '\*warped_red_normalized.nii.gz')[0]

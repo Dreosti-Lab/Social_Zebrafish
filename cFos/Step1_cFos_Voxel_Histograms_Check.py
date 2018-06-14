@@ -43,9 +43,9 @@ num_files = len(cfos_paths)
 # ------------------------------------------------------------------
 
 plt.figure()
-start = 90
-stop = 120
-#stop = num_files
+start = 0
+#stop = 10
+stop = num_files
 for i in range(start, stop, 1):
     
     # Read histogram npz
@@ -58,18 +58,24 @@ for i in range(start, stop, 1):
     bin_centers = npzfile['bin_centers']
     offset = npzfile['offset']
     median = npzfile['median']
+    bot_decile = npzfile['bot_decile']
+    top_decile = npzfile['top_decile']
     mode = npzfile['mode']
     
     # Find bin positions for histogram descriptors
     offset_bin = (np.abs(bin_centers - offset)).argmin()
     median_bin = (np.abs(bin_centers - median)).argmin()
+    bot_decile_bin = (np.abs(bin_centers - bot_decile)).argmin()
+    top_decile_bin = (np.abs(bin_centers - top_decile)).argmin()
     mode_bin = (np.abs(bin_centers - mode)).argmin()
             
     # Plot histogram
     plt.plot(bin_centers, histogram)
     plt.plot(median, histogram[median_bin], 'ko')
-    plt.plot(offset, histogram[offset_bin], 'ro')
-    plt.plot(mode, histogram[mode_bin], 'bo')
+    plt.plot(offset, histogram[offset_bin], 'go')
+    plt.plot(mode, histogram[mode_bin], 'k+')
+    plt.plot(bot_decile, histogram[bot_decile_bin], 'bo')
+    plt.plot(top_decile, histogram[top_decile_bin], 'ro')
                             
     print("Plotting Histogram " + str(i+1) + ' of ' + str(num_files) + ':\n' + cfos_paths[i] + '\n')
                               

@@ -12,6 +12,7 @@ lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 
 # Set Library Paths
 import sys
+import os
 sys.path.append(lib_path)
 
 # Import useful libraries
@@ -29,14 +30,20 @@ import SZ_analysis as SZA
 summaryListFile = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Test_all_ARK.xlsx'
 
 # Set Groups to compare
-group_A = 1;
-group_B = 2;
+group_A = 2;
+group_B = 4;
+
+# Set VPI thresholds
+VPI_min_A = -1.1
+VPI_max_A = 1.1
+VPI_min_B = -1.1
+VPI_max_B = 1.1
 
 # Spatial smoothing factor
 smooth_factor = 4;
 
 # Set analysis path
-analysis_folder = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Analysis\G1v2'
+analysis_folder = r'C:\Users\adamk\Dropbox\Adam_Ele\Last_Hope\Analysis\G2vG4'
 #analysis_folder = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Social_Brain_Areas_Analisys\Comparison'
 
 #---------------------------------------------------------------------------
@@ -48,8 +55,15 @@ cfos_paths = np.array(cfos_paths)
 behaviour_metrics = np.array(behaviour_metrics)
 
 # Assign metrics/paths for each group
-group_A_indices = np.where(behaviour_metrics[:,0] == group_A)[0].astype(np.uint)
-group_B_indices = np.where(behaviour_metrics[:,0] == group_B)[0].astype(np.uint)
+group_A_correct_id = (behaviour_metrics[:,0] == group_A)
+group_B_correct_id = (behaviour_metrics[:,0] == group_B)
+
+group_A_metric_in_range = (behaviour_metrics[:,2] > VPI_min_A) * (behaviour_metrics[:,2] <= VPI_max_A)
+group_B_metric_in_range = (behaviour_metrics[:,2] > VPI_min_B) * (behaviour_metrics[:,2] <= VPI_max_B)
+
+group_A_indices = np.where(group_A_correct_id * group_A_metric_in_range)[0].astype(np.uint)
+group_B_indices = np.where(group_B_correct_id * group_B_metric_in_range)[0].astype(np.uint)
+
 cfos_paths_A = cfos_paths[group_A_indices]
 cfos_paths_B = cfos_paths[group_B_indices]
 n_A = len(group_A_indices)

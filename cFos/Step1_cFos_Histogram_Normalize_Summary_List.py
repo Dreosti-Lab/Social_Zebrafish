@@ -48,6 +48,8 @@ for i in range(num_files):
     bin_centers = npzfile['bin_centers']
     offset = npzfile['offset']
     median = npzfile['median']
+    bot_decile = npzfile['bot_decile']
+    top_decile = npzfile['top_decile']
     mode = npzfile['mode']
 
     # Load original (warped) cFos stack

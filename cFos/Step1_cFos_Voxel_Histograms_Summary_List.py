@@ -58,7 +58,7 @@ num_mask_voxels = np.sum(np.sum(np.sum(mask_data)))
 # Measure cFOS in Mask (normalize to "background")
 plt.figure()
 start = 0
-#stop = 2
+#stop = 60
 stop = num_files
 for i in range(start, stop, 1):
     
@@ -87,6 +87,16 @@ for i in range(start, stop, 1):
     median_bin = np.round(np.argmin(np.abs(np.cumsum(histogram) - half_count))).astype(np.uint)
     median = bin_centers[median_bin]
 
+    # Find lower quartile bin
+    bot_decile_count = np.sum(histogram) / 10
+    bot_decile_bin = np.round(np.argmin(np.abs(np.cumsum(histogram) - bot_decile_count))).astype(np.uint)
+    bot_decile = bin_centers[bot_decile_bin]
+
+    # Find lower quartile bin
+    top_decile_count = 9 * np.sum(histogram) / 10
+    top_decile_bin = np.round(np.argmin(np.abs(np.cumsum(histogram) - top_decile_count))).astype(np.uint)
+    top_decile = bin_centers[top_decile_bin]
+
     # Find mode bin
     mode_bin = np.argmax(histogram)
     mode = bin_centers[mode_bin]
@@ -100,8 +110,10 @@ for i in range(start, stop, 1):
     # Plot histogram
     plt.plot(bin_centers, histogram)
     plt.plot(median, histogram[median_bin], 'ko')
-    plt.plot(offset, histogram[offset_bin], 'ro')
-    plt.plot(mode, histogram[mode_bin], 'bo')
+    plt.plot(offset, histogram[offset_bin], 'go')
+    plt.plot(mode, histogram[mode_bin], 'k+')
+    plt.plot(bot_decile, histogram[bot_decile_bin], 'bo')
+    plt.plot(top_decile, histogram[top_decile_bin], 'ro')
 
     # Save histogram
     if(normalized):
@@ -113,6 +125,8 @@ for i in range(start, stop, 1):
              bin_centers=bin_centers, 
              offset = offset,
              median=median,
+             bot_decile = bot_decile,
+             top_decile = top_decile,
              mode=mode)
  
     print("Saved Histogram " + str(i+1) + ' of ' + str(num_files) + ':\n' + cfos_paths[i] + '\n')

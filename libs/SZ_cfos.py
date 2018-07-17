@@ -37,6 +37,18 @@ def load_nii(path, normalized=False):
         image_data = image.get_data() + 32768 # offset from 16-bit signed integer
     return image_data, image_affine, image_header
 
+# Load NII planes
+def load_nii_planes(path, planes, normalized=False): 
+    image = nib.load(path)
+    image_affine = image.affine
+    image_header = image.header
+    if(normalized):
+        image_data = image.get_data()
+    else:
+        image_data = image.get_data() + 32768 # offset from 16-bit signed integer
+    plane_data = image_data[:,:,planes]
+    return planes_data, image_affine, image_header
+
 # Load NII plane
 def load_nii_plane(path, plane, normalized=False): 
     image = nib.load(path)

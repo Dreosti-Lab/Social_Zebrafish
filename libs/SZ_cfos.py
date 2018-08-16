@@ -5,12 +5,19 @@ Library of utilities for cFos analysis
 @author: Dreosti Lab
 """
 # -----------------------------------------------------------------------------
-# Set "Library Path" - Social Zebrafish Repo
-lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
+# Detect Platform
+import platform
+if(platform.system() == 'Linux'):
+    # Set "Repo Library Path" - Social Zebrafish Repo
+    lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+else:
+    # Set "Repo Library Path" - Social Zebrafish Repo
+    lib_path = r'C:/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # Set Library Paths
 import sys
 sys.path.append(lib_path)
+# -----------------------------------------------------------------------------
 
 # Import useful libraries
 import os
@@ -23,6 +30,9 @@ import matplotlib.image as mpimg
 from PIL import Image, ImageSequence
 import BONSAI_ARK
 from openpyxl import load_workbook
+import seaborn as sns
+sns.set_style("whitegrid")
+import pandas as pd
 
 # Utilities for analyzing cFos experiments
 
@@ -46,7 +56,7 @@ def load_nii_planes(path, planes, normalized=False):
         image_data = image.get_data()
     else:
         image_data = image.get_data() + 32768 # offset from 16-bit signed integer
-    plane_data = image_data[:,:,planes]
+    planes_data = image_data[:,:,planes]
     return planes_data, image_affine, image_header
 
 # Load NII plane
@@ -247,5 +257,81 @@ def voxel_correlation(paths, metric, smooth_factor=1, normalized=False):
 
     return corr_stack
 
+# Plot mask groups in seaborn barplot
+def bar_plot_mask_groups(bar_colours, group_files, control_files=[]):
+
+    # Is there a control file?
+    if (len(control_files) == 0):
+        controls=False
+    else:
+        # Load control data
+        num_controls = len(control_files)
+        controls_s = np.empty(num_controls, dtype=object)
+        controls_means = np.empty(num_controls, dtype=object)
+        for i in range(num_controls):
+            npzfile = np.load(control_files[i])
+            control_data = npzfile['cFos_values']
+            control_name = npzfile['group_name']
+            control_roi = npzfile['roi_name']
+            controls_s[i] = pd.Series(control_data, name=str(control_name))
+            controls_means[i] = np.mean(controls_s[i])
+            controls=True
+    
+    # Load group data
+    num_groups = len(group_files)
+    groups_s = np.empty(num_groups, dtype=object)
+    groups_minus_controls_s = np.empty(num_groups, dtype=object)
+    for i in range(num_groups):
+        npzfile = np.load(group_files[i])
+        group_data = npzfile['cFos_values']
+        group_name = npzfile['group_name']
+        group_roi = npzfile['roi_name']
+        groups_s[i] = pd.Series(group_data, name=str(group_name))
+        if controls:
+            groups_minus_controls_s[i] = pd.Series((group_data-controls_means[i])/controls_means[i], name=str(group_name))    
+
+    # Make plot
+    plt.figure()
+    if controls:
+        df = pd.concat(groups_minus_controls_s, axis=1)
+    else:
+        df = pd.concat(groups_s, axis=1)
+    sns.barplot(data=df, ci=68, capsize=.2, palette=sns.color_palette(bar_colours))
+
+# Compare mask groups using ttest
+def compare_mask_groups(group_files_A, group_files_B, report_path):
+    
+    # Load Group A data
+    num_groups = len(group_files_A)
+    groups_s_A = np.empty(num_groups, dtype=object)
+    for i in range(num_groups):
+        npzfile = np.load(group_files_A[i])
+        group_data = npzfile['cFos_values']
+        group_name = npzfile['group_name']
+        group_roi = npzfile['roi_name']
+        groups_s_A[i] = pd.Series(group_data, name=str(group_name))
+
+    # Load Group A data
+    num_groups = len(group_files_B)
+    groups_s_B = np.empty(num_groups, dtype=object)
+    for i in range(num_groups):
+        npzfile = np.load(group_files_B[i])
+        group_data = npzfile['cFos_values']
+        group_name = npzfile['group_name']
+        group_roi = npzfile['roi_name']
+        groups_s_B[i] = pd.Series(group_data, name=str(group_name))
+
+    # Stats
+    from scipy.stats import ttest_ind
+    report_file = open(report_path, 'w')
+    print('\nTTests:')
+    for i in range(num_groups):
+        A = groups_s_A[i]
+        B = groups_s_B[i]
+        report = str(A.name) + ' vs ' + str(B.name) + ' ' + ' :: ' + str(ttest_ind(A, B, equal_var = True))
+        print(report)
+        report_file.write(report + '\n')
+    report_file.close()    
+    print('\n')
 
 # FIN

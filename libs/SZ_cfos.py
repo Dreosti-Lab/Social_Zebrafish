@@ -324,14 +324,12 @@ def compare_mask_groups(group_files_A, group_files_B, report_path):
     # Stats
     from scipy.stats import ttest_ind
     report_file = open(report_path, 'w')
-    print('\nTTests:')
     for i in range(num_groups):
         A = groups_s_A[i]
         B = groups_s_B[i]
         report = str(A.name) + ' vs ' + str(B.name) + ' ' + ' :: ' + str(ttest_ind(A, B, equal_var = True))
         print(report)
         report_file.write(report + '\n')
-    report_file.close()    
-    print('\n')
+    report_file.close()
 
 # FIN

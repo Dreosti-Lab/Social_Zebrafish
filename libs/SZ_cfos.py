@@ -322,14 +322,22 @@ def compare_mask_groups(group_files_A, group_files_B, report_path):
         groups_s_B[i] = pd.Series(group_data, name=str(group_name))
 
     # Stats
-    from scipy.stats import ttest_ind
+    from scipy.stats import ttest_ind, mannwhitneyu
     report_file = open(report_path, 'w')
     for i in range(num_groups):
-        A = groups_s_A[i]
-        B = groups_s_B[i]
-        report = str(A.name) + ' vs ' + str(B.name) + ' ' + ' :: ' + str(ttest_ind(A, B, equal_var = True))
-        print(report)
+        S1 = groups_s_A[i]
+        S2 = groups_s_B[i]
+        # Statistics: Compare S1 vs. S2 (relative TTEST)
+        result = ttest_ind(S1, S2, equal_var = True)
+        report = str(S1.name) + ' vs ' + str(S2.name) + ' (Un-paired T-Test)' + ' :: ' + str(result)
         report_file.write(report + '\n')
+        print(report)
+
+        result = mannwhitneyu(S1, S2, True)
+        report = str(S1.name) + ' vs ' + str(S2.name) + ' (Mann-Whitney U-Test)' + ' :: ' + str(result)
+        report_file.write(report + '\n')
+        print(report)
+        # Non-parametric version of independent TTest
     report_file.close()
 
 # FIN

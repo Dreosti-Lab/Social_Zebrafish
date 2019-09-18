@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.4.0-preview">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.PointGrey;assembly=Bonsai.PointGrey" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q4="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics" xmlns:q1="clr-namespace:Bonsai.NationalInstruments;assembly=Bonsai.NationalInstruments" xmlns="https://bonsai-rx.org/2018/workflow">
+    <Nodes>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>Intensity</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AnalogOutput">
+          <q1:SignalSource />
+          <q1:SampleRate>1000</q1:SampleRate>
+          <q1:ActiveEdge>Rising</q1:ActiveEdge>
+          <q1:QuantityMode>ContinuousSamples</q1:QuantityMode>
+          <q1:BufferSize>10</q1:BufferSize>
+          <q1:Channels>
+            <q1:AnalogOutputChannelConfiguration>
+              <q1:ChannelName />
+              <q1:MinimumValue>-10</q1:MinimumValue>
+              <q1:MaximumValue>10</q1:MaximumValue>
+              <q1:PhysicalChannel>Dev2/ao0</q1:PhysicalChannel>
+              <q1:VoltageUnits>Volts</q1:VoltageUnits>
+            </q1:AnalogOutputChannelConfiguration>
+          </q1:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:FlyCapture">
+          <q2:Index>0</q2:Index>
+          <q2:ColorProcessing>Default</q2:ColorProcessing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:VideoWriter">
+          <q3:FileName>C:\Users\Elena\Desktop\2019_07_25\fish_1\round3_.avi</q3:FileName>
+          <q3:Suffix>Timestamp</q3:Suffix>
+          <q3:Buffered>true</q3:Buffered>
+          <q3:Overwrite>false</q3:Overwrite>
+          <q3:FourCC>FMP4</q3:FourCC>
+          <q3:FrameRate>100</q3:FrameRate>
+          <q3:FrameSize>
+            <q3:Width>0</q3:Width>
+            <q3:Height>0</q3:Height>
+          </q3:FrameSize>
+          <q3:ResizeInterpolation>NearestNeighbor</q3:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="DelaySubscription">
+          <DueTime>PT1M</DueTime>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q4:Permutation" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="DoubleProperty">
+          <Value>0</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="BehaviorSubject">
+        <Name>Intensity</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="RepeatCount">
+          <Count>1</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Count" DisplayName="BlockCount" Description="How many times to repeat the block of stimulus parameters." />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Intensity</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Concat" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:Grayscale" />
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>StimulusSequence</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="TimeSpanProperty">
+                <Value>PT0.5S</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Name>CombineWithIntensitySequence</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0.605</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0.729</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0.853</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0.977</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>1.101</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>1.323</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Concat" />
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="CombineLatest" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>1</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>1.224</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="Take">
+                  <Count>1</Count>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="DoubleProperty">
+                  <Value>0.358</Value>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="Take">
+                  <Count>1</Count>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="DoubleProperty">
+                  <Value>0.482</Value>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="Take">
+                  <Count>1</Count>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="DoubleProperty">
+                  <Value>0.729</Value>
+                </Combinator>
+              </Builder>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="13" Label="Source1" />
+            <Edge From="1" To="13" Label="Source2" />
+            <Edge From="2" To="13" Label="Source3" />
+            <Edge From="4" To="0" Label="Source1" />
+            <Edge From="5" To="1" Label="Source1" />
+            <Edge From="6" To="2" Label="Source1" />
+            <Edge From="7" To="13" Label="Source4" />
+            <Edge From="8" To="7" Label="Source1" />
+            <Edge From="9" To="13" Label="Source5" />
+            <Edge From="10" To="9" Label="Source1" />
+            <Edge From="11" To="13" Label="Source6" />
+            <Edge From="12" To="11" Label="Source1" />
+            <Edge From="13" To="15" Label="Source2" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="3" Label="Source1" />
+            <Edge From="16" To="13" Label="Source7" />
+            <Edge From="17" To="16" Label="Source1" />
+            <Edge From="18" To="13" Label="Source8" />
+            <Edge From="19" To="18" Label="Source1" />
+            <Edge From="20" To="13" Label="Source9" />
+            <Edge From="21" To="20" Label="Source1" />
+            <Edge From="22" To="13" Label="Source10" />
+            <Edge From="23" To="22" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>ResetIntensity</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="CreateObservable">
+        <Name>StimulusTrial</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Merge" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Delay">
+                <DueTime>PT0.5S</DueTime>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>2</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Last" />
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="DueTime" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>1.323</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Value" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>Intensity</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="AsyncSubject">
+              <Name>TrialParameters</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>TrialParameters</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>TrialParameters</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item1</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Delay">
+                <DueTime>PT2M</DueTime>
+              </Combinator>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="0" Label="Source2" />
+            <Edge From="2" To="8" Label="Source1" />
+            <Edge From="3" To="16" Label="Source1" />
+            <Edge From="4" To="1" Label="Source2" />
+            <Edge From="5" To="0" Label="Source1" />
+            <Edge From="6" To="1" Label="Source1" />
+            <Edge From="7" To="5" Label="Source1" />
+            <Edge From="8" To="3" Label="Source1" />
+            <Edge From="9" To="11" Label="Source1" />
+            <Edge From="12" To="14" Label="Source1" />
+            <Edge From="13" To="15" Label="Source1" />
+            <Edge From="14" To="7" Label="Source1" />
+            <Edge From="15" To="4" Label="Source1" />
+            <Edge From="16" To="10" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="2" To="4" Label="Source1" />
+      <Edge From="4" To="14" Label="Source1" />
+      <Edge From="5" To="11" Label="Source1" />
+      <Edge From="6" To="18" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="9" To="5" Label="Source1" />
+      <Edge From="10" To="9" Label="Source2" />
+      <Edge From="12" To="11" Label="Source2" />
+      <Edge From="13" To="9" Label="Source1" />
+      <Edge From="14" To="3" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="6" Label="Source1" />
+      <Edge From="17" To="12" Label="Source1" />
+      <Edge From="18" To="13" Label="Source1" />
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.NationalInstruments.AnalogOutput, Bonsai.NationalInstruments, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.PointGrey.FlyCapture, Bonsai.PointGrey, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.VideoWriter, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.DelaySubscription, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Numerics.Permutation, Bonsai.Numerics, Version=0.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.DoubleProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.RepeatCount, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Concat, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.MulticastSubjectBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.TimeSpanProperty, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Merge, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Last, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.AsyncSubjectBuilder, Bonsai.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

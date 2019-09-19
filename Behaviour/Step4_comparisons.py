@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Step5: Compare across experiments/conditions
+Compare summaries of analyzed social preference experiments
 
 @author: kampff
 """
-
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
-#------------------------------------------------------------------------------
+lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-#base_path = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_Adam'
-base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
+base_path = r'/home/kampff/Data/Zebrafish'
+#base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
+# -----------------------------------------------------------------------------
 
 # Set Library Paths
 import sys
@@ -37,40 +39,29 @@ import BONSAI_ARK
 import glob
 import pylab as pl
 
-# -----------------------------------------------------------------------------
-# Functions to compare statistics across conditions and make a summary 
-# -----------------------------------------------------------------------------
-
-# Set analysis folders for each condition
+# Set analysis folder and label for experiment/condition A
 analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
-#analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All_test'
 conditionName_A = "Controls-All"
 
-#analysisFolder_B = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Isolated\All'
-#analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\Control\All'
-analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
+# Set analysis folder and label for experiment/condition B
+analysisFolder_B = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
 conditionName_B = "Isolated-All"
 
+# Assemble lists
 analysisFolders = [analysisFolder_A, analysisFolder_B]
 conditionNames = [conditionName_A, conditionName_B]
-
 
 # Summary Containers
 VPI_NS_summary = []
 VPI_S_summary = []
-
 BPS_NS_summary = []
 BPS_S_summary = []
-
 Distance_NS_summary = []
 Distance_S_summary = []
-
 Freezes_NS_summary = []
 Freezes_S_summary = []
-
 Long_Freezes_NS_summary = []
 Long_Freezes_S_summary = []
-
 Percent_Moving_NS_summary = []
 Percent_Moving_S_summary = []
 
@@ -84,34 +75,30 @@ for i, analysisFolder in enumerate(analysisFolders):
     # Find all the npz files saved for each group and fish with all the information
     npzFiles = glob.glob(analysisFolder+'\*.npz')
     
-    #Calculate how many files
+    # Calculate how many files
     numFiles = np.size(npzFiles, 0)
-    
+
+    # Allocate space for summary data
     VPI_NS_ALL = np.zeros(numFiles)
-    VPI_S_ALL = np.zeros(numFiles)
-        
+    VPI_S_ALL = np.zeros(numFiles)        
     BPS_NS_ALL = np.zeros(numFiles)
     BPS_S_ALL = np.zeros(numFiles)
-    
     Distance_NS_ALL = np.zeros(numFiles)
-    Distance_S_ALL = np.zeros(numFiles)
-    
+    Distance_S_ALL = np.zeros(numFiles)    
     Freezes_NS_ALL = np.zeros(numFiles)
     Freezes_S_ALL = np.zeros(numFiles)
-    
     Percent_Moving_NS_ALL = np.zeros(numFiles)
     Percent_Moving_S_ALL = np.zeros(numFiles)
-    
     Long_Freezes_NS_ALL = np.zeros(numFiles)
     Long_Freezes_S_ALL = np.zeros(numFiles)
     
-    #Go through all the files contained in the analysis folder
+    # Go through all the files contained in the analysis folder
     for f, filename in enumerate(npzFiles):
     
-        #Load each npz file
+        # Load each npz file
         dataobject = np.load(filename)
         
-        #Extract from the npz file
+        # Extract from the npz file
         VPI_NS = dataobject['VPI_NS']    
         VPI_S = dataobject['VPI_S']   
         BPS_NS = dataobject['BPS_NS']   
@@ -256,4 +243,4 @@ df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
 sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 
-# FIN
+#FIN

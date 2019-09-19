@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Sep 14 11:59:42 2016
+Track all fish in a social preference experiment
 
 @author: dreostilab (Elena Dreosti)
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
+lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Set "Base Path" for this analysis session
+base_path = r'/home/kampff/Data/Zebrafish'
+#base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
+# -----------------------------------------------------------------------------
 
 # Set Library Paths
 import sys
@@ -27,30 +34,18 @@ import SZ_macros as SZM
 import SZ_video as SZV
 import BONSAI_ARK
 
-## Read Folder List
-#folderListFile = base_path + r'\Adam_Ele\Shared Programming\Python\Social Zebrafish\Folder Lists\Dreosti_LAb\\Wt_Nacre'
-#
-#folderListFile = folderListFile + r'\Folder_List_Wt_Nacre.txt'
+# Specify Folder List
+folderListFile = base_path + r'/Python_Analysis_7days_Isolation/Folder_list/SocialFolderList_PreProcessing_Isolation17_Isolated_SetupB.txt'
 
-#folderListFile = (base_path + r'\Adam_Ele\Shared Programming\Python\Social Zebrafish\Folder Lists\Dreosti_LAb\Wt_Nacre')
-#folderListFile = folderListFile + r'\Folder_List_Wt_Nacre_test.txt'
-
-#folderListFile = (base_path + r'\Adam_Ele\Shared Programming\Python\Social Zebrafish\Folder Lists\Isolation_experiments')
-#folderListFile = folderListFile + r'\Folder_List_Isolation_test.txt'
-
-#folderListFile = (base_path + r'\Python_ED\Folder_List')
-#folderListFile = folderListFile + r'\SocialFolderList_2017_05_25_Condition_A.txt'
-
-#folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\New_Tracking\Folder_List\Long_Isolation_All_Isolated.txt'
-folderListFile = r'\\128.40.155.187\data\D R E O S T I   L A B\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation17_Isolated_SetupB.txt'
-
-
+# Set Flags
 dark = False
 control = False  
 multiple = False
+
+# Read Folder List
 groups, ages, folderNames, fishStatus = SZU.read_folder_list(folderListFile)
 
-# Bulk analysis of all folders
+# Bulk tracking of all folders in Folder List
 for idx,folder in enumerate(folderNames):
     
     # Get Folder Names
@@ -105,7 +100,4 @@ for idx,folder in enumerate(folderNames):
     # Close Plots
     plt.close('all')
     
-# End of Tracking    
-
-
-
+#FIN

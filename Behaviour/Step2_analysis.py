@@ -11,7 +11,7 @@ lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'/home/kampff/Data/Test'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -37,8 +37,8 @@ import BONSAI_ARK
 import glob
 
 # Specify Folder List and Analysis Folder path
-folderListFile = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Folder_list\SocialFolderList_PreProcessing_Isolation11_Isolated.txt'
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_7days_Isolation\Analysis_folder\Isolated'
+folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
+analysisFolder = base_path + r'/Analysis_folder'
 
 # Set Flags
 plot = False
@@ -57,19 +57,19 @@ for idx,folder in enumerate(folderNames):
     NS_folder, S_folder, C_folder = SZU.get_folder_names(folder)
 
     # Load NS Test Crop Regions
-    bonsaiFiles = glob.glob(NS_folder+'\*.bonsai')
+    bonsaiFiles = glob.glob(NS_folder+'/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     NS_test_ROIs = test_ROIs[:, :]
     
     # Load S Test Crop Regions
-    bonsaiFiles = glob.glob(S_folder+'\*.bonsai')
+    bonsaiFiles = glob.glob(S_folder+'/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     S_test_ROIs = test_ROIs[:, :]
 
     # Load S Stim Crop Regions
-    bonsaiFiles = glob.glob(S_folder+'\Social_Fish\*.bonsai')
+    bonsaiFiles = glob.glob(S_folder+'/Social_Fish/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     stim_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     S_stim_ROIs = stim_ROIs[:, :]
@@ -97,7 +97,7 @@ for idx,folder in enumerate(folderNames):
             
             # ----------------------
             # Analyze NS
-            trackingFile = NS_folder + r'\tracking' + str(i) + '.npz'
+            trackingFile = NS_folder + r'/tracking' + str(i) + '.npz'
             data = np.load(trackingFile)
             tracking = data['tracking']
             
@@ -167,7 +167,7 @@ for idx,folder in enumerate(folderNames):
 
             # ----------------------
             # Analyze S
-            trackingFile = S_folder + r'\tracking' + str(i) + '.npz'    
+            trackingFile = S_folder + r'/tracking' + str(i) + '.npz'    
             data = np.load(trackingFile)
             tracking = data['tracking']
             
@@ -238,7 +238,7 @@ for idx,folder in enumerate(folderNames):
 
             # ----------------------
             # Analyze S_stim
-            trackingFile = S_folder + r'\Social_Fish\tracking' + str(i) + '.npz'    
+            trackingFile = S_folder + r'/Social_Fish/tracking' + str(i) + '.npz'    
             data = np.load(trackingFile)
             tracking = data['tracking']
             
@@ -264,14 +264,14 @@ for idx,folder in enumerate(folderNames):
             #-----------------------------------
             # Save figure and data for each fish
             if plot:
-                filename = analysisFolder + '\\' + str(np.int(groups[idx])) + '_SPI_' + str(i) + '.png'  
+                filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SPI_' + str(i) + '.png'  
                 plt.show()
                 plt.savefig(filename, dpi=600)
                 plt.close('all')
 
             #----------------------------
             # Save Analyzed Summary Data
-            filename = analysisFolder + '\\' + str(np.int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
+            filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
             np.savez(filename,
                      VPI_NS=VPI_ns,
                      VPI_S=VPI_s,
@@ -297,7 +297,7 @@ for idx,folder in enumerate(folderNames):
             print ("Bad Fish")
     
     # Report Porgress
-    print (idx)        
+    print (idx)
 # End of Analysis Loop
 
 #FIN

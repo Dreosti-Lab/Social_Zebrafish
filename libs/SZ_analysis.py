@@ -32,7 +32,7 @@ import SZ_utilities as SZU
 
 
 # Compute Viewing Preference Index
-def computeVPI(xPositions, yPositions, testROI, stimROI):
+def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=120):
      
     # Find thresholds of Y from the Test ROI in order to define the Visible area
     visiblePositionThreshold_Y = testROI[1]+(testROI[3]/2) 
@@ -55,7 +55,16 @@ def computeVPI(xPositions, yPositions, testROI, stimROI):
         
     # Compute VPI
     VPI = (numVisibleFrames-numNonVisibleFrames)/np.size(yPositions)
-    
+
+    # Determine number of frames in a one minute bin
+    bin_size = 60 * FPS
+    max_frame = bin_size * 15
+
+    # Compute "binned" VPI
+    visible_bins = np.reshape(AllVisibleFrames[:max_frame], (bin_size, -1))
+    non_visible_bins = np.reshape(AllNonVisibleFrames[:max_frame], (bin_size, -1))
+    total_bins = visible_bins + non_visible_bins
+
     return VPI, AllVisibleFrames, AllNonVisibleFrames
 
 
@@ -220,7 +229,7 @@ def distance_traveled(bx, by, ROI):
 def analyze_tracking_SPI(folder, fishNumber, testROIs, stimROIs):
     
             # Analyze Tacking in Folder based on ROIs
-            trackingFile = folder + r'\tracking' + str(fishNumber) + '.npz'    
+            trackingFile = folder + r'/tracking' + str(fishNumber) + '.npz'    
             data = np.load(trackingFile)
             tracking = data['tracking']
             
@@ -243,7 +252,7 @@ def analyze_tracking_SPI(folder, fishNumber, testROIs, stimROIs):
 def analyze_tracking_VISIBLE(folder, fishNumber, testROIs, stimROIs):
     
             # Analyze Tacking in Folder based on ROIs
-            trackingFile = folder + r'\tracking' + str(fishNumber) + '.npz'    
+            trackingFile = folder + r'/tracking' + str(fishNumber) + '.npz'    
             data = np.load(trackingFile)
             tracking = data['tracking']
             
@@ -266,7 +275,7 @@ def analyze_tracking_VISIBLE(folder, fishNumber, testROIs, stimROIs):
 def analyze_correlations(Test_folder, testNumber, Stim_folder, stimNumber, SocialFrames, corrLength, threshold):
     
     # Analyze Test
-    trackingFile = Test_folder + r'\tracking' + str(testNumber) + '.npz'    
+    trackingFile = Test_folder + r'/tracking' + str(testNumber) + '.npz'    
     data = np.load(trackingFile)
     tracking = data['tracking']
     
@@ -281,7 +290,7 @@ def analyze_correlations(Test_folder, testNumber, Stim_folder, stimNumber, Socia
     motion_test = tracking[:,8]
         
     # Analyze Stim
-    trackingFile = Stim_folder + r'\tracking' + str(stimNumber) + '.npz'    
+    trackingFile = Stim_folder + r'/tracking' + str(stimNumber) + '.npz'    
     data = np.load(trackingFile)
     tracking = data['tracking']
     
@@ -340,7 +349,7 @@ def analyze_correlations(Test_folder, testNumber, Stim_folder, stimNumber, Socia
 def analyze_bouts(testFolder, testNumber, stimFolder, stimNumber, visibleFrames, btaLength, threshold, testROI, stimROI):
     
     # Analyze Test
-    trackingFile = testFolder + r'\tracking' + str(testNumber) + '.npz'    
+    trackingFile = testFolder + r'/tracking' + str(testNumber) + '.npz'    
     data = np.load(trackingFile)
     tracking = data['tracking']
     
@@ -355,7 +364,7 @@ def analyze_bouts(testFolder, testNumber, stimFolder, stimNumber, visibleFrames,
     motion_test = tracking[:,8]
         
     # Analyze Stim
-    trackingFile = stimFolder + r'\tracking' + str(stimNumber) + '.npz'    
+    trackingFile = stimFolder + r'/tracking' + str(stimNumber) + '.npz'    
     data = np.load(trackingFile)
     tracking = data['tracking']
     

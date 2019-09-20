@@ -4,21 +4,6 @@ Created on Fri Dec 20 11:44:40 2013
 
 @author: dreostilab (Elena Dreosti)
 """
-# -----------------------------------------------------------------------------
-# Detect Platform
-import platform
-if(platform.system() == 'Linux'):
-    # Set "Repo Library Path" - Social Zebrafish Repo
-    lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
-else:
-    # Set "Repo Library Path" - Social Zebrafish Repo
-    lib_path = r'C:/Repos/Dreosti-Lab/Social_Zebrafish/libs'
-
-# Set Library Paths
-import sys
-sys.path.append(lib_path)
-# -----------------------------------------------------------------------------
-
 # Import useful libraries
 import os
 import numpy as np
@@ -35,12 +20,11 @@ import BONSAI_ARK
 
 # Utilities for processing videos of Social Experiments
 
-
 # Process Video : Make Summary Images
 def pre_process_video_summary_images(folder, social):
     
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -92,8 +76,8 @@ def pre_process_video_summary_images(folder, social):
     background = np.median(backgroundStack, axis = 2)
 
     saveFolder = folder
-    misc.imsave(saveFolder + r'\difference.png', equ)    
-    cv2.imwrite(saveFolder + r'\background.png', background)
+    misc.imsave(saveFolder + r'/difference.png', equ)    
+    cv2.imwrite(saveFolder + r'/background.png', background)
     # Using SciPy to save caused a weird rescaling when the images were dim.
     # This will change not only the background in the beginning but the threshold estimate
 
@@ -104,7 +88,7 @@ def pre_process_video_summary_images(folder, social):
 def process_video_summary_images(folder, social):
     
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -167,7 +151,7 @@ def process_video_summary_images(folder, social):
     ## Show Crop Regions
     
     # Load Test Crop Regions
-    bonsaiFiles = glob.glob(folder+'\*.bonsai')
+    bonsaiFiles = glob.glob(folder+'/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     test_ROIs = test_ROIs[:, :]
@@ -175,25 +159,25 @@ def process_video_summary_images(folder, social):
     
     # Load Stim Crop Regions
     if social:
-        bonsaiFiles = glob.glob(folder+'\Social_Fish\*.bonsai')
+        bonsaiFiles = glob.glob(folder+'/Social_Fish/*.bonsai')
         bonsaiFiles = bonsaiFiles[0]
         stim_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
         stim_ROIs = stim_ROIs[:, :]
         croppedStim = np.copy(background)    
     
     for i in range(0,6):
-        r1 = test_ROIs[i, 1]
-        r2 = r1+test_ROIs[i, 3]
-        c1 = test_ROIs[i, 0]
-        c2 = c1+test_ROIs[i, 2]
+        r1 = np.int(test_ROIs[i, 1])
+        r2 = np.int(r1+test_ROIs[i, 3])
+        c1 = np.int(test_ROIs[i, 0])
+        c2 = np.int(c1+test_ROIs[i, 2])
         croppedTest[r1:r2, c1:c2] = 0
         
         
         if social:
-            r1 = stim_ROIs[i, 1]
-            r2 = r1+stim_ROIs[i, 3]
-            c1 = stim_ROIs[i, 0]
-            c2 = c1+stim_ROIs[i, 2]
+            r1 = np.int(stim_ROIs[i, 1])
+            r2 = np.int(r1+stim_ROIs[i, 3])
+            c1 = np.int(stim_ROIs[i, 0])
+            c2 = np.int(c1+stim_ROIs[i, 2])
             croppedStim[r1:r2, c1:c2] = 0
     
         
@@ -221,10 +205,10 @@ def process_video_summary_images(folder, social):
     summary[:,:, 2] = croppedTest;
     
     saveFolder = folder
-    misc.imsave(saveFolder + r'\background_old.png', background)
-    misc.imsave(saveFolder + r'\summary.png', summary)    
-#    cv2.imwrite(saveFolder + r'\background.png', cv2.fromarray(background))
-    cv2.imwrite(saveFolder + r'\background.png', background)
+    misc.imsave(saveFolder + r'/background_old.png', background)
+    misc.imsave(saveFolder + r'/summary.png', summary)    
+#    cv2.imwrite(saveFolder + r'/background.png', cv2.fromarray(background))
+    cv2.imwrite(saveFolder + r'/background.png', background)
     # Using SciPy to save caused a weird rescaling when the images were dim.
     # This will change not only the background in the beginning but the threshold estimate
 
@@ -234,7 +218,7 @@ def process_video_summary_images(folder, social):
 def process_video_summary_images_3fish(folder, social):
     
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))
@@ -294,7 +278,7 @@ def process_video_summary_images_3fish(folder, social):
     ## Show Crop Regions
     
     # Load Test Crop Regions
-    bonsaiFiles = glob.glob(folder+'\*.bonsai')
+    bonsaiFiles = glob.glob(folder+'/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     test_ROIs = test_ROIs[1:, :]
@@ -302,7 +286,7 @@ def process_video_summary_images_3fish(folder, social):
     
     # Load Stim Crop Regions
 #    if social:
-#        bonsaiFiles = glob.glob(folder+'\Social_Fish\*.bonsai')
+#        bonsaiFiles = glob.glob(folder+'/Social_Fish/*.bonsai')
 #        bonsaiFiles = bonsaiFiles[0]
 #        stim_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
 #        stim_ROIs = stim_ROIs[1:, :]
@@ -330,9 +314,9 @@ def process_video_summary_images_3fish(folder, social):
     summary[:,:, 2] = croppedTest;
     
     saveFolder = folder
-    misc.imsave(saveFolder + r'\background_old.png', background)
-    misc.imsave(saveFolder + r'\summary.png', summary)    
-    cv2.cv.SaveImage(saveFolder + r'\background.png', cv2.cv.fromarray(background))
+    misc.imsave(saveFolder + r'/background_old.png', background)
+    misc.imsave(saveFolder + r'/summary.png', summary)    
+    cv2.cv.SaveImage(saveFolder + r'/background.png', cv2.cv.fromarray(background))
     # Using SciPy to save caused a weird rescaling when the images were dim.
     # This will change not only the background in the beginning but the threshold estimate
 
@@ -342,7 +326,7 @@ def process_video_summary_images_3fish(folder, social):
 def process_video_track_fish_3fish(folder, social, multiple):
     
     # Load -Initial- Background Frame (histogram from first 50 seconds)
-    backgroundFile = folder + r'\background.png'
+    backgroundFile = folder + r'/background.png'
     background = misc.imread(backgroundFile, False)
     
     # Alloctae Space for Background Stack/Model
@@ -357,7 +341,7 @@ def process_video_track_fish_3fish(folder, social, multiple):
         backgroundStack[:,:,i] = background
     
     # Load Test Crop Regions
-    bonsaiFiles = glob.glob(folder+'\*.bonsai')
+    bonsaiFiles = glob.glob(folder+'/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     
@@ -368,7 +352,7 @@ def process_video_track_fish_3fish(folder, social, multiple):
     
     # Load Stim Crop Regions (if social experiment)
 #    if social:
-#        bonsaiFiles = glob.glob(folder+'\Social_Fish\*.bonsai')
+#        bonsaiFiles = glob.glob(folder+'/Social_Fish/*.bonsai')
 #        bonsaiFiles = bonsaiFiles[0]
 #        stim_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
 #        stim_ROIs = stim_ROIs[1:, :]
@@ -386,7 +370,7 @@ def process_video_track_fish_3fish(folder, social, multiple):
 #                stim_thresholds[i] = np.mean(crop)/7            
 
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))-100 # Skip, possibly corrupt, last 100 frames (1 second)
@@ -709,7 +693,7 @@ def process_video_track_fish_3fish(folder, social, multiple):
 def process_video_track_fish(folder, social, multiple):
     
     # Load -Initial- Background Frame (histogram from first 50 seconds)
-    backgroundFile = folder + r'\background.png'
+    backgroundFile = folder + r'/background.png'
     background = misc.imread(backgroundFile, False)
     
     # Alloctae Space for Background Stack/Model
@@ -726,14 +710,14 @@ def process_video_track_fish(folder, social, multiple):
         backgroundStack[:,:,i] = background
     
     # Load Test Crop Regions
-    bonsaiFiles = glob.glob(folder+'\*.bonsai')
+    bonsaiFiles = glob.glob(folder+'/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     test_ROIs = test_ROIs[:, :]
     
     # Load Stim Crop Regions (if social experiment)
     if social:
-        bonsaiFiles = glob.glob(folder+'\Social_Fish\*.bonsai')
+        bonsaiFiles = glob.glob(folder+'/Social_Fish/*.bonsai')
         bonsaiFiles = bonsaiFiles[0]
         stim_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
         stim_ROIs = stim_ROIs[:, :]
@@ -752,7 +736,7 @@ def process_video_track_fish(folder, social, multiple):
                 stim_thresholds[i] = np.mean(crop)/7            
 
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))-100 # Skip, possibly corrupt, last 100 frames (1 second)
@@ -843,7 +827,7 @@ def process_video_track_fish(folder, social, multiple):
             # Find Binary Contours            
 #            contours,hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 #            contours,hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-            image, contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+            contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
             
             
             # If there are NO contours, then skip tracking
@@ -1008,7 +992,7 @@ def process_video_track_fish(folder, social, multiple):
                 closing = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel)
             
                 # Find Binary Contours            
-                image, contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+                contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
             
                 # If there are NO contours, then skip tracking
                 if len(contours) == 0:
@@ -1249,7 +1233,7 @@ def process_video_track_fish(folder, social, multiple):
 def compute_intial_backgrounds(folder, ROIs):
 
     # Load Video
-    aviFiles = glob.glob(folder+'\*.avi')
+    aviFiles = glob.glob(folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))-100 # Skip, possibly corrupt, last 100 frames (1 second)
@@ -1333,7 +1317,7 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
     # 7. - Compute Heading
     
     # Load Video
-    aviFiles = glob.glob(input_folder+'\*.avi')
+    aviFiles = glob.glob(input_folder+'/*.avi')
     aviFile = aviFiles[0]
     vid = cv2.VideoCapture(aviFile)
     numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))-100 # Skip, possibly corrupt, last 100 frames (1 second)
@@ -1391,7 +1375,7 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
             closing = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel)
             
             # Find Binary Contours            
-            image, contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+            contours, hierarchy = cv2.findContours(closing,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
             
             # Create Binary Mask Image
             mask = np.zeros(crop.shape,np.uint8)
@@ -1633,10 +1617,10 @@ def get_largest_contour(contours):
 def compare_backgrounds(folder):
 
     # Load -Initial- Background Frame (histogram from first 50 seconds)
-    backgroundFile = folder + r'\background_old.png'
+    backgroundFile = folder + r'/background_old.png'
     background_old = misc.imread(backgroundFile, False)
     
-    backgroundFile = folder + r'\background.png'
+    backgroundFile = folder + r'/background.png'
     background = misc.imread(backgroundFile, False)
     absDiff = cv2.absdiff(background_old, background)
 

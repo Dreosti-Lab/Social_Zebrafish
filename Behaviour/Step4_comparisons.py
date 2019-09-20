@@ -40,11 +40,11 @@ import glob
 import pylab as pl
 
 # Set analysis folder and label for experiment/condition A
-analysisFolder_A = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls\All'
+analysisFolder_A = base_path + r'/Isolation_Experiments/Python_Analysis_Long_Isolation_New_Script3/Analysis_Folder/Controls/All'
 conditionName_A = "Controls-All"
 
 # Set analysis folder and label for experiment/condition B
-analysisFolder_B = base_path + r'\Isolation_Experiments\Python_Analysis_Short_Isolation\Analysis_Folder\48h\All'
+analysisFolder_B = base_path + r'/Isolation_Experiments/Python_Analysis_Short_Isolation/Analysis_Folder/48h/All'
 conditionName_B = "Isolated-All"
 
 # Assemble lists
@@ -73,7 +73,7 @@ for i, analysisFolder in enumerate(analysisFolders):
     Long_freeze_threshold = 24000 #More than 4 minutes
     
     # Find all the npz files saved for each group and fish with all the information
-    npzFiles = glob.glob(analysisFolder+'\*.npz')
+    npzFiles = glob.glob(analysisFolder+'/*.npz')
     
     # Calculate how many files
     numFiles = np.size(npzFiles, 0)

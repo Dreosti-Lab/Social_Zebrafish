@@ -92,13 +92,13 @@ def read_folder_list(folderListFile):
 # 3) Determine Data Folder Names from Root directory
 def get_folder_names(folder):
     # Specifiy Folder Names
-    NS_folder = folder + r'\Non_Social_1'
+    NS_folder = folder + '/Non_Social_1'
     
-    S_folder = folder + r'\Social_1'
+    S_folder = folder + '/Social_1'
     if os.path.exists(S_folder) == False:
-        S_folder = folder + r'\Social_1'
+        S_folder = folder + '/Social_1'
     
-    C_folder = folder + r'\Non_Social_2'
+    C_folder = folder + '/Non_Social_2'
     if os.path.exists(C_folder) == False:
         C_folder = -1    
     
@@ -452,17 +452,17 @@ def find_next_nearest_index(array1, array2):
     
 def get_folder_names_controls(folder):
     # Specifiy Folder Names
-    NS_folder = folder + r'\Non_Social_1'
+    NS_folder = folder + r'/Non_Social_1'
     
-    S_folder = folder + r'\Non_Social_2'
+    S_folder = folder + r'/Non_Social_2'
     if os.path.exists(S_folder) == False:
-        S_folder = folder + r'\Social_1_Real'
+        S_folder = folder + r'/Social_1_Real'
         
-#    D_folder = folder + r'\Social_Dark'
+#    D_folder = folder + r'/Social_Dark'
 #    if os.path.exists(D_folder) == False:
 #        D_folder = -1
 #    
-#    C_folder = folder + r'\Non_Social_2'
+#    C_folder = folder + r'/Non_Social_2'
 #    if os.path.exists(C_folder) == False:
 #        C_folder = -1    
     

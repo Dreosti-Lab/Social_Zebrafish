@@ -66,7 +66,7 @@ def analyze_single_fish_experiment(dataFolder, analysisFolder, group, age, fishS
         fig.subplots_adjust(hspace=0.5)
    
         # Load Test Fish Tracking (Non_social control)
-        filename = NS_folder + '\\tracking' + str(f+1) + '.csv'   
+        filename = NS_folder + '\/tracking' + str(f+1) + '.csv'   
         test_tracking_ns = SZU.load_tracking(filename) #Tracking: X, Y, Ort, Major, Minor, Area
         trackingErrors_test_ns = SZU.measure_tracking_errors(test_tracking_ns)
         X_test_ns = test_tracking_ns[:, 0]
@@ -87,7 +87,7 @@ def analyze_single_fish_experiment(dataFolder, analysisFolder, group, age, fishS
         ort_hist_test_ns, edges_test_ns = np.histogram(RelOrt_test_ns[socialY_ns], 36, (0, 360))
         
         # Load Test Fish Tracking (Social condition)
-        filename = S_folder + '\\tracking' + str(f+1) + '.csv'   
+        filename = S_folder + '\/tracking' + str(f+1) + '.csv'   
         test_tracking_s = SZU.load_tracking(filename) #Tracking: X, Y, Ort, Major, Minor, Area
         trackingErrors_test_s = SZU.measure_tracking_errors(test_tracking_s)
         X_test_s = test_tracking_s[:, 0]
@@ -108,7 +108,7 @@ def analyze_single_fish_experiment(dataFolder, analysisFolder, group, age, fishS
         ort_hist_test_s, edges_test_s = np.histogram(RelOrt_test_s[socialY_s], 36, (0, 360))
         
         # Load Stimulus Fish Tracking (Social condition)
-        filename = S_folder + '\\Social_Fish\\tracking' + str(f+1) + '.csv'   
+        filename = S_folder + '\\Social_Fish\/tracking' + str(f+1) + '.csv'   
         stim_tracking_s = SZU.load_tracking(filename) #Tracking: X, Y, Ort, Major, Minor, Area
         trackingErrors_stim_s = SZU.measure_tracking_errors(stim_tracking_s)
         X_stim_s = stim_tracking_s[:, 0]
@@ -334,7 +334,7 @@ def correlate_social_responses_folder(folderName, plot, save):
     for f in range(0,6):
 
         # Load Test Fish Tracking
-        filename = folderName + '\\tracking' + str(f+1) + '.csv'   
+        filename = folderName + '\/tracking' + str(f+1) + '.csv'   
         test_tracking = SZU.load_tracking(filename) #Tracking: X, Y, Ort, Major, Minor, Area
         trackingErrorsTest = SZU.measure_tracking_errors(test_tracking)
         # Extract Tracking Variables        
@@ -343,7 +343,7 @@ def correlate_social_responses_folder(folderName, plot, save):
         Ort_test = test_tracking[:, 2]
 
         # Load Social Fish Tracking
-        filename = folderName + '\\Social_Fish\\tracking' + str(socialComparison[f]) + '.csv'   
+        filename = folderName + '\\Social_Fish\/tracking' + str(socialComparison[f]) + '.csv'   
         social_tracking = SZU.load_tracking(filename) #Tracking: X, Y, Ort, Major, Minor, Area
         trackingErrorsSocial = SZU.measure_tracking_errors(social_tracking)
         # Extract Tracking Variables        

@@ -11,7 +11,7 @@ lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'/home/kampff/Data/Test'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ import SZ_macros as SZM
 import SZ_video as SZV
 
 # Specify Folder List
-folderListFile = base_path + r'/Python_ED/Folder_List'
+folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
 
 # Set Flags
 control= False

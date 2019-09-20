@@ -11,7 +11,7 @@ lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'/home/kampff/Data/Test'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -40,13 +40,14 @@ import glob
 import pylab as pl
 
 # Specify Analysis folder
-analysisFolder = base_path + r'\Isolation_Experiments\Python_Analysis_Long_Isolation_New_Script3\Analysis_Folder\Controls_new'
+analysisFolder = base_path + r'/Analysis_folder'
 
 # Set freeze time threshold
 freeze_threshold = 500
+long_freeze_threshold = 24000 #More than 4 minutes
 
 # Find all the npz files saved for each group and fish with all the information
-npzFiles = glob.glob(analysisFolder+'\*.npz')
+npzFiles = glob.glob(analysisFolder+'/*.npz')
 
 # Calculate how many files
 numFiles = np.size(npzFiles, 0)
@@ -62,6 +63,10 @@ Distance_NS_ALL = np.zeros(numFiles)
 Distance_S_ALL = np.zeros(numFiles)
 Freezes_NS_ALL = np.zeros(numFiles)
 Freezes_S_ALL = np.zeros(numFiles)
+Long_Freezes_NS_ALL = np.zeros(numFiles)
+Long_Freezes_S_ALL = np.zeros(numFiles)
+Percent_Moving_NS_ALL = np.zeros(numFiles)
+Percent_Moving_S_ALL = np.zeros(numFiles)
 OrtHist_NS_NSS_ALL = np.zeros((numFiles,36))
 OrtHist_NS_SS_ALL = np.zeros((numFiles,36))
 OrtHist_S_NSS_ALL = np.zeros((numFiles,36))
@@ -72,7 +77,7 @@ Pauses_NS_ALL = np.zeros((0,10))
 Pauses_S_ALL = np.zeros((0,10))
 
 # Create report file
-reportFilename = analysisFolder + r'\report.txt'
+reportFilename = analysisFolder + r'/report.txt'
 reportFile = open(reportFilename, 'w')
 
 # Go through all the files contained in the analysis folder
@@ -98,13 +103,21 @@ for f, filename in enumerate(npzFiles):
     Bouts_S = dataobject['Bouts_S']
     Pauses_NS = dataobject['Pauses_NS']   
     Pauses_S = dataobject['Pauses_S']
-    
+    Percent_Moving_NS = dataobject['Percent_Moving_NS']   
+    Percent_Moving_S = dataobject['Percent_Moving_S']
+
     # Count Freezes
     Freezes_NS = np.array(np.sum(Pauses_NS[:,8] > freeze_threshold))
     Freezes_S = np.array(np.sum(Pauses_S[:,8] > freeze_threshold))
     Freezes_NS_ALL[f] = Freezes_NS
     Freezes_S_ALL[f] = Freezes_S
     
+    # Count Long Freezes
+    Long_Freezes_NS = np.array(np.sum(Pauses_NS[:,8] > long_freeze_threshold))
+    Long_Freezes_S = np.array(np.sum(Pauses_S[:,8] > long_freeze_threshold))
+    Long_Freezes_NS_ALL[f] = Long_Freezes_NS
+    Long_Freezes_S_ALL[f] = Long_Freezes_S
+
     # Make an array with all summary stats
     VPI_NS_ALL[f] = VPI_NS
     VPI_S_ALL[f] = VPI_S
@@ -193,6 +206,7 @@ plt.ylabel('Rel. Frequency', fontsize=12)
 plt.axis([-1.1, 1.1, 0, 0.5])
 pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
+plt.show()
 
 # ----------------
 # SPI Summary Plot

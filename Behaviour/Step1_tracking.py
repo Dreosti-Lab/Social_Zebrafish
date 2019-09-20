@@ -11,7 +11,7 @@ lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'/home/kampff/Data/Test'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ import SZ_video as SZV
 import BONSAI_ARK
 
 # Specify Folder List
-folderListFile = base_path + r'/Python_Analysis_7days_Isolation/Folder_list/SocialFolderList_PreProcessing_Isolation17_Isolated_SetupB.txt'
+folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
 
 # Set Flags
 dark = False
@@ -54,7 +54,7 @@ for idx,folder in enumerate(folderNames):
 
     # ---------------------
     # Process Video (NS)
-    bonsaiFiles = glob.glob(NS_folder + '\*.bonsai')
+    bonsaiFiles = glob.glob(NS_folder + '/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     ROIs = ROIs[:, :]
@@ -63,13 +63,13 @@ for idx,folder in enumerate(folderNames):
     # Save Tracking (NS)
     for i in range(0,6):
         # Save NS
-        filename = NS_folder + r'\tracking'+ str(i+1) + '.npz'
+        filename = NS_folder + r'/tracking'+ str(i+1) + '.npz'
         fish = np.vstack((fxS[:,i], fyS[:,i], bxS[:,i], byS[:,i], exS[:,i], eyS[:,i], areaS[:,i], ortS[:,i], motS[:,i]))
         np.savez(filename, tracking=fish.T)
     
     # ---------------------
     # Process Video (S)
-    bonsaiFiles = glob.glob(S_folder + '\*.bonsai')
+    bonsaiFiles = glob.glob(S_folder + '/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     ROIs = ROIs[:, :]
@@ -78,13 +78,13 @@ for idx,folder in enumerate(folderNames):
     # Save Tracking (S)
     for i in range(0,6):
         # Save S_test
-        filename = S_folder + r'\tracking'+ str(i+1) + '.npz'
+        filename = S_folder + r'/tracking'+ str(i+1) + '.npz'
         fish = np.vstack((fxS[:,i], fyS[:,i], bxS[:,i], byS[:,i], exS[:,i], eyS[:,i], areaS[:,i], ortS[:,i], motS[:,i]))
         np.savez(filename, tracking=fish.T)
 
     # ---------------------
     # Process Video (Stimulus)
-    bonsaiFiles = glob.glob(Stimulus_folder + '\*.bonsai')
+    bonsaiFiles = glob.glob(Stimulus_folder + '/*.bonsai')
     bonsaiFiles = bonsaiFiles[0]
     ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     ROIs = ROIs[:, :]
@@ -93,7 +93,7 @@ for idx,folder in enumerate(folderNames):
     # Save Tracking (Stimulus)
     for i in range(0,6):
         # Save S_test
-        filename = Stimulus_folder + r'\tracking'+ str(i+1) + '.npz'
+        filename = Stimulus_folder + r'/tracking'+ str(i+1) + '.npz'
         fish = np.vstack((fxS[:,i], fyS[:,i], bxS[:,i], byS[:,i], exS[:,i], eyS[:,i], areaS[:,i], ortS[:,i], motS[:,i]))
         np.savez(filename, tracking=fish.T)
     

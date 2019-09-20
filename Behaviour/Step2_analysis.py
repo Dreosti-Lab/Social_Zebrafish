@@ -11,7 +11,7 @@ lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Test'
+base_path = r'/home/kampff/Data/Zebrafish'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -37,11 +37,16 @@ import BONSAI_ARK
 import glob
 
 # Specify Folder List and Analysis Folder path
-folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
-analysisFolder = base_path + r'/Analysis_folder'
+#folderListFile = base_path + r'/Analysis_folder/Control_Controls/All_Control_Controls.txt'
+#analysisFolder = base_path + r'/Analysis_folder/Control_Controls'
+folderListFile = base_path + r'/Analysis_folder/Isolated_Controls/All_Isolated_Controls.txt'
+analysisFolder = base_path + r'/Analysis_folder/Isolated_Controls'
+#folderListFile = base_path + r'/Analysis_folder/Isolated_Drugged_15/All_Isolated_Drugged_15.txt'
+#analysisFolder = base_path + r'/Analysis_folder/Isolated_Drugged_15'
 
 # Set Flags
 plot = False
+FPS = 120
 
 # Set motion thresholds
 motionStartThreshold = 0.03
@@ -115,7 +120,7 @@ for idx,folder in enumerate(folderNames):
             ort = SZU.adjust_ort_test(ort, i)
 
             # Compute VPI (NS)
-            VPI_ns, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
+            VPI_ns, AllVisibleFrames, AllNonVisibleFrames, VPI_ns_bins = SZA.computeVPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1], FPS)
 
             # Compute SPI (NS)
             SPI_ns, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
@@ -185,7 +190,7 @@ for idx,folder in enumerate(folderNames):
             ort = SZU.adjust_ort_test(ort, i)
             
             # Compute VPI (S)
-            VPI_s, AllVisibleFrames, AllNonVisibleFrames = SZA.computeVPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
+            VPI_s, AllVisibleFrames, AllNonVisibleFrames, VPI_s_bins = SZA.computeVPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1], FPS)
 
             # Compute SPI (S)
             SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeSPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
@@ -265,7 +270,6 @@ for idx,folder in enumerate(folderNames):
             # Save figure and data for each fish
             if plot:
                 filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SPI_' + str(i) + '.png'  
-                plt.show()
                 plt.savefig(filename, dpi=600)
                 plt.close('all')
 
@@ -274,7 +278,9 @@ for idx,folder in enumerate(folderNames):
             filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
             np.savez(filename,
                      VPI_NS=VPI_ns,
+                     VPI_NS_BINS=VPI_ns_bins,
                      VPI_S=VPI_s,
+                     VPI_S_BINS=VPI_s_bins,
                      SPI_NS=SPI_ns, 
                      SPI_S=SPI_s,
                      BPS_NS=BPS_ns,

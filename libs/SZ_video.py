@@ -1534,7 +1534,6 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
             
             
         # ---------------------------------------------------------------------------------
-        
         # Plot All Fish in Movie with Tracking Overlay
         if (f % 100 == 0):
             plt.clf()

@@ -11,7 +11,7 @@ lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Test'
+base_path = r'/home/kampff/Data/Zebrafish'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -40,7 +40,9 @@ import glob
 import pylab as pl
 
 # Specify Analysis folder
-analysisFolder = base_path + r'/Analysis_folder'
+#analysisFolder = base_path + r'/Analysis_folder/Control_Controls'
+analysisFolder = base_path + r'/Analysis_folder/Isolated_Controls'
+#analysisFolder = base_path + r'/Analysis_folder/Isolated_Drugged_15'
 
 # Set freeze time threshold
 freeze_threshold = 500
@@ -55,6 +57,8 @@ numFiles = np.size(npzFiles, 0)
 # Allocate space for summary data
 VPI_NS_ALL = np.zeros(numFiles)
 VPI_S_ALL = np.zeros(numFiles)
+VPI_NS_BINS_ALL = np.zeros((numFiles, 3))
+VPI_S_BINS_ALL = np.zeros((numFiles, 3))
 SPI_NS_ALL = np.zeros(numFiles)
 SPI_S_ALL = np.zeros(numFiles)
 BPS_NS_ALL = np.zeros(numFiles)
@@ -89,6 +93,8 @@ for f, filename in enumerate(npzFiles):
     # Extract from the npz file
     VPI_NS = dataobject['VPI_NS']    
     VPI_S = dataobject['VPI_S']   
+    VPI_NS_BINS = dataobject['VPI_NS_BINS']    
+    VPI_S_BINS = dataobject['VPI_S_BINS']
     SPI_NS = dataobject['SPI_NS']    
     SPI_S = dataobject['SPI_S']   
     BPS_NS = dataobject['BPS_NS']   
@@ -121,6 +127,8 @@ for f, filename in enumerate(npzFiles):
     # Make an array with all summary stats
     VPI_NS_ALL[f] = VPI_NS
     VPI_S_ALL[f] = VPI_S
+    VPI_NS_BINS_ALL[f,:] = VPI_NS_BINS
+    VPI_S_BINS_ALL[f,:] = VPI_S_BINS
     SPI_NS_ALL[f] = SPI_NS
     SPI_S_ALL[f] = SPI_S
     BPS_NS_ALL[f] = BPS_NS
@@ -206,7 +214,48 @@ plt.ylabel('Rel. Frequency', fontsize=12)
 plt.axis([-1.1, 1.1, 0, 0.5])
 pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
-plt.show()
+filename = analysisFolder + '/VPI.png'  
+plt.savefig(filename, dpi=600)
+plt.close('all')
+
+# ----------------
+# VPI "Binned" Summary Plot
+ 
+plt.figure()
+plt.title("Temporal VPI (one minute bins)")
+plt.subplot(1,2,1)
+m = np.nanmean(VPI_NS_BINS_ALL, 0)
+std = np.nanstd(VPI_NS_BINS_ALL, 0)
+valid = (np.logical_not(np.isnan(VPI_NS_BINS_ALL)))
+n = np.sum(valid, 0)
+se = std/np.sqrt(n)
+plt.plot(VPI_NS_BINS_ALL.T, LineWidth=1, Color=[0,0,0,0.1])
+plt.plot(m, 'k', LineWidth=2)
+plt.plot(m, 'ko', MarkerSize=5)
+plt.plot(m+se, 'r', LineWidth=1)
+plt.plot(m-se, 'r', LineWidth=1)
+plt.axis([0, 3, -1.1, 1.1])
+plt.xlabel('minutes')
+plt.ylabel('VPI')
+
+plt.subplot(1,2,2)
+m = np.nanmean(VPI_S_BINS_ALL, 0)
+std = np.nanstd(VPI_S_BINS_ALL, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_ALL)))
+n = np.sum(valid, 0)
+se = std/np.sqrt(n)
+plt.plot(VPI_S_BINS_ALL.T, LineWidth=1, Color=[0,0,0,0.1])
+plt.plot(m, 'k', LineWidth=2)
+plt.plot(m, 'ko', MarkerSize=5)
+plt.plot(m+se, 'r', LineWidth=1)
+plt.plot(m-se, 'r', LineWidth=1)
+plt.axis([0, 3, -1.1, 1.1])
+plt.xlabel('minutes')
+
+plt.suptitle("Temporal VPI (five minute bins)")
+filename = analysisFolder + '/VPI_BINS.png'
+plt.savefig(filename, dpi=600)
+plt.close('all')
 
 # ----------------
 # SPI Summary Plot

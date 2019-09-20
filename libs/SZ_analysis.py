@@ -30,7 +30,6 @@ import SZ_utilities as SZU
 
 # Functions for analyzing "social zebrafish" data
 
-
 # Compute Viewing Preference Index
 def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=120):
      
@@ -56,16 +55,19 @@ def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=120):
     # Compute VPI
     VPI = (numVisibleFrames-numNonVisibleFrames)/np.size(yPositions)
 
-    # Determine number of frames in a one minute bin
-    bin_size = 60 * FPS
-    max_frame = bin_size * 15
+    # Determine number of frames in a five minute bin
+    bin_size = 60 * FPS * 5
+    max_frame = bin_size * 3
 
     # Compute "binned" VPI
-    visible_bins = np.reshape(AllVisibleFrames[:max_frame], (bin_size, -1))
-    non_visible_bins = np.reshape(AllNonVisibleFrames[:max_frame], (bin_size, -1))
-    total_bins = visible_bins + non_visible_bins
+    if len(AllVisibleFrames) >= max_frame:
+        visible_bins = np.sum(np.reshape(AllVisibleFrames[:max_frame].T, (bin_size, -1), order='F'), 0)
+        non_visible_bins = np.sum(np.reshape(AllNonVisibleFrames[:max_frame].T, (bin_size, -1), order='F'), 0)
+        VPI_bins = (visible_bins - non_visible_bins)/bin_size
+    else:
+        VPI_bins = np.empty(3) * np.nan
 
-    return VPI, AllVisibleFrames, AllNonVisibleFrames
+    return VPI, AllVisibleFrames, AllNonVisibleFrames, VPI_bins
 
 
 # Compute Social Preference Index

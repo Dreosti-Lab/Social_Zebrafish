@@ -56,8 +56,8 @@ def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=120):
     VPI = (numVisibleFrames-numNonVisibleFrames)/np.size(yPositions)
 
     # Determine number of frames in a five minute bin
-    bin_size = 60 * FPS * 5
-    max_frame = bin_size * 3
+    bin_size = 60 * FPS
+    max_frame = bin_size * 15
 
     # Compute "binned" VPI
     if len(AllVisibleFrames) >= max_frame:
@@ -65,7 +65,7 @@ def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=120):
         non_visible_bins = np.sum(np.reshape(AllNonVisibleFrames[:max_frame].T, (bin_size, -1), order='F'), 0)
         VPI_bins = (visible_bins - non_visible_bins)/bin_size
     else:
-        VPI_bins = np.empty(3) * np.nan
+        VPI_bins = np.empty(15) * np.nan
 
     return VPI, AllVisibleFrames, AllNonVisibleFrames, VPI_bins
 

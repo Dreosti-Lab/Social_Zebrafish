@@ -6,13 +6,14 @@ Analyze all tracked fish in a social preference experiment
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+#lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+lib_path = r'C:/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 #-----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
-#base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
+#base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'//128.40.155.187/data/D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
 # Set Library Paths

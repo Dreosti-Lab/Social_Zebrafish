@@ -6,12 +6,12 @@ Create summary (figures and report) for robustness experiment
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+lib_path = r'C:\Repos\Dreosti-Lab\Social_Zebrafish\libs'
 #-----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'Z:\D R E O S T I   L A B\Hande\Behaviours\Robustness'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ import pandas as pd
 # Import local modules
 import SZ_utilities as SZU
 import SZ_macros as SZM
-import SZ_video as SZV
+#import SZ_video as SZV
 import SZ_analysis as SZA
 import SZ_summary as SZS
 import BONSAI_ARK
@@ -40,8 +40,8 @@ import glob
 import pylab as pl
 
 # Specify Analysis folders
-morning_Folder = base_path + '/Robustness/Combined_Morning'
-afternoon_Folder = base_path + '/Robustness/Combined_Afternoon'
+morning_Folder = base_path + r'\Analysis_folder\Combined_Morning'
+afternoon_Folder = base_path + r'\Analysis_folder\Combined_Afternoon'
 
 # Find all the npz files saved for each group and fish with all the information
 morning_npzFiles = glob.glob(morning_Folder+'/*.npz')
@@ -84,8 +84,7 @@ for f, filename in enumerate(afternoon_npzFiles):
 # Measure stat: abs(afternoonVPI - morningVPI)
 # - What is the magnitide of change in VPI from morning to afternoon?
 # -- Should be "small" if VPI is robust, i.e. smaller than random chance pairnigs
-morning_VPI = np.mean(morning_VPI_S_ALL)
-afternoon_VPI = np.mean(afternoon_VPI_S_ALL)
+
 real_dVPIs = afternoon_VPI_S_ALL - morning_VPI_S_ALL
 real_dVPI = np.mean(real_dVPIs)
 real_abs_dVPI = np.mean(np.abs(real_dVPIs))

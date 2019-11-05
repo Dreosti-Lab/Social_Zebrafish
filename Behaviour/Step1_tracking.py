@@ -58,6 +58,7 @@ for idx,folder in enumerate(folderNames):
     bonsaiFiles = bonsaiFiles[0]
     ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     ROIs = ROIs[:, :]
+    print('Processing Non-Social fish')
     fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(NS_folder, NS_folder, ROIs)
 
     # Save Tracking (NS)
@@ -73,6 +74,7 @@ for idx,folder in enumerate(folderNames):
     bonsaiFiles = bonsaiFiles[0]
     ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     ROIs = ROIs[:, :]
+    print('Processing Social fish')
     fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS = SZV.improved_fish_tracking(S_folder, S_folder, ROIs)
 
     # Save Tracking (S)

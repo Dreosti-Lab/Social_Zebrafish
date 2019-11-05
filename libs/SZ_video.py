@@ -1354,6 +1354,7 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
         # Process each ROI
         for i in range(0,6):
             
+            print('Processing ROI ' + str(i+1))            
             # Extract Crop Region
             crop, xOff, yOff = get_ROI_crop(current, ROIs, i)
             crop_height, crop_width = np.shape(crop)
@@ -1571,6 +1572,8 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
 
         # Report Progress
         if (f%100) == 0:
+            bs = '\b' * 1000            # The backspace
+            print(bs)
             print (numFrames-f)
     
     # -------------------------------------------------------------------------
@@ -1580,7 +1583,7 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
     # Return tracking data
     return fxS, fyS, bxS, byS, exS, eyS, areaS, ortS, motS
 #------------------------------------------------------------------------------
-
+ 
 # Return cropped image from ROI list
 def get_ROI_crop(image, ROIs, numROi):
     r1 = np.int(ROIs[numROi, 1])

@@ -43,10 +43,10 @@ import pylab as pl
 figureFolder = base_path
 
 # Specify Analysis folder
-analysisFolder_ctl = base_path + r'/Controls'
-analysisFolder_iso = base_path + r'/Isolated_Controls'
-analysisFolder_drug_30 = base_path + r'/Isolated_Drugged/30'
-analysisFolder_drug_50 = base_path + r'/Isolated_Drugged/50'
+analysisFolder_ctl = base_path + r'/All_Controls/Analysis'
+analysisFolder_iso = base_path + r'/48hrs_Isolation/Analysis'
+analysisFolder_drug_30 = base_path + r'/Buspirone_30uM/Analysis/Isolated_Drugged'
+analysisFolder_drug_50 = base_path + r'/Buspirone_50uM/Analysis/Isolated_Drugged'
 
 # Find all the npz files saved for each group and fish with all the information
 npzFiles_ctl = glob.glob(analysisFolder_ctl + '/*.npz')

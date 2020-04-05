@@ -42,14 +42,16 @@ import pylab as pl
 # Specify save folder
 figureFolder = base_path
 
-# Specify Analysis folder(s)
-analysisFolder_ctl = base_path + r'/Controls'
-analysisFolder_iso = base_path + r'/Isolated_Controls'
-analysisFolder_drug_30 = base_path + r'/Isolated_Drugged/30'
-analysisFolder_drug_50 = base_path + r'/Isolated_Drugged/50'
+# Specify Analysis folder
+analysisFolder_ctl = base_path + r'/All_Controls/Analysis'
+analysisFolder_ctl_drug = base_path + r'/Buspirone_30uM/Analysis/Control_Drugged'
+analysisFolder_iso = base_path + r'/48hrs_Isolation/Analysis'
+analysisFolder_drug_30 = base_path + r'/Buspirone_30uM/Analysis/Isolated_Drugged'
+analysisFolder_drug_50 = base_path + r'/Buspirone_50uM/Analysis/Isolated_Drugged'
 
 # Find all the npz files saved for each group and fish with all the information
 npzFiles_ctl = glob.glob(analysisFolder_ctl + '/*.npz')
+npzFiles_ctl_drug = glob.glob(analysisFolder_ctl_drug + '/*.npz')
 npzFiles_iso = glob.glob(analysisFolder_iso + '/*.npz')
 npzFiles_drug_30 = glob.glob(analysisFolder_drug_30 + '/*.npz')
 npzFiles_drug_50 = glob.glob(analysisFolder_drug_50 + '/*.npz')
@@ -83,6 +85,35 @@ for f, filename in enumerate(npzFiles_ctl):
     VPI_S_CTL[f] = VPI_S
     VPI_NS_BINS_CTL[f,:] = VPI_NS_BINS
     VPI_S_BINS_CTL[f,:] = VPI_S_BINS
+
+# LOAD CONTROLS DRUGGED
+
+# Calculate how many files
+numFiles = np.size(npzFiles_ctl_drug, 0)
+
+# Allocate space for summary data
+VPI_NS_CTL_DRUG = np.zeros(numFiles)
+VPI_S_CTL_DRUG = np.zeros(numFiles)
+VPI_NS_BINS_CTL_DRUG = np.zeros((numFiles, 15))
+VPI_S_BINS_CTL_DRUG = np.zeros((numFiles, 15))
+
+# Go through all the files contained in the analysis folder
+for f, filename in enumerate(npzFiles_ctl_drug):
+
+    # Load each npz file
+    dataobject = np.load(filename)
+    
+    # Extract from the npz file
+    VPI_NS = dataobject['VPI_NS']    
+    VPI_S = dataobject['VPI_S']   
+    VPI_NS_BINS = dataobject['VPI_NS_BINS']    
+    VPI_S_BINS = dataobject['VPI_S_BINS']
+
+    # Make an array with all summary stats
+    VPI_NS_CTL_DRUG[f] = VPI_NS
+    VPI_S_CTL_DRUG[f] = VPI_S
+    VPI_NS_BINS_CTL_DRUG[f,:] = VPI_NS_BINS
+    VPI_S_BINS_CTL_DRUG[f,:] = VPI_S_BINS
 
 # LOAD ISO
 
@@ -189,7 +220,7 @@ plt.xlabel('minutes')
 plt.ylabel('VPI')
 
 
-#Format plot layout as tight (applies to both subplots)
+# Format plot layout as tight (applies to both subplots)
 plt.tight_layout() 
 filename = figureFolder +'/Figure_4B.png'
 plt.savefig(filename, dpi=600)
@@ -197,6 +228,189 @@ filename = figureFolder +'/Figure_4B.eps'
 plt.savefig(filename, dpi=600)
 plt.close('all')
 
+
+# ----------------
+# VPI "Binned" Summary Plot (with drugged controls)
+ 
+plt.figure(figsize=(10.24,7.68))
+plt.title("Temporal VPI (one minute bins) with drug controls")
+plt.hlines(0, 0, 15, colors='k', linestyles='dashed')
+
+m = np.nanmean(VPI_S_BINS_CTL, 0)
+std = np.nanstd(VPI_S_BINS_CTL, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_CTL)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'k', LineWidth=4)
+plt.plot(m, 'ko', MarkerSize=7)
+plt.plot(m+se, 'k', LineWidth=1)
+plt.plot(m-se, 'k', LineWidth=1)
+
+m = np.nanmean(VPI_S_BINS_CTL_DRUG, 0)
+std = np.nanstd(VPI_S_BINS_CTL_DRUG, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_CTL)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'y', LineWidth=4)
+plt.plot(m, 'yo', MarkerSize=7)
+plt.plot(m+se, 'y', LineWidth=1)
+plt.plot(m-se, 'y', LineWidth=1)
+
+m = np.nanmean(VPI_S_BINS_ISO, 0)
+std = np.nanstd(VPI_S_BINS_ISO, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_ISO)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'gray', LineWidth=4)
+plt.plot(m, 'ko', MarkerSize=7)
+plt.plot(m+se, 'gray', LineWidth=1)
+plt.plot(m-se, 'gray', LineWidth=1)
+
+m = np.nanmean(VPI_S_BINS_DRUG, 0)
+std = np.nanstd(VPI_S_BINS_DRUG, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_DRUG)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'g', LineWidth=4)
+plt.plot(m, 'go', MarkerSize=7)
+plt.plot(m+se, 'g', LineWidth=1)
+plt.plot(m-se, 'g', LineWidth=1)
+
+plt.axis([0, 14, -0.5, 0.75])
+plt.xlabel('minutes')
+plt.ylabel('VPI')
+
+# Format plot layout as tight (applies to both subplots)
+plt.tight_layout() 
+filename = figureFolder +'/Figure_4B_wCtlDrug.png'
+plt.savefig(filename, dpi=600)
+filename = figureFolder +'/Figure_4B_wCtlDrug.eps'
+plt.savefig(filename, dpi=600)
+plt.close('all')
+
+# ----------------
+# VPI "Binned" Summary Plot (with drugged controls) seperated by Sociality
+ 
+plt.figure(figsize=(10.24,7.68))
+plt.title("Temporal VPI (one minute bins) with drug controls and sociality")
+plt.hlines(0, 0, 15, colors='k', linestyles='dashed')
+
+ALL = VPI_S_BINS_CTL
+SPP = VPI_S_BINS_CTL[VPI_S_CTL > 0.5, :]
+SMM = VPI_S_BINS_CTL[VPI_S_CTL < -0.5, :]
+
+m = np.nanmean(ALL, 0)
+std = np.nanstd(ALL, 0)
+valid = (np.logical_not(np.isnan(ALL)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'k', LineWidth=4)
+plt.plot(m, 'ko', MarkerSize=7)
+plt.plot(m+se, 'k', LineWidth=1)
+plt.plot(m-se, 'k', LineWidth=1)
+
+m = np.nanmean(SPP, 0)
+std = np.nanstd(SPP, 0)
+valid = (np.logical_not(np.isnan(SPP)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'r--', LineWidth=4)
+plt.plot(m, 'ro', MarkerSize=7)
+plt.plot(m+se, 'r', LineWidth=1)
+plt.plot(m-se, 'r', LineWidth=1)
+
+m = np.nanmean(SMM, 0)
+std = np.nanstd(SMM, 0)
+valid = (np.logical_not(np.isnan(SMM)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'b--', LineWidth=4)
+plt.plot(m, 'bo', MarkerSize=7)
+plt.plot(m+se, 'b', LineWidth=1)
+plt.plot(m-se, 'b', LineWidth=1)
+
+
+ALL = VPI_S_BINS_CTL_DRUG
+SPP = VPI_S_BINS_CTL_DRUG[VPI_S_CTL_DRUG > 0.5, :]
+SMM = VPI_S_BINS_CTL_DRUG[VPI_S_CTL_DRUG < -0.5, :]
+
+m = np.nanmean(ALL, 0)
+std = np.nanstd(ALL, 0)
+valid = (np.logical_not(np.isnan(ALL)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'y', LineWidth=4)
+plt.plot(m, 'yo', MarkerSize=7)
+plt.plot(m+se, 'y', LineWidth=1)
+plt.plot(m-se, 'y', LineWidth=1)
+
+m = np.nanmean(SPP, 0)
+std = np.nanstd(SPP, 0)
+valid = (np.logical_not(np.isnan(SPP)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'm--', LineWidth=4)
+plt.plot(m, 'mo', MarkerSize=7)
+plt.plot(m+se, 'm', LineWidth=1)
+plt.plot(m-se, 'm', LineWidth=1)
+
+m = np.nanmean(SMM, 0)
+std = np.nanstd(SMM, 0)
+valid = (np.logical_not(np.isnan(SMM)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'c--', LineWidth=4)
+plt.plot(m, 'co', MarkerSize=7)
+plt.plot(m+se, 'c', LineWidth=1)
+plt.plot(m-se, 'c', LineWidth=1)
+
+
+
+
+
+m = np.nanmean(VPI_S_BINS_ISO, 0)
+std = np.nanstd(VPI_S_BINS_ISO, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_ISO)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'gray', LineWidth=4)
+plt.plot(m, 'ko', MarkerSize=7)
+plt.plot(m+se, 'gray', LineWidth=1)
+plt.plot(m-se, 'gray', LineWidth=1)
+
+m = np.nanmean(VPI_S_BINS_DRUG, 0)
+std = np.nanstd(VPI_S_BINS_DRUG, 0)
+valid = (np.logical_not(np.isnan(VPI_S_BINS_DRUG)))
+n = np.sum(valid, 0)
+print(n)
+se = std/np.sqrt(n-1)
+plt.plot(m, 'g', LineWidth=4)
+plt.plot(m, 'go', MarkerSize=7)
+plt.plot(m+se, 'g', LineWidth=1)
+plt.plot(m-se, 'g', LineWidth=1)
+
+plt.axis([0, 14, -1.0, 1.0])
+plt.xlabel('minutes')
+plt.ylabel('VPI')
+
+# Format plot layout as tight (applies to both subplots)
+plt.tight_layout() 
+filename = figureFolder +'/Figure_4B_wCtlDrug_sociality.png'
+plt.savefig(filename, dpi=600)
+filename = figureFolder +'/Figure_4B_wCtlDrug_sociality.eps'
+plt.savefig(filename, dpi=600)
+plt.close('all')
 
 #-----------------------------------------------------------------------------
 # Comparison statistics

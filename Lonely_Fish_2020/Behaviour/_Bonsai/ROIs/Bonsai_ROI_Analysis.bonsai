@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q2="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:FileCapture">
+          <q1:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\Non_Social_11.avi</q1:FileName>
+          <q1:PlaybackRate>0</q1:PlaybackRate>
+          <q1:StartPosition>0</q1:StartPosition>
+          <q1:PositionUnits>Frames</q1:PositionUnits>
+          <q1:Loop>false</q1:Loop>
+          <q1:Playing>true</q1:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>143</q1:X>
+            <q1:Y>18</q1:Y>
+            <q1:Width>310</q1:Width>
+            <q1:Height>399</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Grayscale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>458</q1:X>
+            <q1:Y>10</q1:Y>
+            <q1:Width>324</q1:Width>
+            <q1:Height>410</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>792</q1:X>
+            <q1:Y>14</q1:Y>
+            <q1:Width>312</q1:Width>
+            <q1:Height>406</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>137</q1:X>
+            <q1:Y>515</q1:Y>
+            <q1:Width>311</q1:Width>
+            <q1:Height>411</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>462</q1:X>
+            <q1:Y>518</q1:Y>
+            <q1:Width>313</q1:Width>
+            <q1:Height>412</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Crop">
+          <q1:RegionOfInterest>
+            <q1:X>794</q1:X>
+            <q1:Y>519</q1:Y>
+            <q1:Width>312</q1:Width>
+            <q1:Height>408</q1:Height>
+          </q1:RegionOfInterest>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\ROI_Analysis_1.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\Roi_Analysis_2.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\Roi_Analysis_3.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\Roi_Analysis_4.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\Roi_Analysis_5.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+      <Expression xsi:type="q2:CsvWriter">
+        <q2:FileName>G:\Behavioural_Experiments\Social_Behaviour\Shan3B_A_SetupA\31_10_2016\Homozygous\Fish1_dpf\Non_Social_1\Roi_Analysis_6.csv</q2:FileName>
+        <q2:Append>false</q2:Append>
+        <q2:Overwrite>false</q2:Overwrite>
+        <q2:Suffix>None</q2:Suffix>
+        <q2:IncludeHeader>false</q2:IncludeHeader>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.IO.CsvWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

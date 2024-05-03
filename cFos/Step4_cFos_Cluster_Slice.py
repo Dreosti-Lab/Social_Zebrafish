@@ -74,8 +74,8 @@ behaviour_metrics = np.array(behaviour_metrics)
 n = len(cfos_paths)
 
 # Extract z-planes from stacks and pre-process for PCA
-stack_rows = np.int(np.floor(512 / bin_factor))
-stack_cols = np.int(np.floor(512 / bin_factor))
+stack_rows = int(np.floor(512 / bin_factor))
+stack_cols = int(np.floor(512 / bin_factor))
 stack_planes = len(analysis_planes)
 pix_per_plane = stack_rows*stack_cols
 pix_per_strip = pix_per_plane*stack_planes

@@ -35,7 +35,7 @@ def read_imagej_roi(fileobj):
         return (s0 << 16) | s1
  
     def getfloat():
-        v = np.int32(get32())
+        v = int32(get32())
         return v.view(np.float32)
  
     magic = fileobj.read(4)

@@ -289,12 +289,12 @@ def analyze_single_fish_experiment(dataFolder, analysisFolder, group, age, fishS
             btas = np.vstack((BTA_test_s, BTA_stim_s, BTA_self_test_s, BTA_self_stim_s))
 
 
-            filename = analysisFolder + '\\' + str(np.int(group)) + '_' + str(f) +'.png'  
+            filename = analysisFolder + '\\' + str(int(group)) + '_' + str(f) +'.png'  
             plt.savefig(filename, dpi=300)
             plt.close('all')
 
             # Save Correlation Data
-            filename = analysisFolder + '\\' + str(np.int(group)) + '_' + str(f) +'.npz'
+            filename = analysisFolder + '\\' + str(int(group)) + '_' + str(f) +'.npz'
             summary = np.array([socialFrames, SPI_ns, SPI_s])
             np.savez(filename, summary, orts, correlations, btas, peaks)
         

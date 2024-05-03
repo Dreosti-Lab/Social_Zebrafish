@@ -178,7 +178,7 @@ def analyze_temporal_bouts(bouts, binning):
     num_bouts = bouts.shape[0]
 
     # Determine largest frame number in all bouts recordings (make multiple of 100)
-    max_frame = np.int(np.max(bouts[:, 4]))
+    max_frame = int(np.max(bouts[:, 4]))
     max_frame = max_frame + (binning - (max_frame % binning))
     max_frame = 100 * 60 * 15 # 15 minutes
 
@@ -190,10 +190,10 @@ def analyze_temporal_bouts(bouts, binning):
     non_visible_frames_moving = 0
     for i in range(0, num_bouts):
         # Extract bout params
-        start = np.int(bouts[i][0])
-        stop = np.int(bouts[i][4])
-        duration = np.int(bouts[i][8])
-        visible = np.int(bouts[i][9])
+        start = int(bouts[i][0])
+        stop = int(bouts[i][4])
+        duration = int(bouts[i][8])
+        visible = int(bouts[i][9])
 
         # Ignore bouts beyond 15 minutes
         if stop >= max_frame:

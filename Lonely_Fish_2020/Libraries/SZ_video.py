@@ -166,18 +166,18 @@ def process_video_summary_images(folder, social):
         croppedStim = np.copy(background)    
     
     for i in range(0,6):
-        r1 = np.int(test_ROIs[i, 1])
-        r2 = np.int(r1+test_ROIs[i, 3])
-        c1 = np.int(test_ROIs[i, 0])
-        c2 = np.int(c1+test_ROIs[i, 2])
+        r1 = int(test_ROIs[i, 1])
+        r2 = int(r1+test_ROIs[i, 3])
+        c1 = int(test_ROIs[i, 0])
+        c2 = int(c1+test_ROIs[i, 2])
         croppedTest[r1:r2, c1:c2] = 0
         
         
         if social:
-            r1 = np.int(stim_ROIs[i, 1])
-            r2 = np.int(r1+stim_ROIs[i, 3])
-            c1 = np.int(stim_ROIs[i, 0])
-            c2 = np.int(c1+stim_ROIs[i, 2])
+            r1 = int(stim_ROIs[i, 1])
+            r2 = int(r1+stim_ROIs[i, 3])
+            c1 = int(stim_ROIs[i, 0])
+            c2 = int(c1+stim_ROIs[i, 2])
             croppedStim[r1:r2, c1:c2] = 0
     
         
@@ -530,7 +530,7 @@ def process_video_track_fish_3fish(folder, social, multiple):
                     
                     # ---------------------------------------------------------------------------------
                     # Find Body and Eye Centroids
-                    area = np.float(area)
+                    area = float(area)
                     
                     # Highlight 50% of the birghtest pixels (body + eyes)                    
                     numBodyPixels = np.ceil(area/2)
@@ -557,16 +557,16 @@ def process_video_track_fish_3fish(folder, social, multiple):
                     values = np.copy(all_values)
                     values = (values-test_thresholds[i]+1)
                     acc = np.sum(values)
-                    fX = np.float(np.sum(c*values))/acc
-                    fY = np.float(np.sum(r*values))/acc
+                    fX = float(np.sum(c*values))/acc
+                    fY = float(np.sum(r*values))/acc
                     
                     # Eye Centroid (a weighted centorid)
                     values = np.copy(all_values)                   
                     values = (values-eyeThreshold+1)
                     values[values < 0] = 0
                     acc = np.sum(values)
-                    eX = np.float(np.sum(c*values))/acc
-                    eY = np.float(np.sum(r*values))/acc
+                    eX = float(np.sum(c*values))/acc
+                    eY = float(np.sum(r*values))/acc
     
                     # Body Centroid (a binary centroid, excluding "eye" pixels)
                     values = np.copy(all_values)                   
@@ -574,8 +574,8 @@ def process_video_track_fish_3fish(folder, social, multiple):
                     values[values >= bodyThreshold] = 1                                                            
                     values[values > eyeThreshold] = 0                                                            
                     acc = np.sum(values)
-                    bX = np.float(np.sum(c*values))/acc
-                    bY = np.float(np.sum(r*values))/acc
+                    bX = float(np.sum(c*values))/acc
+                    bY = float(np.sum(r*values))/acc
                     
                     # ---------------------------------------------------------------------------------
                     # Heading (0 deg to right, 90 deg up)
@@ -903,7 +903,7 @@ def process_video_track_fish(folder, social, multiple):
                     
                     # ---------------------------------------------------------------------------------
                     # Find Body and Eye Centroids
-                    area = np.float(area)
+                    area = float(area)
                     
                     # Highlight 50% of the birghtest pixels (body + eyes)                    
                     numBodyPixels = np.ceil(area/2)
@@ -930,16 +930,16 @@ def process_video_track_fish(folder, social, multiple):
                     values = np.copy(all_values)
                     values = (values-test_thresholds[i]+1)
                     acc = np.sum(values)
-                    fX = np.float(np.sum(c*values))/acc
-                    fY = np.float(np.sum(r*values))/acc
+                    fX = float(np.sum(c*values))/acc
+                    fY = float(np.sum(r*values))/acc
                     
                     # Eye Centroid (a weighted centorid)
                     values = np.copy(all_values)                   
                     values = (values-eyeThreshold+1)
                     values[values < 0] = 0
                     acc = np.sum(values)
-                    eX = np.float(np.sum(c*values))/acc
-                    eY = np.float(np.sum(r*values))/acc
+                    eX = float(np.sum(c*values))/acc
+                    eY = float(np.sum(r*values))/acc
     
                     # Body Centroid (a binary centroid, excluding "eye" pixels)
                     values = np.copy(all_values)                   
@@ -947,8 +947,8 @@ def process_video_track_fish(folder, social, multiple):
                     values[values >= bodyThreshold] = 1                                                            
                     values[values > eyeThreshold] = 0                                                            
                     acc = np.sum(values)
-                    bX = np.float(np.sum(c*values))/acc
-                    bY = np.float(np.sum(r*values))/acc
+                    bX = float(np.sum(c*values))/acc
+                    bY = float(np.sum(r*values))/acc
                     
                     # ---------------------------------------------------------------------------------
                     # Heading (0 deg to right, 90 deg up)
@@ -1074,7 +1074,7 @@ def process_video_track_fish(folder, social, multiple):
                         
                         # ---------------------------------------------------------------------------------
                         # Find Body and Eye Centroids
-                        area = np.float(area)
+                        area = float(area)
                                             
                         # Highlight 50% of the birghtest pixels (body + eyes)                    
                         numBodyPixels = np.ceil(area/2)
@@ -1101,16 +1101,16 @@ def process_video_track_fish(folder, social, multiple):
                         values = np.copy(all_values)
                         values = (values-test_thresholds[i]+1)
                         acc = np.sum(values)
-                        fX = np.float(np.sum(c*values))/acc
-                        fY = np.float(np.sum(r*values))/acc
+                        fX = float(np.sum(c*values))/acc
+                        fY = float(np.sum(r*values))/acc
                         
                         # Eye Centroid (a weighted centorid)
                         values = np.copy(all_values)                   
                         values = (values-eyeThreshold+1)
                         values[values < 0] = 0
                         acc = np.sum(values)
-                        eX = np.float(np.sum(c*values))/acc
-                        eY = np.float(np.sum(r*values))/acc
+                        eX = float(np.sum(c*values))/acc
+                        eY = float(np.sum(r*values))/acc
         
                         # Body Centroid (a binary centroid, excluding "eye" pixels)
                         values = np.copy(all_values)                   
@@ -1118,8 +1118,8 @@ def process_video_track_fish(folder, social, multiple):
                         values[values >= bodyThreshold] = 1                                                            
                         values[values > eyeThreshold] = 0                                                            
                         acc = np.sum(values)
-                        bX = np.float(np.sum(c*values))/acc
-                        bY = np.float(np.sum(r*values))/acc
+                        bX = float(np.sum(c*values))/acc
+                        bY = float(np.sum(r*values))/acc
                         
                         # ---------------------------------------------------------------------------------
                         # Heading (0 deg to right, 90 deg up)
@@ -1456,13 +1456,13 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
                     
                     # ---------------------------------------------------------------------------------
                     # Find Body and Eye Centroids
-                    area = np.float(area)
+                    area = float(area)
                     
                     # Highlight 50% of the birghtest pixels (body + eyes)                    
-                    numBodyPixels = np.int(np.ceil(area/2))
+                    numBodyPixels = int(np.ceil(area/2))
                     
                     # Highlight 10% of the birghtest pixels (mostly eyes)     
-                    numEyePixels = np.int(np.ceil(area/10))
+                    numEyePixels = int(np.ceil(area/10))
                     
                     # Fish Pixel Values (difference from background)
                     fishValues = diff[pixelpoints[:,0], pixelpoints[:,1]]
@@ -1483,16 +1483,16 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
                     values = np.copy(all_values)
                     values = (values-threshold_level+1)
                     acc = np.sum(values)
-                    fX = np.float(np.sum(c*values))/acc
-                    fY = np.float(np.sum(r*values))/acc
+                    fX = float(np.sum(c*values))/acc
+                    fY = float(np.sum(r*values))/acc
                     
                     # Eye Centroid (a weighted centorid)
                     values = np.copy(all_values)                   
                     values = (values-eyeThreshold+1)
                     values[values < 0] = 0
                     acc = np.sum(values)
-                    eX = np.float(np.sum(c*values))/acc
-                    eY = np.float(np.sum(r*values))/acc
+                    eX = float(np.sum(c*values))/acc
+                    eY = float(np.sum(r*values))/acc
     
                     # Body Centroid (a binary centroid, excluding "eye" pixels)
                     values = np.copy(all_values)                   
@@ -1500,8 +1500,8 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
                     values[values >= bodyThreshold] = 1                                                            
                     values[values > eyeThreshold] = 0                                                            
                     acc = np.sum(values)
-                    bX = np.float(np.sum(c*values))/acc
-                    bY = np.float(np.sum(r*values))/acc
+                    bX = float(np.sum(c*values))/acc
+                    bY = float(np.sum(r*values))/acc
                     
                     # ---------------------------------------------------------------------------------
                     # Heading (0 deg to right, 90 deg up)
@@ -1586,18 +1586,18 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
  
 # Return cropped image from ROI list
 def get_ROI_crop(image, ROIs, numROi):
-    r1 = np.int(ROIs[numROi, 1])
-    r2 = np.int(r1+ROIs[numROi, 3])
-    c1 = np.int(ROIs[numROi, 0])
-    c2 = np.int(c1+ROIs[numROi, 2])
+    r1 = int(ROIs[numROi, 1])
+    r2 = int(r1+ROIs[numROi, 3])
+    c1 = int(ROIs[numROi, 0])
+    c2 = int(c1+ROIs[numROi, 2])
     crop = image[r1:r2, c1:c2]
     
     return crop, c1, r1
     
 # Return ROI size from ROI list
 def get_ROI_size(ROIs, numROi):
-    width = np.int(ROIs[numROi, 2])
-    height = np.int(ROIs[numROi, 3])
+    width = int(ROIs[numROi, 2])
+    height = int(ROIs[numROi, 3])
     
     return width, height
 

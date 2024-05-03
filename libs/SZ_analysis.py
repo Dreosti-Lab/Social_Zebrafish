@@ -49,8 +49,8 @@ def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=120):
     AllNonVisibleFrames = np.logical_not(AllVisibleFrames)
    
     # Count Visible and Non-Visible Frames
-    numVisibleFrames = np.float(np.sum(AllVisibleFrames))     # Final Sum of Visible Frames
-    numNonVisibleFrames= np.float(np.sum(AllNonVisibleFrames))  # Final Sum of NON Visible Frames 
+    numVisibleFrames = float(np.sum(AllVisibleFrames))     # Final Sum of Visible Frames
+    numNonVisibleFrames= float(np.sum(AllNonVisibleFrames))  # Final Sum of NON Visible Frames 
         
     # Compute VPI
     VPI = (numVisibleFrames-numNonVisibleFrames)/np.size(yPositions)
@@ -105,8 +105,8 @@ def computeSPI(xPositions, yPositions, testROI, stimROI):
     AllNONSocialFrames_TF=np.logical_and(AllSocialFrames_X_TF, np.logical_not(AllSocialFrames_Y_TF))   # Final NON SOCIAL True/False array
     
     # Count Social and Non-Social Frames
-    numSocialFrames = np.float(np.sum(AllSocialFrames_TF))     # Final Sum of Social Frames
-    numNONSocialFrames= np.float(np.sum(AllNONSocialFrames_TF))  # Final Sum of NON Social Frames 
+    numSocialFrames = float(np.sum(AllSocialFrames_TF))     # Final Sum of Social Frames
+    numNONSocialFrames= float(np.sum(AllNONSocialFrames_TF))  # Final Sum of NON Social Frames 
         
     # Compute SPI
     if (numSocialFrames+numNONSocialFrames) == 0:
@@ -169,8 +169,8 @@ def computeSPI_3fish(xPositions, yPositions, testROI, stimLeft):
     AllNONSocialFrames_X_TF=np.logical_not(AllSocialFrames_X_TF)   # Final NON SOCIAL True/False array
 
     # Count Social and Non-Social Frames
-    numSocialFrames = np.float(np.sum(AllSocialFrames_X_TF))     # Final Sum of Social Frames
-    numNONSocialFrames= np.float(np.sum(AllNONSocialFrames_X_TF))  # Final Sum of NON Social Frames 
+    numSocialFrames = float(np.sum(AllSocialFrames_X_TF))     # Final Sum of Social Frames
+    numNONSocialFrames= float(np.sum(AllNONSocialFrames_X_TF))  # Final Sum of NON Social Frames 
         
     # Compute SPI
     if (numSocialFrames+numNONSocialFrames) == 0:

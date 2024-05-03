@@ -270,13 +270,13 @@ for idx,folder in enumerate(folderNames):
             #-----------------------------------
             # Save figure and data for each fish
             if plot:
-                filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SPI_' + str(i) + '.png'  
+                filename = analysisFolder + '/' + str(int(groups[idx])) + '_SPI_' + str(i) + '.png'  
                 plt.savefig(filename, dpi=600)
                 plt.close('all')
 
             #----------------------------
             # Save Analyzed Summary Data
-            filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
+            filename = analysisFolder + '/' + str(int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
             np.savez(filename,
                      VPI_NS=VPI_ns,
                      VPI_NS_BINS=VPI_ns_bins,

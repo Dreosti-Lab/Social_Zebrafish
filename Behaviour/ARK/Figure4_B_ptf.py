@@ -49,9 +49,9 @@ def fill_pauses(pauses, FPS, freeze_threshold):
         long_pause_threshold = freeze_threshold*120
     pausing_frames = np.zeros(200000)
     for pause in pauses:
-        start  = np.int(pause[0])
-        stop = np.int(pause[4])
-        duration = np.int(pause[8])
+        start  = int(pause[0])
+        stop = int(pause[4])
+        duration = int(pause[8])
         if(duration > long_pause_threshold):
             pausing_frames[start:stop] = 1
     if (FPS == 100):

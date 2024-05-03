@@ -44,8 +44,8 @@ import pylab as pl
 def fill_bouts(bouts, FPS):
     moving_frames = np.zeros(200000)
     for bout in bouts:
-        start  = np.int(bout[0])
-        stop = np.int(bout[4])
+        start  = int(bout[0])
+        stop = int(bout[4])
         moving_frames[start:stop] = 1
     if (FPS == 100):
         moving_frames = moving_frames[:90000]

@@ -17,3 +17,6 @@ x64
 
 #Movie
 *.avi
+
+#Temporary Folders 
+_tmp

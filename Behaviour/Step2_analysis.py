@@ -7,13 +7,13 @@ Analyze all tracked fish in a social preference experiment
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
 #lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
-lib_path = r'C:/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+lib_path = r'/Users/elenadreo/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 #-----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
 #base_path = r'/home/kampff/Data/Zebrafish'
-base_path = r'//128.40.155.187/data/D R E O S T I   L A B'
+base_path = r'/Users/elenadreo/Desktop/SocialBehaviour'
 # -----------------------------------------------------------------------------
 
 # Set Library Paths
@@ -40,13 +40,13 @@ import glob
 # Specify Folder List and Analysis Folder path
 #folderListFile = base_path + r'/Analysis_folder/Control_Controls/All_Control_Controls.txt'
 #analysisFolder = base_path + r'/Analysis_folder/Control_Controls'
-folderListFile = base_path + r'/Analysis_folder/Isolated_Controls/All_Isolated_Controls.txt'
-analysisFolder = base_path + r'/Analysis_folder/Isolated_Controls'
+folderListFile = base_path + r'/FolderList/Akap11.txt'
+analysisFolder = base_path + r'/Akap11/Analysis'
 #folderListFile = base_path + r'/Analysis_folder/Isolated_Drugged_15/All_Isolated_Drugged_15.txt'
 #analysisFolder = base_path + r'/Analysis_folder/Isolated_Drugged_15'
 
 # Set Flags
-plot = False
+plot = True
 FPS = 120
 
 # Set motion thresholds
@@ -63,7 +63,9 @@ for idx,folder in enumerate(folderNames):
     NS_folder, S_folder, C_folder = SZU.get_folder_names(folder)
 
     # Load NS Test Crop Regions
+    print(NS_folder)
     bonsaiFiles = glob.glob(NS_folder+'/*.bonsai')
+    print(bonsaiFiles)
     bonsaiFiles = bonsaiFiles[0]
     test_ROIs = BONSAI_ARK.read_bonsai_crop_rois(bonsaiFiles)
     NS_test_ROIs = test_ROIs[:, :]
@@ -270,13 +272,13 @@ for idx,folder in enumerate(folderNames):
             #-----------------------------------
             # Save figure and data for each fish
             if plot:
-                filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SPI_' + str(i) + '.png'  
+                filename = analysisFolder + '/' + str(int(groups[idx])) + '_SPI_' + str(i) + '.png'  
                 plt.savefig(filename, dpi=600)
                 plt.close('all')
 
             #----------------------------
             # Save Analyzed Summary Data
-            filename = analysisFolder + '/' + str(np.int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
+            filename = analysisFolder + '/' + str(int(groups[idx])) + '_SUMMARY_' + str(i) + '.npz'
             np.savez(filename,
                      VPI_NS=VPI_ns,
                      VPI_NS_BINS=VPI_ns_bins,

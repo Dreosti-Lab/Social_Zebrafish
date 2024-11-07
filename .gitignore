@@ -20,3 +20,7 @@ x64
 
 #Temporary Folders 
 _tmp
+
+# OSX bullshit
+.DS_Store*
+.DS_Store

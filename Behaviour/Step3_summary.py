@@ -6,12 +6,14 @@ Create summary (figures and report) for all analyzed fish in a social preference
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+# lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+lib_path = r'/Users/elenadreo/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 #-----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Zebrafish'
+#base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'/Volumes/DreostiLab1/SocialBehaviour'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -41,7 +43,8 @@ import pylab as pl
 
 # Specify Analysis folder
 #analysisFolder = base_path + r'/Analysis_folder/Control_Controls'
-analysisFolder = base_path + r'/Analysis_folder/Isolated_Controls'
+#analysisFolder = base_path + r'//Volumes/DreostiLab1/SocialBehaviour/Akap11/Analysis'
+analysisFolder = base_path + r'/Akap11/Analysis'
 #analysisFolder = base_path + r'/Analysis_folder/Isolated_Drugged_15'
 
 # Set freeze time threshold
@@ -89,13 +92,14 @@ for f, filename in enumerate(npzFiles):
 
     # Load each npz file
     dataobject = np.load(filename)
+    print(filename)
     
     # Extract from the npz file
     VPI_NS = dataobject['VPI_NS']    
-    VPI_S = dataobject['VPI_S']   
+    VPI_S = dataobject['VPI_S']
     VPI_NS_BINS = dataobject['VPI_NS_BINS']    
     VPI_S_BINS = dataobject['VPI_S_BINS']
-    SPI_NS = dataobject['SPI_NS']    
+    SPI_NS = dataobject['SPI_NS']
     SPI_S = dataobject['SPI_S']   
     BPS_NS = dataobject['BPS_NS']   
     BPS_S = dataobject['BPS_S']
@@ -229,11 +233,11 @@ std = np.nanstd(VPI_NS_BINS_ALL, 0)
 valid = (np.logical_not(np.isnan(VPI_NS_BINS_ALL)))
 n = np.sum(valid, 0)
 se = std/np.sqrt(n)
-plt.plot(VPI_NS_BINS_ALL.T, LineWidth=1, Color=[0,0,0,0.1])
-plt.plot(m, 'k', LineWidth=2)
-plt.plot(m, 'ko', MarkerSize=5)
-plt.plot(m+se, 'r', LineWidth=1)
-plt.plot(m-se, 'r', LineWidth=1)
+plt.plot(VPI_NS_BINS_ALL.T, linewidth=1, color=[0,0,0,0.1])
+plt.plot(m, 'k', linewidth=2)
+plt.plot(m, 'ko', markersize=5)
+plt.plot(m+se, 'r', linewidth=1)
+plt.plot(m-se, 'r', linewidth=1)
 plt.axis([0, 15, -1.1, 1.1])
 plt.xlabel('minutes')
 plt.ylabel('VPI')
@@ -244,11 +248,11 @@ std = np.nanstd(VPI_S_BINS_ALL, 0)
 valid = (np.logical_not(np.isnan(VPI_S_BINS_ALL)))
 n = np.sum(valid, 0)
 se = std/np.sqrt(n)
-plt.plot(VPI_S_BINS_ALL.T, LineWidth=1, Color=[0,0,0,0.1])
-plt.plot(m, 'k', LineWidth=2)
-plt.plot(m, 'ko', MarkerSize=5)
-plt.plot(m+se, 'r', LineWidth=1)
-plt.plot(m-se, 'r', LineWidth=1)
+plt.plot(VPI_S_BINS_ALL.T, linewidth=1, color=[0,0,0,0.1])
+plt.plot(m, 'k', linewidth=2)
+plt.plot(m, 'ko', markersize=5)
+plt.plot(m+se, 'r', linewidth=1)
+plt.plot(m-se, 'r', linewidth=1)
 plt.axis([0, 15, -1.1, 1.1])
 plt.xlabel('minutes')
 
@@ -351,6 +355,7 @@ plt.ylabel('Rel. Frequency', fontsize=12)
 plt.axis([-0.1, 10.1, 0, 0.5])
 pl.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize=12)
 pl.xticks([0, 5, 10], fontsize=12)
+plt.show()
 
 # ----------------
 # Bouts Summary Plot
@@ -394,12 +399,12 @@ plt.ylabel('Rel. Frequency', fontsize=12)
 # All Bouts Summary Plot
 plt.figure()
 plt.subplot(1,2,1)
-plt.plot(Bouts_NS_ALL[:, 1], Bouts_NS_ALL[:, 2], '.', Color=[0.0, 0.0, 0.0, 0.002])
+plt.plot(Bouts_NS_ALL[:, 1], Bouts_NS_ALL[:, 2], '.', color=[0.0, 0.0, 0.0, 0.002])
 plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
     
 plt.subplot(1,2,2)
-plt.plot(Bouts_S_ALL[:, 1], Bouts_S_ALL[:, 2], '.', Color=[0.0, 0.0, 0.0, 0.002])
+plt.plot(Bouts_S_ALL[:, 1], Bouts_S_ALL[:, 2], '.', color=[0.0, 0.0, 0.0, 0.002])
 plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
 
@@ -410,7 +415,7 @@ plt.subplot(1,2,1)
 long_pauses_ns = np.where(Pauses_NS_ALL[:,8] > freeze_threshold)[0]
 num_long_pauses_per_fish_ns = len(long_pauses_ns)/numFiles
 plt.title('NS: #Long Pauses = ' + format(num_long_pauses_per_fish_ns, '.4f'))
-plt.plot(Pauses_NS_ALL[long_pauses_ns, 1], Pauses_NS_ALL[long_pauses_ns, 2], 'o', Color=[0.0, 0.0, 0.0, 0.2])
+plt.plot(Pauses_NS_ALL[long_pauses_ns, 1], Pauses_NS_ALL[long_pauses_ns, 2], 'o', color=[0.0, 0.0, 0.0, 0.2])
 plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
     
@@ -418,7 +423,7 @@ plt.subplot(1,2,2)
 long_pauses_s = np.where(Pauses_S_ALL[:,8] > freeze_threshold)[0]
 num_long_pauses_per_fish_s = len(long_pauses_s)/numFiles
 plt.title('S: #Long Pauses = ' + format(num_long_pauses_per_fish_s, '.4f'))
-plt.plot(Pauses_S_ALL[long_pauses_s, 1], Pauses_S_ALL[long_pauses_s, 2], 'o', Color=[0.0, 0.0, 0.0, 0.2])
+plt.plot(Pauses_S_ALL[long_pauses_s, 1], Pauses_S_ALL[long_pauses_s, 2], 'o', color=[0.0, 0.0, 0.0, 0.2])
 plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
 
@@ -427,7 +432,7 @@ plt.gca().invert_yaxis()
 plt.figure()
 plt.subplot(1,2,1)
 plt.title('VPI vs BPS (NS)')
-plt.plot(VPI_NS_ALL, BPS_NS_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.plot(VPI_NS_ALL, BPS_NS_ALL, 'o', color=[0.0, 0.0, 0.0, 0.5])
 plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
 plt.ylabel('Bouts per Second', fontsize=12)
 plt.axis([-1.1, 1.1, 0, max(BPS_NS_ALL)+0.5])
@@ -435,7 +440,7 @@ pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
     
 plt.subplot(1,2,2)
 plt.title('VPI vs BPS (S)')
-plt.plot(VPI_S_ALL, BPS_S_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.plot(VPI_S_ALL, BPS_S_ALL, 'o', color=[0.0, 0.0, 0.0, 0.5])
 plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
 plt.axis([-1.1, 1.1, 0,  max(BPS_S_ALL)+0.5])
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
@@ -445,7 +450,7 @@ pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
 plt.figure()
 plt.subplot(1,2,1)
 plt.title('VPI vs Distance Traveled (NS)')
-plt.plot(VPI_NS_ALL, Distance_NS_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.plot(VPI_NS_ALL, Distance_NS_ALL, 'o', color=[0.0, 0.0, 0.0, 0.5])
 plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
 plt.ylabel('Distance (mm)', fontsize=12)
 plt.axis([-1.1, 1.1, 0, max(Distance_NS_ALL)+0.5])
@@ -453,7 +458,7 @@ pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
     
 plt.subplot(1,2,2)
 plt.title('VPI vs Distance Traveled (S)')
-plt.plot(VPI_S_ALL, Distance_S_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.plot(VPI_S_ALL, Distance_S_ALL, 'o', color=[0.0, 0.0, 0.0, 0.5])
 plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
 plt.axis([-1.1, 1.1, 0,  max(Distance_S_ALL)+0.5])
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
@@ -463,7 +468,7 @@ pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
 plt.figure()
 plt.subplot(1,2,1)
 plt.title('VPI vs Freezes (NS)')
-plt.plot(VPI_NS_ALL, Freezes_NS_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.plot(VPI_NS_ALL, Freezes_NS_ALL, 'o', color=[0.0, 0.0, 0.0, 0.5])
 plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
 plt.ylabel('Freezes (count)', fontsize=12)
 plt.axis([-1.1, 1.1, -1, max(Freezes_NS_ALL)+0.5])
@@ -471,7 +476,7 @@ pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)
     
 plt.subplot(1,2,2)
 plt.title('VPI vs Freezes (S)')
-plt.plot(VPI_S_ALL, Freezes_S_ALL, 'o', Color=[0.0, 0.0, 0.0, 0.5])
+plt.plot(VPI_S_ALL, Freezes_S_ALL, 'o', color=[0.0, 0.0, 0.0, 0.5])
 plt.xlabel('Visual Preference Index (VPI)', fontsize=12)
 plt.axis([-1.1, 1.1, -1, max(Freezes_S_ALL)+0.5])
 pl.xticks([-1, -0.5, 0, 0.5, 1.0], fontsize=12)

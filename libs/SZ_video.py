@@ -1354,7 +1354,7 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
         # Process each ROI
         for i in range(0,6):
             
-            print('Processing ROI ' + str(i+1))            
+            # print('Processing ROI ' + str(i+1))            
             # Extract Crop Region
             crop, xOff, yOff = get_ROI_crop(current, ROIs, i)
             crop_height, crop_width = np.shape(crop)
@@ -1543,9 +1543,9 @@ def improved_fish_tracking(input_folder, output_folder, ROIs):
             plt.imshow(color)
             plt.axis('image')
             for i in range(0,6):
-                plt.plot(fxS[f, i],fyS[f, i],'b.', MarkerSize = 1)
-                plt.plot(exS[f, i],eyS[f, i],'r.', MarkerSize = 3)
-                plt.plot(bxS[f, i],byS[f, i],'co', MarkerSize = 3)
+                plt.plot(fxS[f, i],fyS[f, i],'b.', markersize = 1)
+                plt.plot(exS[f, i],eyS[f, i],'r.', markersize = 3)
+                plt.plot(bxS[f, i],byS[f, i],'co', markersize = 3)
                 plt.text(bxS[f, i]+10,byS[f, i]+10,  '{0:.1f}'.format(ortS[f, i]), color = [1.0, 1.0, 0.0, 0.5])
                 plt.text(bxS[f, i]+10,byS[f, i]+30,  '{0:.0f}'.format(areaS[f, i]), color = [1.0, 0.5, 0.0, 0.5])
             plt.draw()

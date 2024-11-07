@@ -6,12 +6,14 @@ Quickly check the result of a social preference experiment
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+# lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+lib_path = r'/Users/elenadreo/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 #-----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Test'
+#base_path = r'/home/kampff/Data/Zebrafish'
+base_path = r'/Volumes/DreostiLab1/SocialBehaviour'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -36,7 +38,8 @@ import SZ_macros as SZM
 import SZ_video as SZV
 
 # Specify Folder List
-folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
+folderListFile = base_path + r'/FolderList/Akap11.txt' 
+analysisFolder = base_path + r'/Akap11/Analysis'
 
 # Set Flags
 control= False

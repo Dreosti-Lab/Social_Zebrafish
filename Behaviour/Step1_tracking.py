@@ -6,12 +6,15 @@ Track all fish in a social preference experiment
 """
 # -----------------------------------------------------------------------------
 # Set "Library Path" - Social Zebrafish Repo
-lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+# lib_path = r'/home/kampff/Repos/Dreosti-Lab/Social_Zebrafish/libs'
+lib_path = r'/Users/elenadreo/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 #-----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
-base_path = r'/home/kampff/Data/Test'
+#base_path = r'/home/kampff/Data/Test'
+#base_path = r'/Volumes/DreostiLab1/SocialBehaviour'
+base_path = r'/Users/elenadreo/Data/SocialBehaviour'
 #base_path = r'\\128.40.155.187\data\D R E O S T I   L A B'
 # -----------------------------------------------------------------------------
 
@@ -35,7 +38,8 @@ import SZ_video as SZV
 import BONSAI_ARK
 
 # Specify Folder List
-folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
+#folderListFile = base_path + r'/Folder_list/Control_Controls/Stock_20138_Control_Controls.txt'
+folderListFile = base_path + r'/FolderList/Akap11.txt' 
 
 # Set Flags
 dark = False

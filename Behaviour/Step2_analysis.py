@@ -13,7 +13,7 @@ lib_path = r'/Users/elenadreo/Repos/Dreosti-Lab/Social_Zebrafish/libs'
 # -----------------------------------------------------------------------------
 # Set "Base Path" for this analysis session
 #base_path = r'/home/kampff/Data/Zebrafish'
-base_path = r'/Users/elenadreo/Desktop/SocialBehaviour'
+base_path = r'/Volumes/DreostiLab1/SocialBehaviour'
 # -----------------------------------------------------------------------------
 
 # Set Library Paths
@@ -40,14 +40,14 @@ import glob
 # Specify Folder List and Analysis Folder path
 #folderListFile = base_path + r'/Analysis_folder/Control_Controls/All_Control_Controls.txt'
 #analysisFolder = base_path + r'/Analysis_folder/Control_Controls'
-folderListFile = base_path + r'/FolderList/Akap11.txt'
+folderListFile = base_path + r'/FolderList/Akap11.txt' 
 analysisFolder = base_path + r'/Akap11/Analysis'
 #folderListFile = base_path + r'/Analysis_folder/Isolated_Drugged_15/All_Isolated_Drugged_15.txt'
 #analysisFolder = base_path + r'/Analysis_folder/Isolated_Drugged_15'
 
 # Set Flags
 plot = True
-FPS = 120
+FPS = 100
 
 # Set motion thresholds
 motionStartThreshold = 0.03
@@ -63,7 +63,6 @@ for idx,folder in enumerate(folderNames):
     NS_folder, S_folder, C_folder = SZU.get_folder_names(folder)
 
     # Load NS Test Crop Regions
-    print(NS_folder)
     bonsaiFiles = glob.glob(NS_folder+'/*.bonsai')
     print(bonsaiFiles)
     bonsaiFiles = bonsaiFiles[0]

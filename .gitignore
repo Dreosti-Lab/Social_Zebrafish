@@ -24,3 +24,6 @@ _tmp
 # OSX bullshit
 .DS_Store*
 .DS_Store
+
+# Environment
+.env

@@ -21,6 +21,15 @@ source ./SZ/bin/activate
 pip install numpy matplotlib scipy opencv-python seaborn
 
 ```
+## Environment File
+You must create a ".env" file in the root directory of the Repository with equivalent content to the following, obviously with **paths** that make sense for your computer:
+```txt
+# Location of Python libraries
+LIBS_PATH="/Users/elenadreo/Repos/Dreosti-Lab/social_Zebrafish/libs"
+# Location of data
+BASE_PATH="/Volumes/DreostiLab1/"
+```
+
 # Run code
 for example 
 

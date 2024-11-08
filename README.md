@@ -18,7 +18,7 @@ source ./SZ/bin/activate
 # Install packages
 
 ```bash
-pip install numpy matplotlib scipy opencv-python seaborn
+pip install numpy matplotlib scipy opencv-python seaborn python-dotenv
 
 ```
 ## Environment File

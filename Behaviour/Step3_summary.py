@@ -427,6 +427,17 @@ plt.plot(Pauses_S_ALL[long_pauses_s, 1], Pauses_S_ALL[long_pauses_s, 2], 'o', co
 plt.axis([0, 17, 0, 42])
 plt.gca().invert_yaxis()
 
+# ----------- TEST
+
+plt.figure()
+sns.histplot(num_long_pauses_per_fish_s, x=[0, 17], y=[0,24], bins=10, pmax=0.9, cmap='viridis')
+plt.title('Position Distribution of Zebrafish')
+plt.xlabel('X Position')
+plt.ylabel('Y Position')
+plt.show()
+
+
+
 # ----------------
 # VPI vs BPS Summary Plot 
 plt.figure()

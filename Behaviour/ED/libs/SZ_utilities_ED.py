@@ -20,12 +20,16 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import scipy.signal as signal
 
-
+#List of fucntions
+# 1. read_folder_list
+# 2. get_folder_names
+# 3. adjust_ort_test
+# 4. adjust_ort_stim
 
 #-----------------------------------------------------------------------------
 # Utilities for loading and ploting "social zebrafish" data
 
-# 1) Read Folder List file 6 fish 
+# 1) Read Folder List file 6 fish and returns group of fish,age, foldername and fishstatus (include fish or not)
 def read_folder_list(folderListFile): 
     folderFile = open(folderListFile, "r") #"r" means read the file
     folderList = folderFile.readlines() # returns a list containing the lines
@@ -54,7 +58,8 @@ def read_folder_list(folderListFile):
 # FIN
 
 
-# 2) Determine Data Folder Names from Root directory
+# 2) Check and assign Data Folder Names (NS_Non_Social, Social, etc.) from Root directory "basepath+ fodlerlist"
+
 def get_folder_names(folder):
     # Specifiy Folder Names
     NS_folder = folder + '/Non_Social_1'
@@ -72,3 +77,26 @@ def get_folder_names(folder):
         C_folder = -1    
     
     return NS_folder, S_folder, C_folder
+
+
+# 3. Adjust Orientation (Test Fish)
+def adjust_ort_test(ort, social_side):
+    # Adjust orientations so 0 is always pointing towards "other" fish
+    if social_side: # Test Fish facing Left
+        for i,angle in enumerate(ort):
+            if angle >= 0: 
+                ort[i] = angle - 180
+            else:
+                ort[i] = angle + 180
+    return ort
+
+# 4. Adjust Orientation (Stim Fish)
+def adjust_ort_stim(ort, chamber):
+    # Adjust orientations so 0 is always pointing towards "other" fish
+    if chamber%2 == 1: # Stim Fish facing Left
+        for i,angle in enumerate(ort):
+            if angle >= 0: 
+                ort[i] = angle - 180
+            else:
+                ort[i] = angle + 180
+    return ort

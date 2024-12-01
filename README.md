@@ -40,6 +40,9 @@ python3 Behaviour/Step2_analysis.py
 
 ## Analysis Steps
 Pre-Analysis:
+0. Goes through each experimental folder and produces a background image (used in step1), and some useful summary images. 
+
+Analyis
 1. Produce background and projection images : Stored in same data folder
 2. Re-run Tracking (Create Tracking#.npz for each #fish - Contains X,Y area, etc. values relative to ROI) : Stored in same data folder
 

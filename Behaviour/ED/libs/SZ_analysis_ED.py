@@ -56,7 +56,7 @@ def computeVPI(xPositions, yPositions, testROI, stimROI, FPS=100):
     # Compute VPI
     VPI = (numVisibleFrames-numNonVisibleFrames)/np.size(yPositions)
 
-    # Determine number of frames in a five minute bin
+    # Determine number of frames in a one minute bin
     bin_size = 60 * FPS
     max_frame = bin_size * 15
 
@@ -187,7 +187,7 @@ def normalized_arena_coords(xPositions, yPositions, testROI, stimROI):
 
 
 # 5. Compute Social Preference Index 1/3 (TPI)
-def computeTPI(xPositions, yPositions, testROI, stimROI):
+def computeTPI(xPositions, yPositions, testROI, stimROI, FPS=100):
     
     # Find thresholds of X and Y Test ROI in order to define the social area to calculate the SPI
     socialPositionThreshold_X = testROI[0]+(testROI[2]/4)
@@ -233,7 +233,21 @@ def computeTPI(xPositions, yPositions, testROI, stimROI):
         SPI = (numSocialFrames-numNONSocialFrames)/np.size(yPositions)
     
     
-    return SPI, AllSocialFrames_TF, AllNONSocialFrames_TF
+
+    # Determine number of frames in a one minute bin
+    bin_size = 60 * FPS
+    max_frame = bin_size * 15
+
+    # Compute "binned" VPI
+    if len(AllSocialFrames_TF) >= max_frame:
+        visible_bins = np.sum(np.reshape(AllSocialFrames_TF[:max_frame].T, (bin_size, -1), order='F'), 0)
+        non_visible_bins = np.sum(np.reshape(AllNONSocialFrames_TF[:max_frame].T, (bin_size, -1), order='F'), 0)
+        VPI_bins = (visible_bins - non_visible_bins)/bin_size
+    else:
+        VPI_bins = np.empty(15) * np.nan
+
+    return SPI, AllSocialFrames_TF, AllNONSocialFrames_TF, VPI_bins
+
 
 
 

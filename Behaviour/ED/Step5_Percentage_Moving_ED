@@ -1,0 +1,253 @@
+# -*- coding: utf-8 -*-
+"""
+Compare summaries of analyzed social preference experiments
+
+@author: Elena Dreosti
+"""
+
+## This script plots the Percentage spent moving throughout the 15 min
+## It takes all the conditions (w/t and 10 mutants) and compares them
+
+# MISSING:
+# - add statistics
+
+
+# Load environment file and variables
+import os
+from dotenv import load_dotenv
+load_dotenv()
+libs_path = os.getenv('LIBS_PATH') + "/../Behaviour/ED/libs"
+base_path = os.getenv('BASE_PATH')
+
+
+# Set Library Paths
+import sys
+sys.path.append(libs_path)
+
+# Import useful libraries
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import scipy.misc as misc
+from scipy import stats
+import seaborn as sns
+import pandas as pd
+from matplotlib.colors import to_rgba
+
+# Import local modules
+import BONSAI_ARK_ED
+import SZ_statistics_ED as SZSt
+import glob
+import pylab as pl
+
+# Set analysis folder and label for experiment/condition A
+# and set conditions: descriptive labels corresponding to each folder, allowing the script to reference experimental groups 
+analysisFolder_A = base_path + r'/Scrambled/Analysis_TPI'
+conditionName_A = "w/t"
+# Set analysis folder and label for experiment/condition B
+analysisFolder_B = base_path + r'/Akap11/Analysis_TPI'
+conditionName_B = "A11"
+# Set analysis folder and label for experiment/condition C
+analysisFolder_C = base_path + r'/cacnag1g/Analysis_TPI'
+conditionName_C = "c1g"
+# Set analysis folder and label for experiment/condition D
+analysisFolder_D = base_path + r'/gria3/Analysis_TPI'
+conditionName_D = "G3"
+# Set analysis folder and label for experiment/condition E
+analysisFolder_E = base_path + r'/grin2a/Analysis_TPI'
+conditionName_E = "G2a"
+# Set analysis folder and label for experiment/condition F
+analysisFolder_F = base_path + r'/hcn4/Analysis_TPI'
+conditionName_F = "H4"
+# Set analysis folder and label for experiment/condition G
+analysisFolder_G = base_path + r'/herc1/Analysis_TPI'
+conditionName_G = "H1"
+# Set analysis folder and label for experiment/condition H
+analysisFolder_H = base_path + r'/nr3c2/Analysis_TPI'
+conditionName_H = "n3"
+# Set analysis folder and label for experiment/condition i
+analysisFolder_I = base_path + r'/Sp4/Analysis_TPI'
+conditionName_I = "Sp4"
+# Set analysis folder and label for experiment/condition L
+analysisFolder_L = base_path + r'/trio/Analysis_TPI'
+conditionName_L = "Trio"
+# Set analysis folder and label for experiment/condition M
+analysisFolder_M = base_path + r'/xpo7/Analysis_TPI'
+conditionName_M = "X7"
+
+
+# Assemble lists
+analysisFolders = [analysisFolder_A, analysisFolder_B, analysisFolder_C, analysisFolder_D, analysisFolder_E, analysisFolder_F, analysisFolder_G, analysisFolder_H, analysisFolder_I, analysisFolder_L, analysisFolder_M]
+
+# Createa list of conditions 
+conditionNames = [conditionName_A, conditionName_B, conditionName_C, conditionName_D, conditionName_E, conditionName_F, conditionName_G, conditionName_H, conditionName_I, conditionName_L, conditionName_M]
+
+# Summary Containers
+Percent_Moving_NS_summary = []
+Percent_Moving_S_summary = []
+
+
+# Go through each analysis folder (analysis folder)
+for i, analysisFolder in enumerate(analysisFolders):
+    
+    # Find all the npz files saved for each group and fish with all the information
+    npzFiles = glob.glob(analysisFolder+'/*.npz')
+    
+    # Calculate how many files
+    numFiles = np.size(npzFiles, 0)
+
+    # Allocate space for summary data
+    Percent_Moving_NS_ALL = np.zeros(numFiles)
+    Percent_Moving_S_ALL = np.zeros(numFiles)
+    
+    # Go through all the files contained in the analysis folder
+    for f, filename in enumerate(npzFiles):
+    
+        # Load each npz file
+        dataobject = np.load(filename)
+        
+        # Extract from the npz file
+        Percent_Moving_NS = dataobject['Percent_Moving_NS']   
+        Percent_Moving_S = dataobject['Percent_Moving_S']
+        Percent_Paused_NS = dataobject['Percent_Paused_NS']
+        Percent_Paused_S = dataobject['Percent_Paused_S']
+        
+        # Make an array with all npz values of each fish
+        Percent_Moving_NS_ALL[f] = Percent_Moving_NS
+        Percent_Moving_S_ALL[f] = Percent_Moving_S
+    
+    # Add to summary lists
+    Percent_Moving_NS_summary.append(Percent_Moving_NS_ALL)
+    Percent_Moving_S_summary.append(Percent_Moving_S_ALL)
+
+################################
+
+# # FIGURE 1 ===  Percent Moving Social Cue side 15 min
+
+fig = plt.figure(figsize=(8, 6))
+plt.title('% Moving SC')
+series_list = []
+
+for i, name in enumerate(conditionNames):
+    s = pd.Series(Percent_Moving_S_summary[i], name="S: " + name)
+    series_list.append(s)
+df = pd.concat(series_list, axis=1)
+
+
+# Combine series into a DataFrame
+df = pd.concat(series_list, axis=1)
+
+# Melt the DataFrame for compatibility with Seaborn
+df_long = df.melt(var_name="Condition", value_name="Value")
+
+# Define custom colors: first column gray, others custom hex colors
+colours = ['#d9d9d9','#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#ccebc5', '#ffed6f']
+
+
+# Create a boxplot
+sns.boxplot(
+    x="Condition",  # Set the x-axis to the conditions
+    y="Value",      # Set the y-axis to the values
+    data=df_long,   # Use the melted long DataFrame
+    palette=colours, # Choose a color palette (optional)
+    #palette="Set3", # Choose a color palette (optional)
+    linewidth=1,    # Thickness of boxplot lines
+    #showmeans=True, # Optionally show the Mean using a dot
+    meanprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3}, # Customize mean marker
+    flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3}
+)
+
+
+# Overlay individual data points
+sns.stripplot(
+    x="Condition",  # Align dots with conditions
+    y="Value",      # Align dots with values
+    data=df_long,   # Use the melted DataFrame
+    color="#404040",  # Set dot color
+    #color=box_colours_rgba2,  # Set dot color
+    alpha=0.7,      # Adjust dot transparency
+    jitter=True,    # Add jitter to avoid overlap of dots
+    size=4          # Adjust dot size
+)
+
+# Add horizontal lines
+plt.axhline(y=40, color='red', linestyle='--', linewidth=1.5, label="y = 100")
+plt.axhline(y=10, color='blue', linestyle='--', linewidth=1.5, label="y = 20")
+
+# Add titles and labels if needed
+plt.xticks(rotation=30)  # Rotate x-axis labels for better readability
+plt.tight_layout()
+plt.xlabel('')
+
+
+analysisFolder_figures = base_path + r'/Final_Figures/PercentMoving'
+filename = analysisFolder_figures + '/PercentMoving_SocialCue.png'
+plt.savefig(filename, dpi=600)
+#plt.show()
+
+
+################################
+
+# # FIGURE 2 ===  Percent Moving NO Social Cue 15 min acclimation
+
+fig = plt.figure(figsize=(8, 6))
+plt.title('% Moving No SC')
+series_list = []
+
+for i, name in enumerate(conditionNames):
+    s = pd.Series(Percent_Moving_NS_summary[i], name="S: " + name)
+    series_list.append(s)
+df = pd.concat(series_list, axis=1)
+
+
+# Combine series into a DataFrame
+df = pd.concat(series_list, axis=1)
+
+# Melt the DataFrame for compatibility with Seaborn
+df_long = df.melt(var_name="Condition", value_name="Value")
+
+# Define custom colors: first column gray, others custom hex colors
+colours = ['#d9d9d9','#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#ccebc5', '#ffed6f']
+
+
+# Create a boxplot
+sns.boxplot(
+    x="Condition",  # Set the x-axis to the conditions
+    y="Value",      # Set the y-axis to the values
+    data=df_long,   # Use the melted long DataFrame
+    palette=colours, # Choose a color palette (optional)
+    #palette="Set3", # Choose a color palette (optional)
+    linewidth=1,    # Thickness of boxplot lines
+    #showmeans=True, # Optionally show the Mean using a dot
+    meanprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3}, # Customize mean marker
+    flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3}
+)
+
+
+# Overlay individual data points
+sns.stripplot(
+    x="Condition",  # Align dots with conditions
+    y="Value",      # Align dots with values
+    data=df_long,   # Use the melted DataFrame
+    color="#404040",  # Set dot color
+    #color=box_colours_rgba2,  # Set dot color
+    alpha=0.7,      # Adjust dot transparency
+    jitter=True,    # Add jitter to avoid overlap of dots
+    size=4          # Adjust dot size
+)
+
+# Add horizontal lines
+plt.axhline(y=40, color='red', linestyle='--', linewidth=1.5, label="y = 100")
+plt.axhline(y=10, color='blue', linestyle='--', linewidth=1.5, label="y = 20")
+
+# Add titles and labels if needed
+plt.xticks(rotation=30)  # Rotate x-axis labels for better readability
+plt.tight_layout()
+plt.xlabel('')
+
+
+analysisFolder_figures = base_path + r'/Final_Figures/PercentMoving'
+filename = analysisFolder_figures + '/PercentMoving_NO_SocialCue.png'
+plt.savefig(filename, dpi=600)
+#plt.show()

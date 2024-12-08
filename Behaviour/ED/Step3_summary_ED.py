@@ -41,8 +41,32 @@ import seaborn as sns
 import pandas as pd
 
 # Specify Analysis folder 
-analysisFolder = base_path + r'/Akap11/Analysis_VPI'
-#analysisFolder = base_path + r'/hcn4/Analysis'
+
+# analysisFolder = base_path + r'/Akap11/Analysis_TPI' 
+
+# analysisFolder = base_path + r'/cacnag1g/Analysis_TPI'
+
+# analysisFolder = base_path + r'/gria3/Analysis_TPI'
+
+# analysisFolder = base_path + r'/grin2a/Analysis_TPI'
+
+#analysisFolder = base_path + r'/hcn4/Analysis_TPI'
+
+#analysisFolder = base_path + r'/herc1/Analysis_TPI'
+
+#analysisFolder = base_path + r'/nr3c2/Analysis_TPI'
+
+analysisFolder = base_path + r'/Scrambled/Analysis_TPI'
+
+#analysisFolder = base_path + r'/Sp4/Analysis_TPI'
+
+#analysisFolder = base_path + r'/trio/Analysis_TPI'
+
+#analysisFolder = base_path + r'/xpo7/Analysis_TPI'
+
+
+
+
 
 # Set freeze time threshold
 freeze_threshold = 600 #frames 1 minute
@@ -79,6 +103,8 @@ Bouts_NS_ALL = np.zeros((0,10))
 Bouts_S_ALL = np.zeros((0,10))
 Pauses_NS_ALL = np.zeros((0,10))   
 Pauses_S_ALL = np.zeros((0,10))
+SPI_S_BINS_ALL = np.zeros((numFiles, 15))
+SPI_NS_BINS_ALL = np.zeros((numFiles, 15))
 
 # # Create report file and write on it "r"
 reportFilename = analysisFolder + r'/report.txt'
@@ -113,6 +139,9 @@ for f, filename in enumerate(npzFiles):
     Pauses_S = dataobject['Pauses_S']
     Percent_Moving_NS = dataobject['Percent_Moving_NS']   
     Percent_Moving_S = dataobject['Percent_Moving_S']
+    SPI_NS_BINS = dataobject['SPI_NS_BINS']
+    SPI_S_BINS = dataobject['SPI_S_BINS']
+    
 
     # Count Freezes
     Freezes_NS = np.array(np.sum(Pauses_NS[:,8] > freeze_threshold)) 
@@ -132,6 +161,8 @@ for f, filename in enumerate(npzFiles):
     VPI_S_ALL[f] = VPI_S
     VPI_NS_BINS_ALL[f,:] = VPI_NS_BINS
     VPI_S_BINS_ALL[f,:] = VPI_S_BINS
+    SPI_NS_BINS_ALL[f,:] = SPI_NS_BINS
+    SPI_S_BINS_ALL[f,:] = SPI_S_BINS
     SPI_NS_ALL[f] = SPI_NS
     SPI_S_ALL[f] = SPI_S
     BPS_NS_ALL[f] = BPS_NS
@@ -1223,6 +1254,94 @@ filename = analysisFolder + '/Fig13_SummaryPlots.png'
 plt.savefig(filename, dpi=600)
 plt.close('all')
 
+#################
+
+# FIGURE TEST ===  SPI "Binned" in 1 minute BINS 
+
+ 
+plt.figure()
+fig, ax = plt.subplots(1,2,figsize=(8,6))
+fig.suptitle("Temporal SPI (one minute bins)", fontsize=16)
+
+plt.subplot(1,2,1)
+
+# Compute mean, standard deviation, and standard error of NS
+mean = np.nanmean(SPI_NS_BINS_ALL, 0)
+std = np.nanstd(SPI_NS_BINS_ALL, 0)
+valid = (np.logical_not(np.isnan(VPI_NS_BINS_ALL)))
+n = np.sum(valid, 0)
+se = std/np.sqrt(n) # Standard error
+upper_bound = mean + se
+lower_bound = mean - se
+
+# Prepare x label values for plotting
+x_values = np.arange(SPI_NS_BINS_ALL.shape[1])  # 0 to 14 (15 bins)
+
+# Plot all trajectories in one go
+plt.plot(x_values, SPI_NS_BINS_ALL.T, color=[0, 0, 0, 0.1], linewidth=1)
+
+# Plot the mean line
+sns.lineplot(x=x_values, y=mean, color="black", linewidth=2,  ax=ax[0],label="Mean")
+# Add dots for each data point
+plt.scatter(x_values, mean, color="black", s=40, zorder=3)
+
+# Plot the standard deviation bounds
+plt.plot(x_values, upper_bound, color="red", linewidth=1, linestyle="-", label="Mean + Std Dev")
+plt.plot(x_values, lower_bound, color="red", linewidth=1, linestyle="-", label="Mean - Std Dev")
+
+# Set custom y-ticks (optional based on data range)
+#plt.yticks(ticks=[-1, -0.5, 0, 0.5, 1], labels=["-1", "-0.5", "0", "0.5", "1"])
+plt.xlabel('minutes')
+plt.ylabel('VPI')
+
+# Customize the  subplot
+ax[0].set_title('Non_Social', fontsize=12)
+ax[0].set_xlabel('minutes', fontsize=12)
+ax[0].set_ylabel('VPI', fontsize=12)
+ax[0].legend()
+
+
+
+# =======  Social 
+plt.subplot(1,2,2)
+
+# Compute mean, standard deviation, and standard error of NS
+mean2 = np.nanmean(SPI_S_BINS_ALL, 0)
+std2 = np.nanstd(SPI_S_BINS_ALL, 0)
+valid2 = (np.logical_not(np.isnan(VPI_S_BINS_ALL)))
+n2 = np.sum(valid2, 0)
+se2 = std/np.sqrt(n2) # Standard error
+upper_bound2 = mean2 + se2
+lower_bound2 = mean2 - se2
+
+# Prepare x label values for plotting
+x_values2 = np.arange(SPI_S_BINS_ALL.shape[1])  # 0 to 14 (15 bins)
+
+# Plot all trajectories in one go
+plt.plot(x_values2, SPI_S_BINS_ALL.T, color=[0, 0, 0, 0.1], linewidth=1)
+
+# Plot the mean line
+sns.lineplot(x=x_values2, y=mean2, color="black",  ax=ax[1], linewidth=2, label="Mean")
+# Add dots for each data point
+plt.scatter(x_values2, mean2, color="black", s=40, zorder=3)
+
+# Plot the standard deviation bounds
+plt.plot(x_values2, upper_bound2, color="red", linewidth=1, linestyle="-", label="Mean + Std Dev")
+plt.plot(x_values2, lower_bound2, color="red", linewidth=1, linestyle="-", label="Mean - Std Dev")
+
+# Customize the  subplot
+ax[1].set_title('Social', fontsize=12)
+ax[1].set_xlabel('minutes', fontsize=12)
+ax[1].set_ylabel('VPI', fontsize=12)
+ax[1].legend()
+
+# Adjust layout to prevent overlap
+plt.tight_layout()
+#plt.show()
+
+filename = analysisFolder + '/Fig14_SPI_1min_BINS.png'
+plt.savefig(filename, dpi=600)
+plt.close('all')
 
 
 # FIN

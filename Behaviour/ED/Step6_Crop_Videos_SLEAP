@@ -1,0 +1,95 @@
+# -*- coding: utf-8 -*-
+"""
+Crop the 6 stimulus fish in a social preference experiment
+Created on Dec 5 2024
+@author: dreostilab (Elena Dreosti)
+"""
+
+## This script is used to crop only the small Social Cue chamber 
+# We do this so that we can train a model with SLEAP
+# We use SLEAP to track the social cue when there is more than 1 fish in the chamber
+# The normal tracking only tracks one fish at a time and jumps between both fish.
+
+
+# Load environment file and variables
+import os
+from dotenv import load_dotenv
+load_dotenv()
+libs_path = os.getenv('LIBS_PATH') + "/../Behaviour/ED/libs"
+base_path = os.getenv('BASE_PATH')
+
+
+# Set Library Paths
+import sys
+sys.path.append(libs_path)
+
+
+# Import local modules
+import SZ_utilities_ED as SZU
+import SZ_video_ED as SZV
+import BONSAI_ARK_ED
+
+import glob
+import cv2
+
+print(base_path)
+folderListFile = base_path + r'/FolderLists/Test.txt'
+
+
+# Read Folder List
+groups, ages, folderNames, fishStatus = SZU.read_folder_list(folderListFile)
+print(groups, ages, folderNames, fishStatus)
+
+
+# Bulk tracking of all folders in Folder List
+for idx,folder in enumerate(folderNames):
+    
+    # Get Folder Names path
+    NS_folder, S_folder, C_folder = SZU.get_folder_names(folder)
+    Stimulus_folder = S_folder + '/Social_Fish' # Create path_name for the stimulus folder
+
+    print(S_folder)
+    print(Stimulus_folder)
+
+    # Load Video (input)
+    aviFiles = glob.glob(S_folder+'/*.avi')
+    aviFile = aviFiles[0]
+    vid = cv2.VideoCapture(aviFile)
+    numFrames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))-100 # Skip, possibly corrupt, last 100 frames (1 second)
+    width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    # ---------------------
+    # Read ROIs
+    bonsaiFiles = glob.glob(Stimulus_folder + '/*.bonsai')
+    bonsaiFiles = bonsaiFiles[0]
+    ROIs = BONSAI_ARK_ED.read_bonsai_crop_rois(bonsaiFiles)
+
+    # Create Stimulus Videos (output)
+    stim_vids = []
+    for i in range(6):
+        w, h = SZV.get_ROI_size(ROIs, i)
+        output_video_path = Stimulus_folder+ f"/StimMovie_{i}.avi"
+        fourcc = cv2.VideoWriter_fourcc(*'FMP4')
+        stim_vid = cv2.VideoWriter(output_video_path, fourcc, 100.0, (w, h))
+        stim_vids.append(stim_vid)
+
+    for f in range(0, numFrames):
+        ret, im = vid.read() 
+
+        for i in range(6):
+            r1 = int(ROIs[i, 1])
+            r2 = int(r1+ROIs[i, 3])
+            c1 = int(ROIs[i, 0])
+            c2 = int(c1+ROIs[i, 2])
+            crop = im[r1:r2, c1:c2, :] # RGB image 
+            stim_vids[i].write(crop) #The video is saved in teh memory... gone
+    
+    # Close Video File
+    vid.release()
+
+    for i in range(6):
+        stim_vids[i].release()
+
+
+        

@@ -201,11 +201,6 @@ def analyze_bouts_and_pauses(tracking, testROI, stimROI, visibleFrames, startThr
 
 
 
-
-
-
-
-
         
 # Analyze temporal bouts
 def analyze_temporal_bouts(bouts, binning):

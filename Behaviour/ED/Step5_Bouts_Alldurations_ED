@@ -1,0 +1,420 @@
+# -*- coding: utf-8 -*-
+"""
+Compare summaries of analyzed social preference experiments
+
+@author: Elena Dreosti
+"""
+
+## This script plots PAUSES and BOIUTS DURATIONS (ALL durations) when in the VISIBLE or NON VISIBLE area
+## It takes all the conditions (w/t and 10 mutants) and compares them
+
+# MISSING:
+# - add statistics
+
+# Load environment file and variables
+import os
+from dotenv import load_dotenv
+load_dotenv()
+libs_path = os.getenv('LIBS_PATH') + "/../Behaviour/ED/libs"
+base_path = os.getenv('BASE_PATH')
+
+
+# Set Library Paths
+import sys
+sys.path.append(libs_path)
+
+# Import useful libraries
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import scipy.misc as misc
+from scipy import stats
+import seaborn as sns
+import pandas as pd
+from matplotlib.colors import to_rgba
+
+# Import local modules
+import BONSAI_ARK_ED
+import SZ_statistics_ED as SZSt
+import glob
+import pylab as pl
+
+# Set analysis folder and label for experiment/condition A
+# and set conditions: descriptive labels corresponding to each folder, allowing the script to reference experimental groups 
+analysisFolder_A = base_path + r'/Scrambled/Analysis_TPI'
+conditionName_A = "w/t"
+# Set analysis folder and label for experiment/condition B
+analysisFolder_B = base_path + r'/Akap11/Analysis_TPI'
+conditionName_B = "A11"
+# Set analysis folder and label for experiment/condition C
+analysisFolder_C = base_path + r'/cacnag1g/Analysis_TPI'
+conditionName_C = "c1g"
+# Set analysis folder and label for experiment/condition D
+analysisFolder_D = base_path + r'/gria3/Analysis_TPI'
+conditionName_D = "G3"
+# Set analysis folder and label for experiment/condition E
+analysisFolder_E = base_path + r'/grin2a/Analysis_TPI'
+conditionName_E = "G2a"
+# Set analysis folder and label for experiment/condition F
+analysisFolder_F = base_path + r'/hcn4/Analysis_TPI'
+conditionName_F = "H4"
+# Set analysis folder and label for experiment/condition G
+analysisFolder_G = base_path + r'/herc1/Analysis_TPI'
+conditionName_G = "H1"
+# Set analysis folder and label for experiment/condition H
+analysisFolder_H = base_path + r'/nr3c2/Analysis_TPI'
+conditionName_H = "n3"
+# Set analysis folder and label for experiment/condition i
+analysisFolder_I = base_path + r'/Sp4/Analysis_TPI'
+conditionName_I = "Sp4"
+# Set analysis folder and label for experiment/condition L
+analysisFolder_L = base_path + r'/trio/Analysis_TPI'
+conditionName_L = "Trio"
+# Set analysis folder and label for experiment/condition M
+analysisFolder_M = base_path + r'/xpo7/Analysis_TPI'
+conditionName_M = "X7"
+
+
+# Assemble lists
+analysisFolders = [analysisFolder_A, analysisFolder_B, analysisFolder_C, analysisFolder_D, analysisFolder_E, analysisFolder_F, analysisFolder_G, analysisFolder_H, analysisFolder_I, analysisFolder_L, analysisFolder_M]
+
+# Createa list of conditions 
+conditionNames = [conditionName_A, conditionName_B, conditionName_C, conditionName_D, conditionName_E, conditionName_F, conditionName_G, conditionName_H, conditionName_I, conditionName_L, conditionName_M]
+
+# Summary Containers
+Pauses_NS_summary = []     
+Pauses_S_summary = []
+Bouts_NS_summary = [] 
+Bouts_S_summary = []
+Pauses_NS_summary_visible = []     
+Pauses_S_summary_visible = []
+Bouts_NS_summary_visible = [] 
+Bouts_S_summary_visible = []
+
+#Pauses_10_20_conditions = []
+Ratio_Pauses = []
+Ratio_Pauses_10_20_conditions = []
+
+
+# Go through each analysis folder (analysis folder)
+for i, analysisFolder in enumerate(analysisFolders):
+    
+    Ratio_Pauses_10_20_ALL = []
+
+    # Find all the npz files saved for each group and fish with all the information
+    npzFiles = glob.glob(analysisFolder+'/*.npz')
+    
+    # Calculate how many files
+    numFiles = np.size(npzFiles, 0)
+
+    # Allocate space for summary data
+    Pauses_NS_ALL = np.zeros((numFiles, 10))      
+    Pauses_S_ALL = np.zeros((numFiles, 10)) 
+    Bouts_NS_ALL = np.zeros((numFiles, 10)) 
+    Bouts_S_ALL = np.zeros((numFiles, 10))
+    Pauses_NS_ALL_visible = np.zeros((numFiles, 10))      
+    Pauses_S_ALL_visible = np.zeros((numFiles, 10)) 
+    Bouts_NS_ALL_visible = np.zeros((numFiles, 10)) 
+    Bouts_S_ALL_visible = np.zeros((numFiles, 10))
+    
+    # Go through all the files contained in the analysis folder
+    for f, filename in enumerate(npzFiles):
+    
+        # Load each npz file
+        dataobject = np.load(filename)
+        
+        # Extract from the npz file
+        Pauses_NS = dataobject['Pauses_NS']   
+        Pauses_S = dataobject['Pauses_S']
+        Bouts_NS = dataobject['Bouts_NS']
+        Bouts_S = dataobject['Bouts_S']
+        #print(f"Original Bouts_S shape: {Bouts_S.shape}")
+
+         # Filter Arrays where column 9 equals 1 (visible frames)
+        Bouts_NS_visible = Bouts_NS[Bouts_NS[:, 9] == 1]
+        Bouts_S_visible = Bouts_S[Bouts_S[:, 9] == 1]
+        Pauses_NS_visible = Pauses_NS[Pauses_NS[:, 9] == 1]
+        Pauses_S_visible = Pauses_S[Pauses_S[:, 9] == 1]
+        #print(f"Filtered Bouts_S shape: {Bouts_NS_visible.shape}")
+
+        # Compute column-wise mean for the visible array. We want avg each fish
+        if Bouts_NS_visible.size > 0:  # Check if the filtered array is not empty
+            Bouts_NS_visible_means = np.mean(Bouts_NS_visible, axis=0)
+            Bouts_S_visible_means = np.mean(Bouts_S_visible, axis=0)
+            Pauses_NS_visible_means = np.mean(Pauses_NS_visible, axis=0)
+            Pauses_S_visible_means = np.mean(Pauses_S_visible, axis=0)   #avg of columns
+
+
+            #print("Column-wise means of filtered Bouts_NS:")
+            Bouts_NS_ALL_visible = np.vstack([Bouts_NS_ALL_visible, Bouts_NS_visible_means])
+            Bouts_S_ALL_visible = np.vstack([Bouts_S_ALL_visible, Bouts_S_visible_means])
+            Pauses_NS_ALL_visible = np.vstack([Pauses_NS_ALL_visible, Pauses_NS_visible_means])
+            Pauses_S_ALL_visible= np.vstack([Pauses_S_ALL_visible, Pauses_S_visible_means])
+            #print(Bouts_NS_visible_means)
+        else:
+            print("No rows where column 9 equals 1.")
+            #print(filename)
+
+    Pauses_NS_summary_visible.append(Pauses_NS_ALL_visible)     
+    Pauses_S_summary_visible.append(Pauses_S_ALL_visible) 
+    Bouts_NS_summary_visible.append(Bouts_NS_ALL_visible) 
+    Bouts_S_summary_visible.append(Bouts_S_ALL_visible) 
+
+
+
+
+###############
+#FIGURE 1 - Sum of Bouts duration in the visible area only durin SC
+
+series_list_bouts_S_visible = []
+
+for i, name in enumerate(conditionNames):
+    # Extract each condition Bouts_S_ALL (:,9) lenght of all bouts of all fish
+    condition_bouts_S_visible = Bouts_S_summary_visible[i] # 
+    Bouts_S_duration = condition_bouts_S_visible[:,8]*10
+    Bouts_S_duration = Bouts_S_duration[Bouts_S_duration > 0]  # Keep only positive durations
+
+    # Create a pandas Series with the extracted and filtered data
+    s_bouts_S_visible = pd.Series(Bouts_S_duration, name=f"S: {name}")
+
+    
+    # Append the Series to the list
+    series_list_bouts_S_visible.append(s_bouts_S_visible)
+    
+
+# Combine all Series into a DataFrame
+df_bouts_S_visible = pd.concat(series_list_bouts_S_visible, axis=1)
+
+
+# Melt the DataFrame for compatibility with Seaborn
+df_long_bouts_S_visible = df_bouts_S_visible.melt(var_name="Condition", value_name="Duration")
+
+# Plot a boxplot for each condition
+plt.figure(figsize=(12, 6))
+sns.boxplot(x="Condition", y="Duration", data=df_long_bouts_S_visible, hue="Condition", palette="pastel", linewidth=1.5, showfliers=False,dodge=False  )
+plt.title("Bouts durations with Social Cue")
+plt.ylabel('Duration (seconds)', fontsize=12)
+plt.xticks(rotation=45)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.ylabel('ms')
+plt.tight_layout()
+
+
+# Overlay individual data points
+sns.stripplot(
+    x="Condition",  # Align dots with conditions
+    y="Duration",      # Align dots with values
+    data=df_long_bouts_S_visible,   # Use the melted DataFrame
+    color="#404040",  # Set dot color
+    #color=box_colours_rgba2,  # Set dot color
+    alpha=0.7,      # Adjust dot transparency
+    jitter=True,    # Add jitter to avoid overlap of dots
+    size=4          # Adjust dot size
+)
+
+
+# Add horizontal lines
+plt.axhline(y=200, color='red', linestyle='--', linewidth=1.5, label="y = 100")
+plt.axhline(y=50, color='blue', linestyle='--', linewidth=1.5, label="y = 20")
+plt.tight_layout()
+
+analysisFolder_figures = base_path + r'/Final_Figures/Bouts_duration'
+filename = analysisFolder_figures + '/Bouts_All_Durations_S_visible.png'
+plt.savefig(filename, dpi=300)
+plt.show(block=False)
+
+
+
+##############
+#FIGURE 2 - Sum of Bouts duration in the visible area BUT NO SC
+
+series_list_bouts_NS_visible = []
+
+for i, name in enumerate(conditionNames):
+    # Extract each condition Pauses_S_ALL (:,9) lenght of all bouts of all fish
+    condition_data_NS_visible = Bouts_NS_summary_visible[i] # 
+    Bouts_NS_duration = condition_data_NS_visible[:,8]*10
+    Bouts_NS_duration = Bouts_NS_duration[Bouts_NS_duration > 0]  # Keep only positive durations
+
+    # Create a pandas Series with the extracted and filtered data
+    s_bouts_NS_visible = pd.Series(Bouts_NS_duration, name=f"S: {name}")
+
+    
+    # Append the Series to the list
+    series_list_bouts_NS_visible.append(s_bouts_NS_visible)
+    
+
+# Combine all Series into a DataFrame
+df_bouts_NS_visible = pd.concat(series_list_bouts_NS_visible, axis=1)
+
+
+# Melt the DataFrame for compatibility with Seaborn
+df_long_bouts_NS_visible = df_bouts_NS_visible.melt(var_name="Condition", value_name="Duration")
+
+# Plot a boxplot for each condition
+plt.figure(figsize=(12, 6))
+sns.boxplot(x="Condition", y="Duration", data=df_long_bouts_NS_visible, hue="Condition", palette="pastel", linewidth=1.5, showfliers=False,dodge=False  )
+plt.title("Bouts durations NO Social Cue")
+plt.ylabel('Duration (seconds)', fontsize=12)
+plt.xticks(rotation=45)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.ylabel('ms')
+plt.tight_layout()
+
+
+# Overlay individual data points
+sns.stripplot(
+    x="Condition",  # Align dots with conditions
+    y="Duration",      # Align dots with values
+    data=df_long_bouts_NS_visible,   # Use the melted DataFrame
+    color="#404040",  # Set dot color
+    #color=box_colours_rgba2,  # Set dot color
+    alpha=0.7,      # Adjust dot transparency
+    jitter=True,    # Add jitter to avoid overlap of dots
+    size=4          # Adjust dot size
+)
+
+
+# Add horizontal lines
+plt.axhline(y=200, color='red', linestyle='--', linewidth=1.5, label="y = 100")
+plt.axhline(y=50, color='blue', linestyle='--', linewidth=1.5, label="y = 20")
+
+
+
+plt.tight_layout()
+
+
+analysisFolder_figures = base_path + r'/Final_Figures/Bouts_duration'
+filename = analysisFolder_figures + '/Bouts_All_Durations_NS_visible.png'
+plt.savefig(filename, dpi=300)
+plt.show()
+
+###################################################
+
+###############
+#FIGURE 3 - Sum of Pauses duration in the visible area only durin SC
+
+series_list_pauses_S_visible = []
+
+for i, name in enumerate(conditionNames):
+    # Extract each condition Bouts_S_ALL (:,9) lenght of all bouts of all fish
+    condition_pauses_S_visible = Pauses_S_summary_visible[i] # 
+    Pauses_S_duration = condition_pauses_S_visible[:,8]*10
+    pauses_S_duration = Pauses_S_duration[Pauses_S_duration > 0]  # Keep only positive durations
+
+    # Create a pandas Series with the extracted and filtered data
+    s_pauses_S_visible = pd.Series(Pauses_S_duration, name=f"S: {name}")
+
+    
+    # Append the Series to the list
+    series_list_pauses_S_visible.append(s_pauses_S_visible)
+    
+
+# Combine all Series into a DataFrame
+df_pauses_S_visible = pd.concat(series_list_pauses_S_visible, axis=1)
+
+
+# Melt the DataFrame for compatibility with Seaborn
+df_long_pauses_S_visible = df_pauses_S_visible.melt(var_name="Condition", value_name="Duration")
+
+# Plot a boxplot for each condition
+plt.figure(figsize=(12, 6))
+sns.boxplot(x="Condition", y="Duration", data=df_long_pauses_S_visible, hue="Condition", palette="pastel", linewidth=1.5, showfliers=False,dodge=False  )
+plt.title("Bouts durations with Social Cue")
+plt.ylabel('Duration (seconds)', fontsize=12)
+plt.xticks(rotation=45)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.ylabel('ms')
+plt.tight_layout()
+
+
+# Overlay individual data points
+sns.stripplot(
+    x="Condition",  # Align dots with conditions
+    y="Duration",      # Align dots with values
+    data=df_long_pauses_S_visible,   # Use the melted DataFrame
+    color="#404040",  # Set dot color
+    #color=box_colours_rgba2,  # Set dot color
+    alpha=0.7,      # Adjust dot transparency
+    jitter=True,    # Add jitter to avoid overlap of dots
+    size=4          # Adjust dot size
+)
+
+
+# Add horizontal lines
+plt.axhline(y=200, color='red', linestyle='--', linewidth=1.5, label="y = 100")
+plt.axhline(y=50, color='blue', linestyle='--', linewidth=1.5, label="y = 20")
+
+plt.ylim(0, 2000)  # Set y-axis limits
+plt.tight_layout()
+plt.show(block=False)
+
+
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_All_Durations_S_visible.png'
+plt.savefig(filename, dpi=300)
+
+
+###############
+#FIGURE 4 - Sum of Pauses duration in the NON visible area only durin SC
+
+series_list_pauses_NS_visible = []
+
+for i, name in enumerate(conditionNames):
+    # Extract each condition Bouts_S_ALL (:,9) lenght of all bouts of all fish
+    condition_pauses_NS_visible = Pauses_NS_summary_visible[i] # 
+    Pauses_NS_duration = condition_pauses_NS_visible[:,8]*10
+    pauses_NS_duration = Pauses_NS_duration[Pauses_NS_duration > 0]  # Keep only positive durations
+
+    # Create a pandas Series with the extracted and filtered data
+    s_pauses_S_visible = pd.Series(Pauses_NS_duration, name=f"S: {name}")
+
+    
+    # Append the Series to the list
+    series_list_pauses_NS_visible.append(s_pauses_S_visible)
+    
+
+# Combine all Series into a DataFrame
+df_pauses_NS_visible = pd.concat(series_list_pauses_S_visible, axis=1)
+
+
+# Melt the DataFrame for compatibility with Seaborn
+df_long_pauses_NS_visible = df_pauses_NS_visible.melt(var_name="Condition", value_name="Duration")
+
+# Plot a boxplot for each condition
+plt.figure(figsize=(12, 6))
+sns.boxplot(x="Condition", y="Duration", data=df_long_pauses_NS_visible, hue="Condition", palette="pastel", linewidth=1.5, showfliers=False,dodge=False  )
+plt.title("Bouts durations with Social Cue")
+plt.ylabel('Duration (seconds)', fontsize=12)
+plt.xticks(rotation=45)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.ylabel('ms')
+plt.tight_layout()
+
+
+# Overlay individual data points
+sns.stripplot(
+    x="Condition",  # Align dots with conditions
+    y="Duration",      # Align dots with values
+    data=df_long_pauses_NS_visible,   # Use the melted DataFrame
+    color="#404040",  # Set dot color
+    #color=box_colours_rgba2,  # Set dot color
+    alpha=0.7,      # Adjust dot transparency
+    jitter=True,    # Add jitter to avoid overlap of dots
+    size=4          # Adjust dot size
+)
+
+
+# Add horizontal lines
+plt.axhline(y=200, color='red', linestyle='--', linewidth=1.5, label="y = 100")
+plt.axhline(y=50, color='blue', linestyle='--', linewidth=1.5, label="y = 20")
+plt.ylim(0, 2000)  # Set y-axis limits
+
+plt.tight_layout()
+plt.show(block=False)
+
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_All_Durations_NS_visible.png'
+plt.savefig(filename, dpi=300)
+

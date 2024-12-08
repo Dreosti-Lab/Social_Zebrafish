@@ -5,6 +5,11 @@ Created on Nov 14 2024
 @author: dreostilab (Elena Dreosti)
 """
 
+
+## This script extracts the .npz files and calculates VPI and TPI 
+# TPI are 1/4 of the X length of the chamber. Therefore the visible area is smaller  
+# The decreasing order of visible areas is VPI, SPI and TPI ( you can check the plots of Step1)
+
 # Load environment file and variables
 import os
 from dotenv import load_dotenv
@@ -41,11 +46,40 @@ import glob
 # Specify Folder List and Analysis Folder path
 
 # Specify Folder List
-#folderListFile = base_path + r'/FolderList/Akap11_test.txt'  
-folderListFile = base_path + r'/FolderList/hcn4_test.txt' 
-#analysisFolder = base_path + r'/Akap11/Analysis'
-analysisFolder = base_path + r'/hcn4/Analysis'
-#analysisFolder = base_path + r'/herc1/Analysis'
+# folderListFile = base_path + r'/FolderList/Akap11_test.txt'
+# analysisFolder = base_path + r'/Akap11/Analysis_TPI' 
+
+# folderListFile = base_path + r'/FolderList/cagnag1g_test.txt'  
+# analysisFolder = base_path + r'/cacnag1g/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/Gria3_test.txt' 
+# analysisFolder = base_path + r'/gria3/Analysis_TPI'
+
+# # NOT WORKING
+# folderListFile = base_path + r'/FolderList/Grin2a_test.txt' 
+# analysisFolder = base_path + r'/grin2a/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/hcn4_test.txt' 
+# analysisFolder = base_path + r'/hcn4/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/herc1_test.txt'
+# analysisFolder = base_path + r'/herc1/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/nr3c2_test.txt'
+# analysisFolder = base_path + r'/nr3c2/Analysis_TPI'
+
+folderListFile = base_path + r'/FolderList/Scrambled_test.txt'
+analysisFolder = base_path + r'/Scrambled/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/Sp4_test.txt'
+# analysisFolder = base_path + r'/Sp4/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/trio_test.txt'
+# analysisFolder = base_path + r'/trio/Analysis_TPI'
+
+# folderListFile = base_path + r'/FolderList/Xpo7_test.txt'
+# analysisFolder = base_path + r'/xpo7/Analysis_TPI'
+
 
 
 
@@ -135,7 +169,7 @@ for idx,folder in enumerate(folderNames):
             VPI_ns, AllVisibleFrames, AllNonVisibleFrames, VPI_ns_bins = SZA.computeVPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1], FPS)
 
             # Compute SPI (NS)
-            SPI_ns, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeTPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
+            SPI_ns, AllSocialFrames_TF, AllNONSocialFrames_TF, SPI_ns_bins = SZA.computeTPI(bx, by, NS_test_ROIs[i-1], S_stim_ROIs[i-1])
             
             # Compute BPS (NS)
             BPS_ns, avgBout_ns = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
@@ -218,7 +252,7 @@ for idx,folder in enumerate(folderNames):
             VPI_s, AllVisibleFrames, AllNonVisibleFrames, VPI_s_bins = SZA.computeVPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1], FPS)
 
             # Compute SPI (S)
-            SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF = SZA.computeTPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
+            SPI_s, AllSocialFrames_TF, AllNONSocialFrames_TF, SPI_s_bins = SZA.computeTPI(bx, by, S_test_ROIs[i-1], S_stim_ROIs[i-1])
             
             # Compute BPS (S)
             BPS_s, avgBout_s = SZS.measure_BPS(motion, motionStartThreshold, motionStopThreshold)
@@ -339,7 +373,9 @@ for idx,folder in enumerate(folderNames):
                      Percent_Moving_NS = Percent_Moving_ns,
                      Percent_Moving_S = Percent_Moving_s,
                      Percent_Paused_NS = Percent_Paused_ns,
-                     Percent_Paused_S = Percent_Paused_s)
+                     Percent_Paused_S = Percent_Paused_s,
+                     SPI_S_BINS = SPI_s_bins,
+                     SPI_NS_BINS = SPI_ns_bins)
         else:
             print ("Bad Fish")
     

@@ -5,6 +5,13 @@ Created on Nov 14 2024
 @author: dreostilab (Elena Dreosti)
 """
 
+## This script extracts the .npz files and calculates VPI (half of Y chamber) and SPI 
+# SPI are 1/2 of the X length of the chambera and 1/2 of the Y width. 
+# The decreasing order of visible areas is VPI, SPI and TPI ( you can check the plots of Step1)
+
+
+
+
 # Load environment file and variables
 import os
 from dotenv import load_dotenv

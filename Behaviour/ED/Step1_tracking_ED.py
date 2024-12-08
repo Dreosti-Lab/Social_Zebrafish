@@ -38,7 +38,7 @@ import BONSAI_ARK_ED
 #folderListFile = base_path + r'/FolderList/nr3c2_test.txt'
 #folderListFile = base_path + r'/FolderList/Sp4_test.txt'
 #folderListFile = base_path + r'/FolderList/trio_test.txt'
-folderListFile = base_path + r'/FolderList/Xpo7_test.txt'
+folderListFile = base_path + r'/FolderList/Test.txt'
 
 
 # Set Flags

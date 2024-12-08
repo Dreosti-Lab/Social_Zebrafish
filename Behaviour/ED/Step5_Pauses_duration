@@ -1,0 +1,428 @@
+# -*- coding: utf-8 -*-
+"""
+Compare summaries of analyzed social preference experiments
+
+@author: Elena Dreosti
+"""
+
+## This script plots PAUSES ONLY when in the VISIBLE for the acclimation (NS) or social cue (S) experiment
+## It takes all the conditions (w/t and 10 mutants) and compares them
+# You can define the interval of pause durations you want to chcek 
+
+# MISSING:
+# - add statistics
+
+# Load environment file and variables
+import os
+from dotenv import load_dotenv
+load_dotenv()
+libs_path = os.getenv('LIBS_PATH') + "/../Behaviour/ED/libs"
+base_path = os.getenv('BASE_PATH')
+
+
+# Set Library Paths
+import sys
+sys.path.append(libs_path)
+
+# Import useful libraries
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import scipy.misc as misc
+from scipy import stats
+import seaborn as sns
+import pandas as pd
+from matplotlib.colors import to_rgba
+
+# Import local modules
+import BONSAI_ARK_ED
+import SZ_statistics_ED as SZSt
+import glob
+import pylab as pl
+
+
+# Define pause duration interval to plot in figure 1. Express it in frames. 
+Duration0 = 0.01
+Duration50 = 5
+Duration100 = 10
+Duration200 = 20
+Duration300 = 30
+Duration400 = 40
+Duration500 = 50
+
+
+# Set analysis folder and label for experiment/condition A
+# and set conditions: descriptive labels corresponding to each folder, allowing the script to reference experimental groups 
+analysisFolder_A = base_path + r'/Scrambled/Analysis_TPI'
+conditionName_A = "w/t"
+# Set analysis folder and label for experiment/condition B
+analysisFolder_B = base_path + r'/Akap11/Analysis_TPI'
+conditionName_B = "A11"
+# Set analysis folder and label for experiment/condition C
+analysisFolder_C = base_path + r'/cacnag1g/Analysis_TPI'
+conditionName_C = "c1g"
+# Set analysis folder and label for experiment/condition D
+analysisFolder_D = base_path + r'/gria3/Analysis_TPI'
+conditionName_D = "G3"
+# Set analysis folder and label for experiment/condition E
+analysisFolder_E = base_path + r'/grin2a/Analysis_TPI'
+conditionName_E = "G2a"
+# Set analysis folder and label for experiment/condition F
+analysisFolder_F = base_path + r'/hcn4/Analysis_TPI'
+conditionName_F = "H4"
+# Set analysis folder and label for experiment/condition G
+analysisFolder_G = base_path + r'/herc1/Analysis_TPI'
+conditionName_G = "H1"
+# Set analysis folder and label for experiment/condition H
+analysisFolder_H = base_path + r'/nr3c2/Analysis_TPI'
+conditionName_H = "n3"
+# Set analysis folder and label for experiment/condition i
+analysisFolder_I = base_path + r'/Sp4/Analysis_TPI'
+conditionName_I = "Sp4"
+# Set analysis folder and label for experiment/condition L
+analysisFolder_L = base_path + r'/trio/Analysis_TPI'
+conditionName_L = "Trio"
+# Set analysis folder and label for experiment/condition M
+analysisFolder_M = base_path + r'/xpo7/Analysis_TPI'
+conditionName_M = "X7"
+
+
+# Assemble lists
+analysisFolders = [analysisFolder_A, analysisFolder_B, analysisFolder_C, analysisFolder_D, analysisFolder_E, analysisFolder_F, analysisFolder_G, analysisFolder_H, analysisFolder_I, analysisFolder_L, analysisFolder_M]
+
+# Createa list of conditions 
+conditionNames = [conditionName_A, conditionName_B, conditionName_C, conditionName_D, conditionName_E, conditionName_F, conditionName_G, conditionName_H, conditionName_I, conditionName_L, conditionName_M]
+
+# Summary Containers
+Pauses_NS_summary_visible = []     
+Pauses_S_summary_visible = []
+
+Ratio_Pauses_Condition_0_50 = []
+Ratio_Pauses_Condition_50_100 = []
+Ratio_Pauses_Condition_100_200 = []
+Ratio_Pauses_Condition_200_300 = []
+Ratio_Pauses_Condition_300_400 = []
+Ratio_Pauses_Condition_400_500 = []
+
+
+# Go through each analysis folder (analysis folder)
+for i, analysisFolder in enumerate(analysisFolders):
+
+    ratio_Pauses_0_50_ALL = []
+    ratio_Pauses_50_100_ALL = []
+    ratio_Pauses_100_200_ALL = []
+    ratio_Pauses_200_300_ALL = []
+    ratio_Pauses_300_400_ALL = []
+    ratio_Pauses_400_500_ALL = []
+
+    # Find all the npz files saved for each group and fish with all the information
+    npzFiles = glob.glob(analysisFolder+'/*.npz')
+    
+    # Calculate how many files
+    numFiles = np.size(npzFiles, 0)
+
+    # Allocate space for summary data
+    Pauses_NS_ALL = np.zeros((numFiles, 10))      
+    Pauses_S_ALL = np.zeros((numFiles, 10)) 
+    
+    # Go through all the files contained in the analysis folder
+    for f, filename in enumerate(npzFiles):
+    
+        # Load each npz file
+        dataobject = np.load(filename)
+        
+        # Extract from the npz file
+        Pauses_NS = dataobject['Pauses_NS']   
+        Pauses_S = dataobject['Pauses_S']
+
+         # Filter Arrays where column 9 equals 1 (visible frames)
+        Pauses_NS_visible = Pauses_NS[Pauses_NS[:, 9] == 1]
+        Pauses_S_visible = Pauses_S[Pauses_S[:, 9] == 1]
+
+        # Check for pause durations between 10 and 20 frames in column 8
+        if Pauses_S_visible.size > 0:
+            Pauses_0_50 = np.sum((Pauses_S_visible[:, 8] >= Duration0) & (Pauses_S_visible[:, 8] <= Duration50))
+            Pauses_50_100 = np.sum((Pauses_S_visible[:, 8] >= Duration50) & (Pauses_S_visible[:, 8] <= Duration100))
+            Pauses_100_200 = np.sum((Pauses_S_visible[:, 8] >= Duration100) & (Pauses_S_visible[:, 8] <= Duration200))
+            Pauses_200_300 = np.sum((Pauses_S_visible[:, 8] >= Duration200) & (Pauses_S_visible[:, 8] <= Duration300))
+            Pauses_300_400 = np.sum((Pauses_S_visible[:, 8] >= Duration300) & (Pauses_S_visible[:, 8] <= Duration400))
+            Pauses_400_500 = np.sum((Pauses_S_visible[:, 8] >= Duration400) & (Pauses_S_visible[:, 8] <= Duration500))
+
+            Pauses_ALL_len =len(Pauses_S_visible[:, 8])
+            # Ratio of Pauses_10_20 per total number of pauses
+            ratio_Pauses0_50 = Pauses_0_50/Pauses_ALL_len
+            ratio_Pauses50_100 = Pauses_50_100/Pauses_ALL_len
+            ratio_Pauses100_200 = Pauses_100_200/Pauses_ALL_len
+            ratio_Pauses200_300 = Pauses_200_300/Pauses_ALL_len
+            ratio_Pauses300_400 = Pauses_300_400/Pauses_ALL_len
+            ratio_Pauses400_500 = Pauses_400_500/Pauses_ALL_len
+
+        else:
+            ratio_Pauses0_50 = 0  # If no visible data, count is 0 for this fish
+            ratio_Pauses_50_100 = 0  # If no visible data, count is 0 for this fish
+            ratio_Pauses_100_200 = 0  # If no visible data, count is 0 for this fish
+            ratio_Pauses_200_300 = 0  # If no visible data, count is 0 for this fish
+            ratio_Pauses_300_400 = 0  # If no visible data, count is 0 for this fish
+            ratio_Pauses_400_500 = 0  # If no visible data, count is 0 for this fish
+
+
+        
+        # Append the Pauses of all conditions. e.g. Ratio_Pauses_10_20 = [0.3, 0.65, 0.2 ....]
+        ratio_Pauses_0_50_ALL.append(ratio_Pauses0_50) # this is a list of different lengths
+        ratio_Pauses_50_100_ALL.append(ratio_Pauses50_100) # this is a list of different lengths
+        ratio_Pauses_100_200_ALL.append(ratio_Pauses100_200) # this is a list of different lengths
+        ratio_Pauses_200_300_ALL.append(ratio_Pauses200_300) # this is a list of different lengths
+        ratio_Pauses_300_400_ALL.append(ratio_Pauses300_400) # this is a list of different lengths
+        ratio_Pauses_400_500_ALL.append(ratio_Pauses400_500) # this is a list of different lengths
+
+    # Append the array of counts for this condition to the main array
+    # E.g. condition_pause_counts = [[0.1, 0.7, 0.8], [0.1, 0.12, 0.15, 0.9], [0.2, 0.4]]
+    Ratio_Pauses_Condition_0_50.append(ratio_Pauses_0_50_ALL)
+    Ratio_Pauses_Condition_50_100.append(ratio_Pauses_50_100_ALL)
+    Ratio_Pauses_Condition_100_200.append(ratio_Pauses_100_200_ALL)
+    Ratio_Pauses_Condition_200_300.append(ratio_Pauses_200_300_ALL)
+    Ratio_Pauses_Condition_300_400.append(ratio_Pauses_300_400_ALL)
+    Ratio_Pauses_Condition_400_500.append(ratio_Pauses_400_500_ALL)
+
+#############################
+
+## FIGURE 1  -  Duration Pauses 0-50ms
+
+# Prepare data for boxplot
+Data_Ratio_Pauses = []
+
+for condition_name, values in zip(conditionNames, Ratio_Pauses_Condition_0_50):
+    if not values:  # Skip empty lists
+        print(f"Skipping empty data for condition: {condition_name}")
+        continue
+    for value in values:
+        Data_Ratio_Pauses.append({"Condition": condition_name, "Value": value})
+
+df = pd.DataFrame(Data_Ratio_Pauses)
+#print(df)
+
+# Create a boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="Condition", y="Value", data=df, palette="pastel", hue="Condition", linewidth=1.5, dodge=False, flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3})
+
+# Add individual data points
+sns.stripplot(x="Condition", y="Value", data=df, color="black", alpha=0.7, jitter=True, size=4)
+
+# Customize the plot
+plt.title("Pauses 0-50ms", fontsize=14)
+plt.xlabel("Condition", fontsize=12)
+plt.ylabel("Pause Ratio", fontsize=12)
+plt.xticks(rotation=30)
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.ylim(0, 0.6)  # Set y-axis limits
+
+# Save the plot
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_S_0_50ms.png'
+plt.savefig(filename, dpi=300)
+
+#plt.show()
+
+#############################
+
+## FIGURE 2  -  Duration Pauses 50-100ms
+
+# Prepare data for boxplot
+Data_Ratio_Pauses = []
+
+for condition_name, values in zip(conditionNames, Ratio_Pauses_Condition_50_100):
+    if not values:  # Skip empty lists
+        print(f"Skipping empty data for condition: {condition_name}")
+        continue
+    for value in values:
+        Data_Ratio_Pauses.append({"Condition": condition_name, "Value": value})
+
+df = pd.DataFrame(Data_Ratio_Pauses)
+#print(df)
+
+# Create a boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="Condition", y="Value", data=df, palette="pastel", hue="Condition", linewidth=1.5, dodge=False, flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3})
+
+# Add individual data points
+sns.stripplot(x="Condition", y="Value", data=df, color="black", alpha=0.7, jitter=True, size=4)
+
+# Customize the plot
+plt.title("Pauses 50-100ms", fontsize=14)
+plt.xlabel("Condition", fontsize=12)
+plt.ylabel("Pause Ratio", fontsize=12)
+plt.xticks(rotation=30)
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.ylim(0, 0.6)  # Set y-axis limits
+
+# Save the plot
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_S_50_100ms.png'
+plt.savefig(filename, dpi=300)
+
+#plt.show()
+
+#############################
+
+## FIGURE 3  -  Duration Pauses 100-200ms
+
+# Prepare data for boxplot
+Data_Ratio_Pauses = []
+
+for condition_name, values in zip(conditionNames, Ratio_Pauses_Condition_100_200):
+    if not values:  # Skip empty lists
+        print(f"Skipping empty data for condition: {condition_name}")
+        continue
+    for value in values:
+        Data_Ratio_Pauses.append({"Condition": condition_name, "Value": value})
+
+df = pd.DataFrame(Data_Ratio_Pauses)
+#print(df)
+
+# Create a boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="Condition", y="Value", data=df, palette="pastel", hue="Condition", linewidth=1.5, dodge=False, flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3})
+
+# Add individual data points
+sns.stripplot(x="Condition", y="Value", data=df, color="black", alpha=0.7, jitter=True, size=4)
+
+# Customize the plot
+plt.title("Pauses 100-200ms", fontsize=14)
+plt.xlabel("Condition", fontsize=12)
+plt.ylabel("Pause Ratio", fontsize=12)
+plt.xticks(rotation=30)
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.ylim(0, 0.6)  # Set y-axis limits
+
+# Save the plot
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_S_100_200ms.png'
+plt.savefig(filename, dpi=300)
+
+#plt.show()
+
+#############################
+
+## FIGURE 4  -  Duration Pauses 200-300ms
+
+# Prepare data for boxplot
+Data_Ratio_Pauses = []
+
+for condition_name, values in zip(conditionNames, Ratio_Pauses_Condition_200_300):
+    if not values:  # Skip empty lists
+        print(f"Skipping empty data for condition: {condition_name}")
+        continue
+    for value in values:
+        Data_Ratio_Pauses.append({"Condition": condition_name, "Value": value})
+
+df = pd.DataFrame(Data_Ratio_Pauses)
+#print(df)
+
+# Create a boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="Condition", y="Value", data=df, palette="pastel", hue="Condition", linewidth=1.5, dodge=False, flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3})
+
+# Add individual data points
+sns.stripplot(x="Condition", y="Value", data=df, color="black", alpha=0.7, jitter=True, size=4)
+
+# Customize the plot
+plt.title("Pauses 200-300ms", fontsize=14)
+plt.xlabel("Condition", fontsize=12)
+plt.ylabel("Pause Ratio", fontsize=12)
+plt.xticks(rotation=30)
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.ylim(0, 0.6)  # Set y-axis limits
+
+# Save the plot
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_S_200_300ms.png'
+plt.savefig(filename, dpi=300)
+
+#plt.show()
+
+#############################
+
+## FIGURE 5  -  Duration Pauses 300-400ms
+
+# Prepare data for boxplot
+Data_Ratio_Pauses = []
+
+for condition_name, values in zip(conditionNames, Ratio_Pauses_Condition_300_400):
+    if not values:  # Skip empty lists
+        print(f"Skipping empty data for condition: {condition_name}")
+        continue
+    for value in values:
+        Data_Ratio_Pauses.append({"Condition": condition_name, "Value": value})
+
+df = pd.DataFrame(Data_Ratio_Pauses)
+#print(df)
+
+# Create a boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="Condition", y="Value", data=df, palette="pastel", hue="Condition", linewidth=1.5, dodge=False, flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3})
+
+# Add individual data points
+sns.stripplot(x="Condition", y="Value", data=df, color="black", alpha=0.7, jitter=True, size=4)
+
+# Customize the plot
+plt.title("Pauses 300-400ms", fontsize=14)
+plt.xlabel("Condition", fontsize=12)
+plt.ylabel("Pause Ratio", fontsize=12)
+plt.xticks(rotation=30)
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.ylim(0, 0.6)  # Set y-axis limits
+
+# Save the plot
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_S_300_400ms.png'
+plt.savefig(filename, dpi=300)
+
+#plt.show()
+
+#############################
+
+## FIGURE 5  -  Duration Pauses 400-500ms
+
+# Prepare data for boxplot
+Data_Ratio_Pauses = []
+
+for condition_name, values in zip(conditionNames, Ratio_Pauses_Condition_400_500):
+    if not values:  # Skip empty lists
+        print(f"Skipping empty data for condition: {condition_name}")
+        continue
+    for value in values:
+        Data_Ratio_Pauses.append({"Condition": condition_name, "Value": value})
+
+df = pd.DataFrame(Data_Ratio_Pauses)
+#print(df)
+
+# Create a boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="Condition", y="Value", data=df, palette="pastel", hue="Condition", linewidth=1.5, dodge=False, flierprops={"marker":"o", "markerfacecolor":"black", "markeredgecolor":"black", "markersize": 3})
+
+# Add individual data points
+sns.stripplot(x="Condition", y="Value", data=df, color="black", alpha=0.7, jitter=True, size=4)
+
+# Customize the plot
+plt.title("Pauses 400-500ms", fontsize=14)
+plt.xlabel("Condition", fontsize=12)
+plt.ylabel("Pause Ratio", fontsize=12)
+plt.xticks(rotation=30)
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.ylim(0, 0.6)  # Set y-axis limits
+
+# Save the plot
+analysisFolder_figures = base_path + r'/Final_Figures/Pauses_duration'
+filename = analysisFolder_figures + '/Pauses_S_400_500ms.png'
+plt.savefig(filename, dpi=300)
+
+#plt.show()
+
+

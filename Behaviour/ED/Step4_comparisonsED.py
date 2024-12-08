@@ -28,12 +28,12 @@ import glob
 import pylab as pl
 
 # Set analysis folder and label for experiment/condition A
-analysisFolder_A = base_path + r'/Akap11/Analysis_VPI'
+analysisFolder_A = base_path + r'/Scrambled/Analysis_TPI'
 conditionName_A = "Control"
 
 
 # Set analysis folder and label for experiment/condition B
-analysisFolder_B = base_path + r'/Akap11/Analysis_TPI'
+analysisFolder_B = base_path + r'/trio/Analysis_TPI'
 conditionName_B = "Mutant"
 
 # Assemble lists
@@ -155,7 +155,7 @@ for i, name in enumerate(conditionNames):
     series_list.append(s)
 df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
-sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+#sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 #plt.show()
 
 # BPS
@@ -171,7 +171,7 @@ for i, name in enumerate(conditionNames):
     series_list.append(s)
 df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
-sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+#sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 #plt.show()
 
 # Distance
@@ -187,7 +187,7 @@ for i, name in enumerate(conditionNames):
     series_list.append(s)
 df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
-sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+#sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 #plt.show()
 
 # Freezes
@@ -219,7 +219,7 @@ for i, name in enumerate(conditionNames):
     series_list.append(s)
 df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
-sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+#sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 #plt.show()
 
 # Long Freezes
@@ -235,6 +235,6 @@ for i, name in enumerate(conditionNames):
     series_list.append(s)
 df = pd.concat(series_list, axis=1)
 sns.barplot(data=df, orient="v", saturation=0.1, color=[0.75,0.75,0.75,1], ci=95, capsize=0.05, errwidth=2)
-sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
+#sns.stripplot(data=df, orient="v", size=4, jitter=True, edgecolor="gray")
 plt.show()
 #FIN

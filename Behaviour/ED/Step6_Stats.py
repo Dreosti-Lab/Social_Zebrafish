@@ -27,50 +27,18 @@ from scipy import stats
 import seaborn as sns
 import pandas as pd
 
+
 # Import local modules
 import SZ_utilities_ED as SZU
 import SZ_macros_ED as SZM
 import SZ_video_ED as SZV
 import SZ_analysis_ED as SZA
 import SZ_summary_ED as SZS
+import SZ_statistics_ED as SZSt
 import BONSAI_ARK_ED
 import glob
 import pylab as pl
 
-# -----------------------------------------------------------------------------
-# Stats Helper Function
-# -----------------------------------------------------------------------------
-def do_stats(S1_in, name_1, S2_in, name_2, report_file):
-
-    # Controls vs Full Isolation (NS)
-    # -------------------------------
-    valid = (np.logical_not(np.isnan(S1_in)))
-    S1 = S1_in[valid]
-
-    valid = (np.logical_not(np.isnan(S2_in)))
-    S2 = S2_in[valid]
-
-    line = '\n' + name_1 + '(S1) vs ' + name_2 + '(S2)' 
-    report_file.write(line + '\n')
-    print(line)
-    line = 'Mean (S1): ' + str(np.mean(S1)) + '\nMean (S2): ' + str(np.mean(S2)) 
-    report_file.write(line + '\n')
-    print(line)
-
-    # Statistics: Compare S1 vs. S2 (relative TTEST)
-    result = stats.ttest_ind(S1, S2)
-    line = "P-Value (S1 vs. S2):" + str(result[1]) + ' (Un-paired T-Test)'
-    report_file.write(line + '\n')
-    print(line)
-
-    # Non-parametric version of independent TTest
-    result = stats.mannwhitneyu(S1, S2, True)
-    line = "P-Value (S1 vs. S2):" + str(result[1]) + ' (Mann-Whitney U-Test)'
-    report_file.write(line + '\n')
-    print(line)
-
-    return
-# -----------------------------------------------------------------------------
 
 # Set analysis folder and label for experiment/condition A
 analysisFolder_A = base_path + r'/Akap11/Analysis_TPI'
@@ -113,6 +81,8 @@ conditionNames = [conditionName_A, conditionName_B, conditionName_C, conditionNa
 # Summary Containers
 VPI_NS_summary = []
 VPI_S_summary = []
+SPI_NS_summary = []
+SPI_S_summary = []
 BPS_NS_summary = []
 BPS_S_summary = []
 Distance_NS_summary = []
@@ -139,7 +109,9 @@ for i, analysisFolder in enumerate(analysisFolders):
 
     # Allocate space for summary data
     VPI_NS_ALL = np.zeros(numFiles)
-    VPI_S_ALL = np.zeros(numFiles)        
+    VPI_S_ALL = np.zeros(numFiles)    
+    SPI_NS_ALL = np.zeros(numFiles)
+    SPI_S_ALL = np.zeros(numFiles)     
     BPS_NS_ALL = np.zeros(numFiles)
     BPS_S_ALL = np.zeros(numFiles)
     Distance_NS_ALL = np.zeros(numFiles)
@@ -164,6 +136,8 @@ for i, analysisFolder in enumerate(analysisFolders):
         # Extract from the npz file
         VPI_NS = dataobject['VPI_NS']    
         VPI_S = dataobject['VPI_S']   
+        SPI_NS = dataobject['SPI_NS']    
+        SPI_S = dataobject['SPI_S']
         BPS_NS = dataobject['BPS_NS']   
         BPS_S = dataobject['BPS_S']
         Distance_NS = dataobject['Distance_NS']   
@@ -188,6 +162,8 @@ for i, analysisFolder in enumerate(analysisFolders):
         # Make an array with all summary stats
         VPI_NS_ALL[f] = VPI_NS
         VPI_S_ALL[f] = VPI_S
+        SPI_NS_ALL[f] = SPI_NS
+        SPI_S_ALL[f] = SPI_S
         BPS_NS_ALL[f] = BPS_NS
         BPS_S_ALL[f] = BPS_S
         Distance_NS_ALL[f] = Distance_NS
@@ -198,6 +174,8 @@ for i, analysisFolder in enumerate(analysisFolders):
     # Add to summary lists
     VPI_NS_summary.append(VPI_NS_ALL)
     VPI_S_summary.append(VPI_S_ALL)
+    SPI_NS_summary.append(SPI_NS_ALL)
+    SPI_S_summary.append(SPI_S_ALL)
     
     BPS_NS_summary.append(BPS_NS_ALL)
     BPS_S_summary.append(BPS_S_ALL)
@@ -222,23 +200,26 @@ for i, name in enumerate(conditionNames):
     print(f"\n\n{name}\n---------------")
     report_path = f"{analysisFolders[i]}/report_{name}.txt"
     report_file = open(report_path, 'w')
-    do_stats(VPI_NS_summary[control_index], "VPI: Controls (NS)", VPI_NS_summary[i], f"VPI: {name} (NS)", report_file)
-    do_stats(VPI_S_summary[control_index], "VPI: Controls (S)", VPI_S_summary[i], f"VPI: {name} (S)", report_file)
+    SZSt.do_stats(VPI_NS_summary[control_index], "VPI: Controls (NS)", VPI_NS_summary[i], f"VPI: {name} (NS)", report_file)
+    SZSt.do_stats(VPI_S_summary[control_index], "VPI: Controls (S)", VPI_S_summary[i], f"VPI: {name} (S)", report_file)
 
-    do_stats(BPS_NS_summary[control_index], "BPS: Controls (NS)", BPS_NS_summary[i], f"BPS: {name} (NS)", report_file)
-    do_stats(BPS_S_summary[control_index], "BPS: Controls (S)", BPS_S_summary[i], f"BPS: {name} (S)", report_file)
+    SZSt.do_stats(SPI_NS_summary[control_index], "SPI: Controls (NS)", SPI_NS_summary[i], f"SPI: {name} (NS)", report_file)
+    SZSt.do_stats(SPI_S_summary[control_index], "SPI: Controls (S)", SPI_S_summary[i], f"SPI: {name} (S)", report_file)
 
-    do_stats(Distance_NS_summary[control_index], "Distance: Controls (NS)", Distance_NS_summary[i], f"Distance: {name} (NS)", report_file)
-    do_stats(Distance_S_summary[control_index], "Distance: Controls (S)", Distance_S_summary[i], f"Distance: {name} (S)", report_file)
+    SZSt.do_stats(BPS_NS_summary[control_index], "BPS: Controls (NS)", BPS_NS_summary[i], f"BPS: {name} (NS)", report_file)
+    SZSt.do_stats(BPS_S_summary[control_index], "BPS: Controls (S)", BPS_S_summary[i], f"BPS: {name} (S)", report_file)
 
-    do_stats(Freezes_NS_summary[control_index], "Freezes: Controls (NS)", Freezes_NS_summary[i], f"Freezes: {name} (NS)", report_file)
-    do_stats(Freezes_S_summary[control_index], "Freezes: Controls (S)", Freezes_S_summary[i], f"Freezes: {name} (S)", report_file)
+    SZSt.do_stats(Distance_NS_summary[control_index], "Distance: Controls (NS)", Distance_NS_summary[i], f"Distance: {name} (NS)", report_file)
+    SZSt.do_stats(Distance_S_summary[control_index], "Distance: Controls (S)", Distance_S_summary[i], f"Distance: {name} (S)", report_file)
 
-    do_stats(Percent_Moving_NS_summary[control_index], "Percent Moving: Controls (NS)", Percent_Moving_NS_summary[i], f"Percent Moving: {name} (NS)", report_file)
-    do_stats(Percent_Moving_S_summary[control_index], "Percent Moving: Controls (S)", Percent_Moving_S_summary[i], f"Percent Moving: {name} (S)", report_file)
+    SZSt.do_stats(Freezes_NS_summary[control_index], "Freezes: Controls (NS)", Freezes_NS_summary[i], f"Freezes: {name} (NS)", report_file)
+    SZSt.do_stats(Freezes_S_summary[control_index], "Freezes: Controls (S)", Freezes_S_summary[i], f"Freezes: {name} (S)", report_file)
 
-    do_stats(Long_Freezes_NS_summary[control_index], "Long Freezes: Controls (NS)", Long_Freezes_NS_summary[i], f"Long Freezes: {name} (NS)", report_file)
-    do_stats(Long_Freezes_S_summary[control_index], "Long Freezes: Controls (S)", Long_Freezes_S_summary[i], f"Long Freezes: {name} (S)", report_file)
+    SZSt.do_stats(Percent_Moving_NS_summary[control_index], "Percent Moving: Controls (NS)", Percent_Moving_NS_summary[i], f"Percent Moving: {name} (NS)", report_file)
+    SZSt.do_stats(Percent_Moving_S_summary[control_index], "Percent Moving: Controls (S)", Percent_Moving_S_summary[i], f"Percent Moving: {name} (S)", report_file)
+
+    SZSt.do_stats(Long_Freezes_NS_summary[control_index], "Long Freezes: Controls (NS)", Long_Freezes_NS_summary[i], f"Long Freezes: {name} (NS)", report_file)
+    SZSt.do_stats(Long_Freezes_S_summary[control_index], "Long Freezes: Controls (S)", Long_Freezes_S_summary[i], f"Long Freezes: {name} (S)", report_file)
     report_file.close()
 
 #FIN
